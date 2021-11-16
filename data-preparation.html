@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Data preparation | Analytics with KNIME and R</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Data preparation | Analytics with KNIME and R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a draft." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Data preparation | Analytics with KNIME and R" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="F Acito" />
+
+
+<meta name="date" content="2021-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-to-knime.html"/>
+<link rel="next" href="principal-components-analytics.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Cover page</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#what-is-analytics"><i class="fa fa-check"></i><b>1.1</b> What is analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-trends-in-analytics"><i class="fa fa-check"></i><b>1.2</b> Some trends in analytics</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#broadening-of-application-areas"><i class="fa fa-check"></i><b>1.2.1</b> Broadening of application areas</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#generalization-of-the-notion-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Generalization of the notion of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#a-trend-from-slicing-and-dicing-data-to-more-advanced-techniques"><i class="fa fa-check"></i><b>1.2.3</b> A trend from “slicing and dicing” data to more advanced techniques</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#more-advanced-data-visualization"><i class="fa fa-check"></i><b>1.2.4</b> More advanced data visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#the-analytics-process-model"><i class="fa fa-check"></i><b>1.3</b> The analytics process model</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html"><i class="fa fa-check"></i><b>2</b> Business understanding and problem definition</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#expert-views"><i class="fa fa-check"></i><b>2.1</b> Expert views</a></li>
+<li class="chapter" data-level="2.2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#understanding-the-business"><i class="fa fa-check"></i><b>2.2</b> Understanding the business</a></li>
+<li class="chapter" data-level="2.3" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#identifying-stakeholders"><i class="fa fa-check"></i><b>2.3</b> Identifying stakeholders</a></li>
+<li class="chapter" data-level="2.4" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#structured-versus-unstructured-problems"><i class="fa fa-check"></i><b>2.4</b> Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="2.5" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#framing-the-problem"><i class="fa fa-check"></i><b>2.5</b> Framing the problem</a></li>
+<li class="chapter" data-level="2.6" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#appendix-some-tools-for-problem-definition"><i class="fa fa-check"></i>Appendix: Some tools for problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#right-to-left-thinking"><i class="fa fa-check"></i>Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#reversing-the-problem"><i class="fa fa-check"></i>Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#open-the-problem-with-whys"><i class="fa fa-check"></i>Open the problem with “whys”</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#challenge-assumptions"><i class="fa fa-check"></i>Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#chunking"><i class="fa fa-check"></i>Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#problems"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduction to KNIME</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i><b>3.1</b> The KNIME Workbench</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#elements-of-the-knime-workbench"><i class="fa fa-check"></i><b>3.1.1</b> Elements of the KNIME Workbench</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#learning-to-use-knime"><i class="fa fa-check"></i><b>3.2</b> Learning to use KNIME</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-extensions-and-integrations"><i class="fa fa-check"></i><b>3.3</b> KNIME extensions and integrations</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-1-predicting-heart-disease"><i class="fa fa-check"></i><b>3.4</b> KNIME workflow example #1: Predicting heart disease</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-2-preparation-of-hospital-data"><i class="fa fa-check"></i><b>3.5</b> KNIME workflow example #2: Preparation of hospital data</a></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#summary-1"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#problems-1"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-preparation.html"><a href="data-preparation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="data-preparation.html"><a href="data-preparation.html#obtaining-the-needed-data"><i class="fa fa-check"></i><b>4.2</b> Obtaining the needed data</a></li>
+<li class="chapter" data-level="4.3" data-path="data-preparation.html"><a href="data-preparation.html#data-cleaning"><i class="fa fa-check"></i><b>4.3</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-preparation.html"><a href="data-preparation.html#missing-values"><i class="fa fa-check"></i><b>4.3.1</b> Missing values</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-preparation.html"><a href="data-preparation.html#outliers"><i class="fa fa-check"></i><b>4.3.2</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-preparation.html"><a href="data-preparation.html#feature-engineering"><i class="fa fa-check"></i><b>4.4</b> Feature engineering</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-preparation.html"><a href="data-preparation.html#data-transformations"><i class="fa fa-check"></i><b>4.4.1</b> Data transformations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-preparation.html"><a href="data-preparation.html#data-exploration"><i class="fa fa-check"></i><b>4.4.2</b> Data exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html"><i class="fa fa-check"></i><b>5</b> Principal components analytics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#approaches-to-dimension-reduction"><i class="fa fa-check"></i><b>5.1</b> Approaches to dimension reduction</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#the-pca-model"><i class="fa fa-check"></i><b>5.3</b> The PCA model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html"><i class="fa fa-check"></i><b>6</b> Evaluating predictive models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#training-testing-and-validation-samples"><i class="fa fa-check"></i><b>6.2</b> Training, Testing, and Validation samples</a></li>
+<li class="chapter" data-level="6.3" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-continuous-versus-discrete-targets"><i class="fa fa-check"></i><b>6.3</b> Evaluating continuous versus discrete targets</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-continuous-targets"><i class="fa fa-check"></i><b>6.3.1</b> Evaluating performance with continuous targets</a></li>
+<li class="chapter" data-level="6.3.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-classification-models"><i class="fa fa-check"></i><b>6.3.2</b> Evaluating performance with classification models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-techniques"><i class="fa fa-check"></i><b>7.2</b> Regression techniques</a></li>
+<li class="chapter" data-level="7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-explanation"><i class="fa fa-check"></i><b>7.3</b> Regression for explanation</a></li>
+<li class="chapter" data-level="7.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-prediction"><i class="fa fa-check"></i><b>7.4</b> Regression for prediction</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="multiple-regression.html"><a href="multiple-regression.html#revisiting-regression-assumptions"><i class="fa fa-check"></i><b>7.4.1</b> Revisiting regression assumptions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction-example-used-toyota-corollas"><i class="fa fa-check"></i><b>7.4.2</b> Prediction example: Used Toyota Corollas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-a-brief-history-of-regression"><i class="fa fa-check"></i>Appendix: A brief history of regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#problems-2"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#example-with-a-single-predictor"><i class="fa fa-check"></i><b>8.1</b> Example with a single predictor</a></li>
+<li class="chapter" data-level="8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#example-predictive-analytic-in-hr"><i class="fa fa-check"></i><b>8.2</b> Example: Predictive analytic in HR</a></li>
+<li class="chapter" data-level="8.3" data-path="logistic-regression.html"><a href="logistic-regression.html#predictor-interpretation-and-importance"><i class="fa fa-check"></i><b>8.3</b> Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="8.4" data-path="logistic-regression.html"><a href="logistic-regression.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Regularized logistic regression</a></li>
+<li class="chapter" data-level="8.5" data-path="logistic-regression.html"><a href="logistic-regression.html#probability-calibration"><i class="fa fa-check"></i><b>8.5</b> Probability calibration</a></li>
+<li class="chapter" data-level="8.6" data-path="logistic-regression.html"><a href="logistic-regression.html#evaluation-of-logistic-regression"><i class="fa fa-check"></i><b>8.6</b> Evaluation of logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>9</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ensemble-models.html"><a href="ensemble-models.html#creating-ensemble-models"><i class="fa fa-check"></i><b>9.1</b> Creating ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="ensemble-models.html"><a href="ensemble-models.html#reduced-variation"><i class="fa fa-check"></i><b>9.1.1</b> Reduced variation</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ensemble-models.html"><a href="ensemble-models.html#improved-performance"><i class="fa fa-check"></i><b>9.1.2</b> Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ensemble-models.html"><a href="ensemble-models.html#parallel-and-sequential-learners"><i class="fa fa-check"></i><b>9.2</b> Parallel and sequential learners</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ensemble-models.html"><a href="ensemble-models.html#bagging-bootstrap-aggregating"><i class="fa fa-check"></i><b>9.2.1</b> Bagging (Bootstrap Aggregating)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ensemble-models.html"><a href="ensemble-models.html#random-forests"><i class="fa fa-check"></i><b>9.2.2</b> Random Forests</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ensemble-models.html"><a href="ensemble-models.html#adaboost"><i class="fa fa-check"></i><b>9.2.3</b> AdaBoost</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ensemble-models.html"><a href="ensemble-models.html#gradient-boosting-machines"><i class="fa fa-check"></i><b>9.2.4</b> Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ensemble-models.html"><a href="ensemble-models.html#xgboost"><i class="fa fa-check"></i><b>9.2.5</b> XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ensemble-models.html"><a href="ensemble-models.html#example-of-ensemble-modeling-for-a-continuous-target"><i class="fa fa-check"></i><b>9.3</b> Example of ensemble modeling for a continuous target</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>10</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="naive-bayes.html"><a href="naive-bayes.html#a-thought-problem"><i class="fa fa-check"></i><b>10.1</b> A thought problem</a></li>
+<li class="chapter" data-level="10.2" data-path="naive-bayes.html"><a href="naive-bayes.html#bayes-theorem-applied-to-predictive-analytics"><i class="fa fa-check"></i><b>10.2</b> Bayes Theorem applied to predictive analytics</a></li>
+<li class="chapter" data-level="10.3" data-path="naive-bayes.html"><a href="naive-bayes.html#illustration-of-naïve-bayes-with-a-toy-data-set"><i class="fa fa-check"></i><b>10.3</b> Illustration of Naïve Bayes with a “toy” data set</a></li>
+<li class="chapter" data-level="10.4" data-path="naive-bayes.html"><a href="naive-bayes.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i><b>10.4</b> The assumption of conditional independence</a></li>
+<li class="chapter" data-level="10.5" data-path="naive-bayes.html"><a href="naive-bayes.html#naïve-bayes-with-continuous-predictors"><i class="fa fa-check"></i><b>10.5</b> Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="10.6" data-path="naive-bayes.html"><a href="naive-bayes.html#laplace-smoothing"><i class="fa fa-check"></i><b>10.6</b> Laplace Smoothing</a></li>
+<li class="chapter" data-level="10.7" data-path="naive-bayes.html"><a href="naive-bayes.html#example-using-naïve-bayes-with-churn-data"><i class="fa fa-check"></i><b>10.7</b> Example using naïve Bayes with churn data</a></li>
+<li class="chapter" data-level="10.8" data-path="naive-bayes.html"><a href="naive-bayes.html#spam-detection-using-naïve-bayes"><i class="fa fa-check"></i><b>10.8</b> Spam detection using naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>11</b> Deep learning</a></li>
+<li class="chapter" data-level="12" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>12</b> k Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#k-nearest-neighbors-and-memory-based-learning"><i class="fa fa-check"></i><b>12.1</b> k nearest neighbors and memory-based learning</a></li>
+<li class="chapter" data-level="12.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications"><i class="fa fa-check"></i><b>12.2</b> Typical applications</a></li>
+<li class="chapter" data-level="12.3" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#what-is-knn"><i class="fa fa-check"></i><b>12.3</b> What is kNN?</a></li>
+<li class="chapter" data-level="12.4" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-two-dimensional-graphic-example-of-knn"><i class="fa fa-check"></i><b>12.4</b> A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="12.5" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#example-of-knn-diagnosing-heart-disease"><i class="fa fa-check"></i><b>12.5</b> Example of kNN: Diagnosing heart disease</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#results"><i class="fa fa-check"></i><b>12.5.1</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-continuous-targets"><i class="fa fa-check"></i><b>12.6</b> kNN for continuous targets</a></li>
+<li class="chapter" data-level="12.7" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-multiclass-target-variables"><i class="fa fa-check"></i><b>12.7</b> kNN for multiclass target variables</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tree-models.html"><a href="tree-models.html"><i class="fa fa-check"></i><b>13</b> Tree models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="tree-models.html"><a href="tree-models.html#classification-trees"><i class="fa fa-check"></i><b>13.1</b> Classification trees</a></li>
+<li class="chapter" data-level="13.2" data-path="tree-models.html"><a href="tree-models.html#forming-classification-trees"><i class="fa fa-check"></i><b>13.2</b> Forming classification trees</a></li>
+<li class="chapter" data-level="13.3" data-path="tree-models.html"><a href="tree-models.html#varieties-of-classification-tree-algorithms"><i class="fa fa-check"></i><b>13.3</b> Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="13.4" data-path="tree-models.html"><a href="tree-models.html#criteria-for-splitting-and-growing-a-tree"><i class="fa fa-check"></i><b>13.4</b> Criteria for splitting and growing a tree</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tree-models.html"><a href="tree-models.html#the-gini-index"><i class="fa fa-check"></i><b>13.4.1</b> The Gini index</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tree-models.html"><a href="tree-models.html#information-gain"><i class="fa fa-check"></i><b>13.4.2</b> Information Gain</a></li>
+<li class="chapter" data-level="13.4.3" data-path="tree-models.html"><a href="tree-models.html#chi-square-as-a-splitting-criterion"><i class="fa fa-check"></i><b>13.4.3</b> Chi-square as a splitting criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="tree-models.html"><a href="tree-models.html#overfitting"><i class="fa fa-check"></i><b>13.5</b> Overfitting</a></li>
+<li class="chapter" data-level="13.6" data-path="tree-models.html"><a href="tree-models.html#example-of-a-classification-tree"><i class="fa fa-check"></i><b>13.6</b> Example of a classification tree</a></li>
+<li class="chapter" data-level="13.7" data-path="tree-models.html"><a href="tree-models.html#regression-trees"><i class="fa fa-check"></i><b>13.7</b> Regression trees</a>
+<ul>
+<li class="chapter" data-level="13.7.1" data-path="tree-models.html"><a href="tree-models.html#how-regression-trees-work"><i class="fa fa-check"></i><b>13.7.1</b> How regression trees work</a></li>
+<li class="chapter" data-level="13.7.2" data-path="tree-models.html"><a href="tree-models.html#example-predicting-home-prices"><i class="fa fa-check"></i><b>13.7.2</b> Example: Predicting home prices</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="tree-models.html"><a href="tree-models.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>13.8</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>14</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="neural-networks.html"><a href="neural-networks.html#what-are-artificial-neural-networks"><i class="fa fa-check"></i><b>14.1</b> What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="neural-networks.html"><a href="neural-networks.html#human-neurons-to-mathematical-models"><i class="fa fa-check"></i><b>14.1.1</b> Human neurons to mathematical models</a></li>
+<li class="chapter" data-level="14.1.2" data-path="neural-networks.html"><a href="neural-networks.html#activation-functions"><i class="fa fa-check"></i><b>14.1.2</b> Activation functions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="neural-networks.html"><a href="neural-networks.html#the-road-to-machine-learning-with-neural-nets"><i class="fa fa-check"></i><b>14.2</b> The road to machine learning with neural nets</a></li>
+<li class="chapter" data-level="14.3" data-path="neural-networks.html"><a href="neural-networks.html#example-of-a-neural-network"><i class="fa fa-check"></i><b>14.3</b> Example of a neural network</a></li>
+<li class="chapter" data-level="14.4" data-path="neural-networks.html"><a href="neural-networks.html#training-a-neural-net"><i class="fa fa-check"></i><b>14.4</b> Training a neural net</a></li>
+<li class="chapter" data-level="14.5" data-path="neural-networks.html"><a href="neural-networks.html#considerations-in-using-neural-nets"><i class="fa fa-check"></i><b>14.5</b> Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="neural-networks.html"><a href="neural-networks.html#missing-data"><i class="fa fa-check"></i><b>14.5.1</b> Missing data</a></li>
+<li class="chapter" data-level="14.5.2" data-path="neural-networks.html"><a href="neural-networks.html#representative-data"><i class="fa fa-check"></i><b>14.5.2</b> Representative data</a></li>
+<li class="chapter" data-level="14.5.3" data-path="neural-networks.html"><a href="neural-networks.html#all-eventualities-must-be-covered"><i class="fa fa-check"></i><b>14.5.3</b> All eventualities must be covered</a></li>
+<li class="chapter" data-level="14.5.4" data-path="neural-networks.html"><a href="neural-networks.html#unbalanced-data-sets"><i class="fa fa-check"></i><b>14.5.4</b> Unbalanced data sets</a></li>
+<li class="chapter" data-level="14.5.5" data-path="neural-networks.html"><a href="neural-networks.html#the-overfitting-problem"><i class="fa fa-check"></i><b>14.5.5</b> The overfitting problem</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="neural-networks.html"><a href="neural-networks.html#neural-network-example"><i class="fa fa-check"></i><b>14.6</b> Neural network example</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>15</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#approaches-to-forming-clusters"><i class="fa fa-check"></i><b>15.1</b> Approaches to forming clusters</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hierarchical-versus-partitioning-methods"><i class="fa fa-check"></i><b>15.1.1</b> Hierarchical versus partitioning methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hard-versus-soft-methods"><i class="fa fa-check"></i><b>15.1.2</b> “Hard” versus “soft” methods</a></li>
+<li class="chapter" data-level="15.1.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#applying-hierarchical-clusters"><i class="fa fa-check"></i><b>15.1.3</b> Applying hierarchical clusters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analytics with KNIME and R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-preparation" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Data preparation</h1>
+<div id="introduction" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Introduction</h2>
+<p>Data preparation includes the processes of obtaining the data, cleaning it, feature engineering, and exploratory analysis. Data analysts report that 60 to 90 percent of the time on a project is often consumed by these processes.</p>
+<p>There are many possible ways to perform the data preparation processes and many steps might be taken before the data is ready for analysis. It is very important to document whatever steps are taken to join, clean, transform, or otherwise prepare the data so that reference can be made when new data is to be analyzed. *[A common problem when working with spreadsheets is that after making several modifications to the data, it is difficult to reproduce the steps unless they are somehow recorded. This is an added benefit of using KNIME since the workflows provide a graphical record of all steps taken.]</p>
+</div>
+<div id="obtaining-the-needed-data" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Obtaining the needed data</h2>
+<p>One aspect of the analytics process that is surprising to many newcomers is that a company’s or organization’s data warehouse will not provide the data that is needed in the correct form. The data must be assembled, cleaned and custom fitted to the analytics problem.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> This process is most efficient and effective when the analyst has good knowledge of the business itself or has a domain expert on the project team.</p>
+<p>Data from a company’s internal systems may need to be integrated with census data. Or weather data. Or traffic data. Or calendar data indicating holidays and weekends, etc. Data base tools such as joins involve linking records between two or more data bases by matching what is known as a key field.</p>
+<p>External data from the web, government, and commercial sources may be needed and integrated into a usable structure. Most predictive and data mining software requires that the data to be analyzed is in a well-formed tabular structure or flat file. Variables should be in the columns and observations in the rows. If the data source has variables in the rows and observations in the columns, the data table must be transposed.</p>
+<p>It is also important that the proper type of data is available. For example, if a predictive model is to be developed, it is necessary to have both predictors and outcome variables. If a binary outcome is to be predicted, then there must be enough instances of both binary outcomes. For example, if a predictive model to identify fraud requires observations which are both fraudulent and not fraudulent.</p>
+<p>As the data is being assembled one may find that it is not going to be appropriate or sufficient to address the problem identified in the first step. Then, the business problem might have to be revised or new ways explored to obtain the required data.</p>
+</div>
+<div id="data-cleaning" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Data cleaning</h2>
+<p>After obtaining the data it might include inaccurate, incomplete, or inconsistent values; there might be duplicate records, spelling errors, or simply errors from the original data capture. Trying to analyze data that has such errors is bound to lead to incorrect or misleading results. Data cleaning (aka data scrubbing or data cleansing) prior to model building is extremely important. It is not as simple as deleting records with apparent records. Instead, it is important maximize accuracy while not deleting information. The goal is to make sure that the data set submitted to the modeling process is of the highest quality. Some of the steps in the data cleaning process include:</p>
+<ul>
+<li>Removing unneeded columns (variables) and/or rows.
+<ul>
+<li>Removing duplicate observations.</li>
+<li>Removing variables that have constant values for all observations.</li>
+</ul></li>
+<li>Removing data that is out of scope and/or not within the required time frame.</li>
+<li>Finding and correcting impossible or non-sensible values where logical constraints can be specified.
+<ul>
+<li>Checking conditions across variable that must be satisfied. (For example, age in years should equal current year minus birth year, population density should equal total population divided by area, and so on.)</li>
+</ul></li>
+<li>Removing duplicate observations.</li>
+<li>Removing variables that have constant values for all observations.</li>
+<li>Identifying and dealing with outliers.</li>
+<li>Identifying and dealing with missing values.</li>
+<li>Finding misspellings, out-of-range, or impossible values.
+<ul>
+<li>Checking to make sure that the range of each variable is correct. (For example, ensuring that dates, geographic regions, and other variables fall into the proper range.)</li>
+</ul></li>
+<li>Making sure that the formats and units of measurement are consistent.
+<ul>
+<li>Are the variables measured in the same way over time or have the data definitions been changed?</li>
+<li>Are the variables from different data sets available at the same level of granularity?</li>
+</ul></li>
+<li>ensuring that regular expressions such as phone numbers, zip codes, social security numbers, etc. are in a consistent and correct format.</li>
+</ul>
+<p>This is an imposing list and there may be additional steps that might be needed. Also, some of the issues may not be relevant to a particular project. There is no simple process to follow since it depends on the specific variables in the data.</p>
+<p>KNIME provides several nodes that can be used for cleaning the data. (Figure <a href="data-preparation.html#fig:KNIMENodes">4.1</a>)</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:KNIMENodes"></span>
+<img src="imagesForDataPreparation/KNIMENodesDataCleaning.PNG" alt="Some of the KNIME nodes useful for data cleaning." width="80%" />
+<p class="caption">
+Figure 4.1: Some of the KNIME nodes useful for data cleaning.
+</p>
+</div>
+<div id="missing-values" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Missing values</h3>
+<p>The presence of missing values is one of the most difficult problems in analytics. In an ideal situation there would be valid values for every observation. However, it is very likely that some missing values will be present for some of the variables in most real data sets.</p>
+<p>The first thing to do is to try to find the value for the missing information. While it would be great if these values could be found, in practice it is unlikely.</p>
+<p>Missing values can be indicated in variety of ways in a data set, so analysts need to be on the look out for such indicators. Some of the ways that missing values are indicated in data sets include the following:</p>
+<div class="insetNoBorder">
+<p>Null<br />
+99, 999, -999, etc.<br />
+-1<br />
+?<br />
+.<br />
+NA<br />
+None</p>
+</div>
+<p>It is important to recognize how the original values were coded and to recode the values to a common indicator. This is especially true for numeric variable, where the missing value code could distort statistics such as the mean and variance.</p>
+<p>Missing values occur for many reasons. Missing values could be generated due to structural reasons. For example, a variable might ask if a person is homeowner or not. If yes, then a question might ask for the approximate value of the home. If no, the value of the home is missing, as it should be.</p>
+<p>In survey research, it is very common for respondents to refuse to answer questions about income. Respondents may simply not know the answer to a question, resulting in a missing value.</p>
+<div id="types-of-missing-values" class="section level5" number="4.3.1.0.1">
+<h5><span class="header-section-number">4.3.1.0.1</span> Types of missing values</h5>
+<p>A classification scheme for missing values developed by <span class="citation">(<a href="#ref-Rubin1976" role="doc-biblioref">Rubin 1976</a>)</span> stipulated three types of missing values:</p>
+<ul>
+<li>MCAR - Missing completely at random.</li>
+<li>MAR - Missing at random.</li>
+<li>MNAR - Not missing at random.</li>
+</ul>
+<p>MCAR is the most favorable situation, since it means that the values which are missing have no relation with either target or predictor values. The observations with missing values will have similar distributions as those without missing values. The missing values in the rows of a data set could reflect random errors of data collection.</p>
+<p>MAR means that there are likely systematic differences between the observations with versus those without missing values. The assumption is that is related to some of the observed predictor variables. For example, missing values for income might relate to income and age, with those higher in income and older more likely to omit income.</p>
+<p>MNAR refers to situations where the likelihood of a value to be missing is not related to other variables but instead is related to the value itself. For example, in a data set on credit worthiness, a question on personal bankruptcies may be left blank by persons who did declare bankruptcy. This is the most pernicious type of missingness. It is very difficult to determine whether missing values are MNAR versus MAR or MCAR. Domain knowledge can be helpful to identify when MNAR is present.</p>
+</div>
+<div id="handling-missing-values" class="section level4" number="4.3.1.1">
+<h4><span class="header-section-number">4.3.1.1</span> Handling missing values</h4>
+<p>If the proportion of observations with missing information is small in a large data set (e.g., less than 1%), those observations can probably be deleted. This is known as <em>listwise deletion</em>. Before dropping observations, however, it is important to check whether the missing values are concentrated in just a couple of variables or if many of most of the observations have at least one missing value. In the latter case, it is possible, even with a small percentage of missing values, that a data set with a million observations could be reduced to only thousands using listwise deletion.</p>
+<p>Another approach consider is to delete columns with large percentages of missing data. For example, if 75% of observations on a particular variable are missing, then the column might be deleted. This, of course, should not be done if the situation is deemed NMAR.</p>
+</div>
+<div id="imputation-methods" class="section level4" number="4.3.1.2">
+<h4><span class="header-section-number">4.3.1.2</span> Imputation methods</h4>
+<p>Imputation refers to the substitution of a value to replace the missing values in a data set. (If MNAR is suspected, the imputation techniques discussed in the following should <em>not</em> be used since the results of analyses can be biased and misleading.) There are many ways of doing so:</p>
+<ul>
+<li>For numeric variables:
+<ul>
+<li>Substitute a constant value for all missing values in numeric variables.</li>
+<li>Substitute missing values with mean or median of the non-missing values.</li>
+<li>Regress non-missing values of a variable on other variables in the data set and then use the regression equation to predict the most likely values in the observations with the missing values.</li>
+<li>Use k nearest neighbors to find observations with similar values on the non-missing variables and then use those observations to impute the missing values, for example, by taking the average of the non-missing values from k nearest neighbors.</li>
+</ul></li>
+<li>For categorical variables:
+<ul>
+<li>Substitute for the missing values the mode of the values from the non-missing values.</li>
+<li>Explicitly consider the missing values as simply another level of the categorical variable.</li>
+<li>Use a model to predict category level for the missing values from non-missing observations. One such technique to consider is decision trees.</li>
+</ul></li>
+</ul>
+<p>Missing values for each variable in a data set can be identified using the KNIME Statistics node. The KNIME node “Missing Value” handles missing values for both numeric and string variables. The node can replace all numeric and string variables in the same manner or the type of imputation can be set differently for each variable. The approach to handling missing values depends on the type of variable. The following options are available in the “Missing Value” node for numeric variables:</p>
+<ul>
+<li>For any type of variable with missing values:
+<ul>
+<li>Do nothing.</li>
+<li>Remove the row with the missing value.</li>
+<li>Impute a fixed value – replace missing values with a user specified constant for strings or numeric variables.</li>
+</ul></li>
+<li>For numeric variables with missing values:
+<ul>
+<li>Replace values with a summary statistic – the maximum, minimum, mean, median, or rounded mean.</li>
+</ul></li>
+<li>For time series data with missing values:
+<ul>
+<li>Linear Interpolation – estimate a missing value via a straight-line trend either increasing or decreasing.</li>
+<li>Average Interpolation – take the average of a number of previous and next non-missing values.</li>
+<li>Moving average – calculate the mean of a specified number of look-ahead and look-behind values.</li>
+</ul></li>
+<li>For string or nominal variables:
+<ul>
+<li>Most frequent value – replace the missing values with the mode of the variable.</li>
+</ul></li>
+</ul>
+<p>Additional methods for missing value imputation are available in R such as:</p>
+<ul>
+<li>MICE (Multivariate Imputation by Chained Equations) <span class="citation">(<a href="#ref-mice" role="doc-biblioref">mice 2021</a>)</span></li>
+<li>Amelia (A Program for Missing Data) <span class="citation">(<a href="#ref-Amelia" role="doc-biblioref">Amelia 2021</a>)</span></li>
+<li>VIM (Visualization and Imputation of Missing Values) <span class="citation">(<a href="#ref-VIM" role="doc-biblioref">VIM 2021</a>)</span></li>
+<li>mlr (Machine learning in R) <span class="citation">(<a href="#ref-mlr" role="doc-biblioref">mlr 2021</a>)</span></li>
+</ul>
+</div>
+</div>
+<div id="outliers" class="section level3" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Outliers</h3>
+<p>Outliers are defined as values of a variable that are an “abnormal distance” from other values in a data set - extremely high or extremely low. Whether a value is an outlier is not always easy to say as it may depend on domain knowledge. Extreme outliers can cause problems for many algorithms and can distort both supervised and unsupervised models. There are many graphical and statistical techniques that can be used to detect outliers.</p>
+<p>Outliers are sometimes due to data entry errors, e.g., when an extra zero or two is added to value by mistake. In other cases, a pattern of outlying values can be identified which may suggest how to deal with them.</p>
+<p>In general, it is not a good idea to simply remove outliers without further investigation. If we are very sure that an outlier is an error, the observation can be removed if the fraction of cases with outliers is very small.</p>
+<p><em>Graphical approach to detecting outliers</em></p>
+<p><img src="TextbookDraft_files/figure-html/unnamed-chunk-2-1.png" width="672" style="background-color: black; padding:1px; display: inline-block;" /></p>
+<p><img src="TextbookDraft_files/figure-html/unnamed-chunk-3-1.png" width="672" style="background-color: black; padding:1px; display: inline-block;" /></p>
+<p><em>Statistical methods</em></p>
+<p>One statistical method is to standardize a variable by subtracting the mean and dividing by the standard deviation. Then, assuming normality, values outside plus or minus two or three standard deviations can be evaluated as possible outliers.</p>
+<p>Another popular approach is to calculate Tukey’s upper and lower fences which are shown graphically in histograms <span class="citation">(<a href="#ref-Tukey1977" role="doc-biblioref">Tukey 1977</a>)</span>. The formulas are based on the first (Q1) and third (Q3) quartiles. Using this formula, k can be set by the analyst. The advantage of calculating the fences rather than using histograms is that the analyst can define what outliers are by setting k. For deviations from normality, k is typically set at 1.5. For extreme outliers, the value of k can be set at 3.0</p>
+<div class="insetNoBorder">
+<p>Lower fence = Q1 - k(Q3 - Q1)
+Upper fence = Q3 + k(Q3 - Q1)</p>
+</div>
+<p>The KNIME node Numeric Outliers can be used to detect and potentially deal with outliers. This node allows the user to specify k. To identify extreme outliers a typical practice is to set k equal to 3.</p>
+<p>The advantage of calculating the fences rather than using histograms is that the analyst can define what outliers are by setting k. The value of k depends on the purpose of the test. For deviations from normality, k is typically set at 1.5, although others tests for normality are available and normality of the predictor values is not required.</p>
+<p><em>Multivariate outliers</em></p>
+<p>To this point the discussion has focused on univariate outliers. Even if no univariate outliers are found, it is possible that outliers are present that can be only detected using multivariate methods.</p>
+<p>For example, the following scatterplot shows an outlier in red.</p>
+<p><img src="TextbookDraft_files/figure-html/unnamed-chunk-4-1.png" width="672" style="background-color: black; padding:1px; display: inline-block;" /></p>
+<p>Box plots are created on the X and Y variables. No outliers are identified.</p>
+<p><img src="TextbookDraft_files/figure-html/unnamed-chunk-5-1.png" width="672" style="background-color: black; padding:1px; display: inline-block;" /></p>
+<p>To identify multivariate outliers, the Mahalanobis Distance can be used. A detailed discussion of how to do this is in <span class="citation">(<a href="#ref-Cansiz" role="doc-biblioref">Cansiz 2020</a>)</span>. This article uses R. KNIME has a component called “outliers 1 column” that detects outliers using Mahalanobis distance that requires Python integration. An R code snippet can be developed for Mahalanobis distance using the R package mvoutlier <span class="citation">(<a href="#ref-mvoutlier" role="doc-biblioref">mvoutlier 2021</a>)</span>.</p>
+<div id="handling-outliers" class="section level4" number="4.3.2.1">
+<h4><span class="header-section-number">4.3.2.1</span> Handling outliers</h4>
+<p>Identifying potential outliers in a variable is usually straightforward, but deciding what to do about outliers is not simple. Outlying values could be legitimate and correct, so routinely deleting observations is not a recommended practice. In fact, in some cases detecting outliers is actually the object of analysis in applications such as intrusion detection in computer systems, determining fraud in financial activity, detecting unusual patterns in medical data, and other areas. <span class="citation">(<a href="#ref-Aggarwal" role="doc-biblioref">Aggarwal 2017</a>)</span></p>
+<p>The KNIME node Number Outliers detects and provides several options to treat any identified outliers. The treatment options are:</p>
+<ul>
+<li>Remove each row containing an outlier (although this should not be done without careful consideration).<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a></li>
+<li>Replace each outlier with a missing value indicator.</li>
+<li>Replace each outlier with the closest value within the permitted interval.</li>
+</ul>
+<p>Sometimes a log transformation will reduce variability in a predictor and lessen or remove outliers. The Math node in KNIME can be used to create transformations.</p>
+<p>Another approach is to bin a continuous variable by dividing it into groups. This creates an ordinal variable where the values in each bin can be controlled. The KNIME node Numeric Binner can be used define and create bins. The numeric variate is transformed into a string column. Of course, detail is lost is binning, but this is frequently a useful technique.</p>
+</div>
+</div>
+</div>
+<div id="feature-engineering" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Feature engineering</h2>
+<p>Feature engineering refers to steps taken to improve the accuracy of predictive models though data transformations, constructions of new variables from available variables, or acquiring additional variables to enhance model performance. Feature engineering, despite its technical connotation is really more of an art than a science that is learned through experience. However, there are still useful suggestions for starting the process.</p>
+<p>Features and independent variables are basically the same thing. Independent variables (and related terms such as predictors, inputs, and so on) are used by statisticians while the term <em>features</em> is more prevalent in the context of machine learning.<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a></p>
+<div id="data-transformations" class="section level3" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Data transformations</h3>
+<p>To identify the need for transforming predictor variables, descriptive statistics and data visualizations are important tools. Histograms, box plots, scatter plots, and other basic visualization techniques can be routinely applied to numeric predictors.</p>
+<div id="handling-skewed-data" class="section level4" number="4.4.1.1">
+<h4><span class="header-section-number">4.4.1.1</span> Handling skewed data</h4>
+<p>After outliers, missing values, and other anomalies have been dealt with, the distributions of variables should be checked for extreme skewness. While predictor values in machine learning models do not have to be perfectly symmetrical, skewed variables can distort or bias model performance. The models can be overly sensitive to the tails of the variable distributions.</p>
+<p>Detecting skewness is usually straightforward using histograms. Skewness can be reduced by using transformations:</p>
+<ul>
+<li>For positive or left skew, try the following on a variable x:
+<ul>
+<li>log(k + x)</li>
+<li>sqrt(k + x)</li>
+<li>where k is a large enough positive number to insure that the log and square root are applied only to numbers &gt; 0.</li>
+</ul></li>
+<li>For negative or right skew, try the following on a variable x:
+<ul>
+<li>x<sup>n</sup>, where n is positive number.</li>
+<li>sqrt(k - x) where k is greater than the largest number in x.</li>
+</ul></li>
+</ul>
+<p>For the positive skew in the following example, the square root transformation created a more symmetric distribution the log function. For the negative skew, the square root of (k-x) worked best,
+Selecting the transformation is usually a trial- and-error process.
+<img src="TextbookDraft_files/figure-html/unnamed-chunk-6-1.png" width="672" style="background-color: black; padding:1px; display: inline-block;" /></p>
+<p><img src="TextbookDraft_files/figure-html/unnamed-chunk-7-1.png" width="672" style="background-color: black; padding:1px; display: inline-block;" /></p>
+</div>
+<div id="transformations-to-achieve-linearity" class="section level4" number="4.4.1.2">
+<h4><span class="header-section-number">4.4.1.2</span> Transformations to achieve linearity</h4>
+<p>For some machine learning methods, such as ordinary regression and logistic regression it is important that the relationship between the predictors and the target variable is a straight line or linear. Other predictive models, such as neural nets and decision trees are not as reliant on linearity, but transformations to linearity will not hurt for such models.</p>
+<p>To check for linearity a separate scatterplot of the target variable versus each continuous predictor usually diagnostic. If non-linearity is found, then transformations can be tried on either the target variable or the predictors. In my experience, it is better to try transformations on the predictors and leave the target variable as is. Transforming the target variable can sometimes cause other problems with modeling. With predictive models the objective is almost always to make predictions in the units of the original variable. Therefore, if the target variable is transformed using the log (a common suggestion in many texts), at the final stage of the analysis the inverse of the log must be applied to the result. This is not always a straightforward step. Performance measures such as R<sup>2</sup> and root mean squared error cannot be compared between models where the target has been transformed versus not transformed. In general, it’s better to attempt to achieve linearity using the predictors.</p>
+<p>The following chart shows typical transformations for different non-linear relationships.
+(Figure <a href="data-preparation.html#fig:transformationsForLinearity">4.2</a>)</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:transformationsForLinearity"></span>
+<img src="imagesForDataPreparation/TransformationsForLinearity.PNG" alt="Transformations to achieve linearity." width="80%" style="background-color: black; padding:3px; display: inline-block;" />
+<p class="caption">
+Figure 4.2: Transformations to achieve linearity.
+</p>
+</div>
+<p>A demonstration of how these transformations work to straighten relationships is shown here.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8-1"></span>
+<img src="TextbookDraft_files/figure-html/unnamed-chunk-8-1.png" alt="Examples of transformations." width="672" style="background-color: black; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 4.3: Examples of transformations.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8-2"></span>
+<img src="TextbookDraft_files/figure-html/unnamed-chunk-8-2.png" alt="Examples of transformations." width="672" style="background-color: black; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 4.4: Examples of transformations.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8-3"></span>
+<img src="TextbookDraft_files/figure-html/unnamed-chunk-8-3.png" alt="Examples of transformations." width="672" style="background-color: black; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 4.5: Examples of transformations.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8-4"></span>
+<img src="TextbookDraft_files/figure-html/unnamed-chunk-8-4.png" alt="Examples of transformations." width="672" style="background-color: black; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 4.6: Examples of transformations.
+</p>
+</div>
+<p><em>Deriving new variables</em></p>
+<p>New variables can be created used two or more variables already in the data set. This requires more than statistical and computer skills. It requires understanding of the business problem.</p>
+<p>For example, if you are predicting whether a person will cancel a cell phone contract or not, the data may have the number of calls made from the phone. A new measure might be the number of calls per day. Or the number of days when no call is made. Or the number of calls made divided by the number of calls received.</p>
+</div>
+</div>
+<div id="data-exploration" class="section level3" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> Data exploration</h3>
+<p>Once the data set has been cleaned, the next step is to thoroughly explore the data. Some of this may have been done in the previous step, but here is where descriptive statistics and graphical representations are most useful. Exploratory data analysis is an approach/philosophy for data analysis that employs a variety of graphical and some descriptive statistical techniques to provide insight into a data set.</p>
+<p>Exploratory analysis is open-ended, since the goal is to generate clues about what is happening which can then open new avenues of investigation (“hypothesis generation” rather than the more formal “hypothesis testing” featured prominently in many books on statistics). This analysis can also support the selection of appropriate modeling techniques, uncover underlying structure in the data, and further assess how clean the data is.</p>
+<p>Exploratory analysis is not a highly linear, rigid process. Different people will literally find things differently. The software used for exploratory analysis should ideally be both agile and functional.</p>
+<p>Commonly used graphs include:</p>
+<ul>
+<li>Scatter plots</li>
+<li>Bar plots</li>
+<li>Histograms</li>
+<li>Box and whisker plots</li>
+<li>Density plots</li>
+<li>Bubble charts</li>
+</ul>
+<p>Commonly used descriptive statistics include:</p>
+<ul>
+<li>Mean, median, mode</li>
+<li>Variance, standard deviation</li>
+<li>Range, Max, Min</li>
+<li>Correlations and covariances</li>
+<li>Frequencies and percentages</li>
+<li>Percentiles and quartiles</li>
+</ul>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Aggarwal" class="csl-entry">
+Aggarwal, Charu C. 2017. <em>Outlier Analysis, Second Edition</em>. Switzerland: Springer International Publishing.
+</div>
+<div id="ref-Amelia" class="csl-entry">
+Amelia. 2021. <span>“A Program for Missing Data.”</span> https://cran.r-project.org/web/packages/Amelia/Amelia.pdf.
+</div>
+<div id="ref-Cansiz" class="csl-entry">
+Cansiz, Sergen. 2020. <span>“Mahalanobis Distance and Multivariate Outlier Detection in r.”</span> https://towardsdatascience.com/mahalonobis-distance-and-outlier-detection-in-r-cb9c37576d7d.
+</div>
+<div id="ref-mice" class="csl-entry">
+mice. 2021. <span>“Multivariate Imputation by Chained Equations.”</span> https://cran.r-project.org/web/packages/mice/mice.pdf.
+</div>
+<div id="ref-mlr" class="csl-entry">
+mlr. 2021. <span>“Machine Learning in r.”</span> https://cran.r-project.org/web/packages/mlr/mlr.pdf.
+</div>
+<div id="ref-mvoutlier" class="csl-entry">
+mvoutlier. 2021. <span>“Multivariate Outlier Detection Based on Robust Methods.”</span> https://cran.r-project.org/web/packages/mvoutlier/mvoutlier.pdf.
+</div>
+<div id="ref-Rubin1976" class="csl-entry">
+Rubin, Donald B. 1976. <span>“Inference and Missing Data.”</span> <em>Biometrika</em> 63: 581–90.
+</div>
+<div id="ref-Tukey1977" class="csl-entry">
+Tukey, John. 1977. <em>Exploratory Data Analysis</em>. Addison-Wesley.
+</div>
+<div id="ref-VIM" class="csl-entry">
+VIM. 2021. <span>“Visualization and Imputation of Missing Values.”</span> https://cran.r-project.org/web/packages/VIM/VIM.pdf.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="6">
+<li id="fn6"><p>Related terms include data wrangling and data munging.<a href="data-preparation.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>Outliers should not be routinely deleted because they are not necessarily bad observations. In some cases, if correct, they can be quite informative. On the other hand, if the outlier appears to be a recording or measurement error or otherwise invalid, then the outlier can be discarded. Clearly, it is important to have domain knowledge to make such judgments.<a href="data-preparation.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>Some authors distinguish between “raw” variables and “features” with the latter referring to constructed variables.<a href="data-preparation.html#fnref8" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-knime.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="principal-components-analytics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["TextbookDraft.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

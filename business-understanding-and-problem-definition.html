@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Business understanding and problem definition | Analytics with KNIME and R</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Business understanding and problem definition | Analytics with KNIME and R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a draft." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Business understanding and problem definition | Analytics with KNIME and R" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="F Acito" />
+
+
+<meta name="date" content="2021-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro.html"/>
+<link rel="next" href="introduction-to-knime.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Cover page</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#what-is-analytics"><i class="fa fa-check"></i><b>1.1</b> What is analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-trends-in-analytics"><i class="fa fa-check"></i><b>1.2</b> Some trends in analytics</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#broadening-of-application-areas"><i class="fa fa-check"></i><b>1.2.1</b> Broadening of application areas</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#generalization-of-the-notion-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Generalization of the notion of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#a-trend-from-slicing-and-dicing-data-to-more-advanced-techniques"><i class="fa fa-check"></i><b>1.2.3</b> A trend from “slicing and dicing” data to more advanced techniques</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#more-advanced-data-visualization"><i class="fa fa-check"></i><b>1.2.4</b> More advanced data visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#the-analytics-process-model"><i class="fa fa-check"></i><b>1.3</b> The analytics process model</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html"><i class="fa fa-check"></i><b>2</b> Business understanding and problem definition</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#expert-views"><i class="fa fa-check"></i><b>2.1</b> Expert views</a></li>
+<li class="chapter" data-level="2.2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#understanding-the-business"><i class="fa fa-check"></i><b>2.2</b> Understanding the business</a></li>
+<li class="chapter" data-level="2.3" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#identifying-stakeholders"><i class="fa fa-check"></i><b>2.3</b> Identifying stakeholders</a></li>
+<li class="chapter" data-level="2.4" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#structured-versus-unstructured-problems"><i class="fa fa-check"></i><b>2.4</b> Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="2.5" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#framing-the-problem"><i class="fa fa-check"></i><b>2.5</b> Framing the problem</a></li>
+<li class="chapter" data-level="2.6" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#appendix-some-tools-for-problem-definition"><i class="fa fa-check"></i>Appendix: Some tools for problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#right-to-left-thinking"><i class="fa fa-check"></i>Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#reversing-the-problem"><i class="fa fa-check"></i>Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#open-the-problem-with-whys"><i class="fa fa-check"></i>Open the problem with “whys”</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#challenge-assumptions"><i class="fa fa-check"></i>Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#chunking"><i class="fa fa-check"></i>Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#problems"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduction to KNIME</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i><b>3.1</b> The KNIME Workbench</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#elements-of-the-knime-workbench"><i class="fa fa-check"></i><b>3.1.1</b> Elements of the KNIME Workbench</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#learning-to-use-knime"><i class="fa fa-check"></i><b>3.2</b> Learning to use KNIME</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-extensions-and-integrations"><i class="fa fa-check"></i><b>3.3</b> KNIME extensions and integrations</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-1-predicting-heart-disease"><i class="fa fa-check"></i><b>3.4</b> KNIME workflow example #1: Predicting heart disease</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-2-preparation-of-hospital-data"><i class="fa fa-check"></i><b>3.5</b> KNIME workflow example #2: Preparation of hospital data</a></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#summary-1"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#problems-1"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-preparation.html"><a href="data-preparation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="data-preparation.html"><a href="data-preparation.html#obtaining-the-needed-data"><i class="fa fa-check"></i><b>4.2</b> Obtaining the needed data</a></li>
+<li class="chapter" data-level="4.3" data-path="data-preparation.html"><a href="data-preparation.html#data-cleaning"><i class="fa fa-check"></i><b>4.3</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-preparation.html"><a href="data-preparation.html#missing-values"><i class="fa fa-check"></i><b>4.3.1</b> Missing values</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-preparation.html"><a href="data-preparation.html#outliers"><i class="fa fa-check"></i><b>4.3.2</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-preparation.html"><a href="data-preparation.html#feature-engineering"><i class="fa fa-check"></i><b>4.4</b> Feature engineering</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-preparation.html"><a href="data-preparation.html#data-transformations"><i class="fa fa-check"></i><b>4.4.1</b> Data transformations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-preparation.html"><a href="data-preparation.html#data-exploration"><i class="fa fa-check"></i><b>4.4.2</b> Data exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html"><i class="fa fa-check"></i><b>5</b> Principal components analytics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#approaches-to-dimension-reduction"><i class="fa fa-check"></i><b>5.1</b> Approaches to dimension reduction</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#the-pca-model"><i class="fa fa-check"></i><b>5.3</b> The PCA model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html"><i class="fa fa-check"></i><b>6</b> Evaluating predictive models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#training-testing-and-validation-samples"><i class="fa fa-check"></i><b>6.2</b> Training, Testing, and Validation samples</a></li>
+<li class="chapter" data-level="6.3" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-continuous-versus-discrete-targets"><i class="fa fa-check"></i><b>6.3</b> Evaluating continuous versus discrete targets</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-continuous-targets"><i class="fa fa-check"></i><b>6.3.1</b> Evaluating performance with continuous targets</a></li>
+<li class="chapter" data-level="6.3.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-classification-models"><i class="fa fa-check"></i><b>6.3.2</b> Evaluating performance with classification models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-techniques"><i class="fa fa-check"></i><b>7.2</b> Regression techniques</a></li>
+<li class="chapter" data-level="7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-explanation"><i class="fa fa-check"></i><b>7.3</b> Regression for explanation</a></li>
+<li class="chapter" data-level="7.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-prediction"><i class="fa fa-check"></i><b>7.4</b> Regression for prediction</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="multiple-regression.html"><a href="multiple-regression.html#revisiting-regression-assumptions"><i class="fa fa-check"></i><b>7.4.1</b> Revisiting regression assumptions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction-example-used-toyota-corollas"><i class="fa fa-check"></i><b>7.4.2</b> Prediction example: Used Toyota Corollas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-a-brief-history-of-regression"><i class="fa fa-check"></i>Appendix: A brief history of regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#problems-2"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#example-with-a-single-predictor"><i class="fa fa-check"></i><b>8.1</b> Example with a single predictor</a></li>
+<li class="chapter" data-level="8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#example-predictive-analytic-in-hr"><i class="fa fa-check"></i><b>8.2</b> Example: Predictive analytic in HR</a></li>
+<li class="chapter" data-level="8.3" data-path="logistic-regression.html"><a href="logistic-regression.html#predictor-interpretation-and-importance"><i class="fa fa-check"></i><b>8.3</b> Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="8.4" data-path="logistic-regression.html"><a href="logistic-regression.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Regularized logistic regression</a></li>
+<li class="chapter" data-level="8.5" data-path="logistic-regression.html"><a href="logistic-regression.html#probability-calibration"><i class="fa fa-check"></i><b>8.5</b> Probability calibration</a></li>
+<li class="chapter" data-level="8.6" data-path="logistic-regression.html"><a href="logistic-regression.html#evaluation-of-logistic-regression"><i class="fa fa-check"></i><b>8.6</b> Evaluation of logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>9</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ensemble-models.html"><a href="ensemble-models.html#creating-ensemble-models"><i class="fa fa-check"></i><b>9.1</b> Creating ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="ensemble-models.html"><a href="ensemble-models.html#reduced-variation"><i class="fa fa-check"></i><b>9.1.1</b> Reduced variation</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ensemble-models.html"><a href="ensemble-models.html#improved-performance"><i class="fa fa-check"></i><b>9.1.2</b> Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ensemble-models.html"><a href="ensemble-models.html#parallel-and-sequential-learners"><i class="fa fa-check"></i><b>9.2</b> Parallel and sequential learners</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ensemble-models.html"><a href="ensemble-models.html#bagging-bootstrap-aggregating"><i class="fa fa-check"></i><b>9.2.1</b> Bagging (Bootstrap Aggregating)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ensemble-models.html"><a href="ensemble-models.html#random-forests"><i class="fa fa-check"></i><b>9.2.2</b> Random Forests</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ensemble-models.html"><a href="ensemble-models.html#adaboost"><i class="fa fa-check"></i><b>9.2.3</b> AdaBoost</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ensemble-models.html"><a href="ensemble-models.html#gradient-boosting-machines"><i class="fa fa-check"></i><b>9.2.4</b> Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ensemble-models.html"><a href="ensemble-models.html#xgboost"><i class="fa fa-check"></i><b>9.2.5</b> XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ensemble-models.html"><a href="ensemble-models.html#example-of-ensemble-modeling-for-a-continuous-target"><i class="fa fa-check"></i><b>9.3</b> Example of ensemble modeling for a continuous target</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>10</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="naive-bayes.html"><a href="naive-bayes.html#a-thought-problem"><i class="fa fa-check"></i><b>10.1</b> A thought problem</a></li>
+<li class="chapter" data-level="10.2" data-path="naive-bayes.html"><a href="naive-bayes.html#bayes-theorem-applied-to-predictive-analytics"><i class="fa fa-check"></i><b>10.2</b> Bayes Theorem applied to predictive analytics</a></li>
+<li class="chapter" data-level="10.3" data-path="naive-bayes.html"><a href="naive-bayes.html#illustration-of-naïve-bayes-with-a-toy-data-set"><i class="fa fa-check"></i><b>10.3</b> Illustration of Naïve Bayes with a “toy” data set</a></li>
+<li class="chapter" data-level="10.4" data-path="naive-bayes.html"><a href="naive-bayes.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i><b>10.4</b> The assumption of conditional independence</a></li>
+<li class="chapter" data-level="10.5" data-path="naive-bayes.html"><a href="naive-bayes.html#naïve-bayes-with-continuous-predictors"><i class="fa fa-check"></i><b>10.5</b> Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="10.6" data-path="naive-bayes.html"><a href="naive-bayes.html#laplace-smoothing"><i class="fa fa-check"></i><b>10.6</b> Laplace Smoothing</a></li>
+<li class="chapter" data-level="10.7" data-path="naive-bayes.html"><a href="naive-bayes.html#example-using-naïve-bayes-with-churn-data"><i class="fa fa-check"></i><b>10.7</b> Example using naïve Bayes with churn data</a></li>
+<li class="chapter" data-level="10.8" data-path="naive-bayes.html"><a href="naive-bayes.html#spam-detection-using-naïve-bayes"><i class="fa fa-check"></i><b>10.8</b> Spam detection using naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>11</b> Deep learning</a></li>
+<li class="chapter" data-level="12" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>12</b> k Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#k-nearest-neighbors-and-memory-based-learning"><i class="fa fa-check"></i><b>12.1</b> k nearest neighbors and memory-based learning</a></li>
+<li class="chapter" data-level="12.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications"><i class="fa fa-check"></i><b>12.2</b> Typical applications</a></li>
+<li class="chapter" data-level="12.3" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#what-is-knn"><i class="fa fa-check"></i><b>12.3</b> What is kNN?</a></li>
+<li class="chapter" data-level="12.4" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-two-dimensional-graphic-example-of-knn"><i class="fa fa-check"></i><b>12.4</b> A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="12.5" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#example-of-knn-diagnosing-heart-disease"><i class="fa fa-check"></i><b>12.5</b> Example of kNN: Diagnosing heart disease</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#results"><i class="fa fa-check"></i><b>12.5.1</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-continuous-targets"><i class="fa fa-check"></i><b>12.6</b> kNN for continuous targets</a></li>
+<li class="chapter" data-level="12.7" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-multiclass-target-variables"><i class="fa fa-check"></i><b>12.7</b> kNN for multiclass target variables</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tree-models.html"><a href="tree-models.html"><i class="fa fa-check"></i><b>13</b> Tree models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="tree-models.html"><a href="tree-models.html#classification-trees"><i class="fa fa-check"></i><b>13.1</b> Classification trees</a></li>
+<li class="chapter" data-level="13.2" data-path="tree-models.html"><a href="tree-models.html#forming-classification-trees"><i class="fa fa-check"></i><b>13.2</b> Forming classification trees</a></li>
+<li class="chapter" data-level="13.3" data-path="tree-models.html"><a href="tree-models.html#varieties-of-classification-tree-algorithms"><i class="fa fa-check"></i><b>13.3</b> Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="13.4" data-path="tree-models.html"><a href="tree-models.html#criteria-for-splitting-and-growing-a-tree"><i class="fa fa-check"></i><b>13.4</b> Criteria for splitting and growing a tree</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tree-models.html"><a href="tree-models.html#the-gini-index"><i class="fa fa-check"></i><b>13.4.1</b> The Gini index</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tree-models.html"><a href="tree-models.html#information-gain"><i class="fa fa-check"></i><b>13.4.2</b> Information Gain</a></li>
+<li class="chapter" data-level="13.4.3" data-path="tree-models.html"><a href="tree-models.html#chi-square-as-a-splitting-criterion"><i class="fa fa-check"></i><b>13.4.3</b> Chi-square as a splitting criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="tree-models.html"><a href="tree-models.html#overfitting"><i class="fa fa-check"></i><b>13.5</b> Overfitting</a></li>
+<li class="chapter" data-level="13.6" data-path="tree-models.html"><a href="tree-models.html#example-of-a-classification-tree"><i class="fa fa-check"></i><b>13.6</b> Example of a classification tree</a></li>
+<li class="chapter" data-level="13.7" data-path="tree-models.html"><a href="tree-models.html#regression-trees"><i class="fa fa-check"></i><b>13.7</b> Regression trees</a>
+<ul>
+<li class="chapter" data-level="13.7.1" data-path="tree-models.html"><a href="tree-models.html#how-regression-trees-work"><i class="fa fa-check"></i><b>13.7.1</b> How regression trees work</a></li>
+<li class="chapter" data-level="13.7.2" data-path="tree-models.html"><a href="tree-models.html#example-predicting-home-prices"><i class="fa fa-check"></i><b>13.7.2</b> Example: Predicting home prices</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="tree-models.html"><a href="tree-models.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>13.8</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>14</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="neural-networks.html"><a href="neural-networks.html#what-are-artificial-neural-networks"><i class="fa fa-check"></i><b>14.1</b> What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="neural-networks.html"><a href="neural-networks.html#human-neurons-to-mathematical-models"><i class="fa fa-check"></i><b>14.1.1</b> Human neurons to mathematical models</a></li>
+<li class="chapter" data-level="14.1.2" data-path="neural-networks.html"><a href="neural-networks.html#activation-functions"><i class="fa fa-check"></i><b>14.1.2</b> Activation functions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="neural-networks.html"><a href="neural-networks.html#the-road-to-machine-learning-with-neural-nets"><i class="fa fa-check"></i><b>14.2</b> The road to machine learning with neural nets</a></li>
+<li class="chapter" data-level="14.3" data-path="neural-networks.html"><a href="neural-networks.html#example-of-a-neural-network"><i class="fa fa-check"></i><b>14.3</b> Example of a neural network</a></li>
+<li class="chapter" data-level="14.4" data-path="neural-networks.html"><a href="neural-networks.html#training-a-neural-net"><i class="fa fa-check"></i><b>14.4</b> Training a neural net</a></li>
+<li class="chapter" data-level="14.5" data-path="neural-networks.html"><a href="neural-networks.html#considerations-in-using-neural-nets"><i class="fa fa-check"></i><b>14.5</b> Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="neural-networks.html"><a href="neural-networks.html#missing-data"><i class="fa fa-check"></i><b>14.5.1</b> Missing data</a></li>
+<li class="chapter" data-level="14.5.2" data-path="neural-networks.html"><a href="neural-networks.html#representative-data"><i class="fa fa-check"></i><b>14.5.2</b> Representative data</a></li>
+<li class="chapter" data-level="14.5.3" data-path="neural-networks.html"><a href="neural-networks.html#all-eventualities-must-be-covered"><i class="fa fa-check"></i><b>14.5.3</b> All eventualities must be covered</a></li>
+<li class="chapter" data-level="14.5.4" data-path="neural-networks.html"><a href="neural-networks.html#unbalanced-data-sets"><i class="fa fa-check"></i><b>14.5.4</b> Unbalanced data sets</a></li>
+<li class="chapter" data-level="14.5.5" data-path="neural-networks.html"><a href="neural-networks.html#the-overfitting-problem"><i class="fa fa-check"></i><b>14.5.5</b> The overfitting problem</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="neural-networks.html"><a href="neural-networks.html#neural-network-example"><i class="fa fa-check"></i><b>14.6</b> Neural network example</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>15</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#approaches-to-forming-clusters"><i class="fa fa-check"></i><b>15.1</b> Approaches to forming clusters</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hierarchical-versus-partitioning-methods"><i class="fa fa-check"></i><b>15.1.1</b> Hierarchical versus partitioning methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hard-versus-soft-methods"><i class="fa fa-check"></i><b>15.1.2</b> “Hard” versus “soft” methods</a></li>
+<li class="chapter" data-level="15.1.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#applying-hierarchical-clusters"><i class="fa fa-check"></i><b>15.1.3</b> Applying hierarchical clusters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analytics with KNIME and R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="business-understanding-and-problem-definition" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Business understanding and problem definition</h1>
+<p>Before collecting data or thinking about which technique to use, it is critical to understand the business problem. While it may seem obvious that the business problem should be clearly stated, it is frequently reported that the biggest reason for failures of analytics projects is a poor understanding of the problem. It perhaps goes without saying that in order to define a problem that will result in adding value to an organization, it must be preceded by a good understanding the business.</p>
+<p>The elements of this phase of the analytics process include understanding the business, identifying the stakeholders, recognizing the type of problem, and finally framing the problem.<br />
+There is a temptation to take a request from a client or manager without careful thought and to go directly to gathering and analyzing data. If this path is taken, it is very likely that the most important business question will not be answered. This causes wasted time and resources.</p>
+<p>The benefits of a careful effort to understand the business and define the problem include:</p>
+<ol style="list-style-type: decimal">
+<li><p>The work of the analyst becomes more efficient because fewer dead-ends are encountered. Data collection will be more efficient, with more likely focus on getting the right data and ignoring variables that are not relevant. Rather than just getting all the data that can be found, a more directed search for variables can occur. This also provides stronger justification for asking the client for the additiontal data.</p></li>
+<li><p>Second, business analytics is about adding value. The problem should be well structured so that the results can be implemented and that they will add value. With the right problem structure getting a useful solution is more likely. Scattershot model building is likely to lead to poor predictions and, importantly, little guidance as to what is wrong and how to improve the model.<br />
+</p></li>
+<li><p>Third, by having a clearly defined problem that can be communicated to everyone involved, two traps of providing information that is already known or information that is so unusual as to be unbelievable are avoided.</p></li>
+</ol>
+<div id="expert-views" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Expert views</h2>
+<p>Business understanding and defining the problem are among the most important tasks in analytics projects. These quotes from a variety of experts attest to the importance of this phase of the analytics process.</p>
+<div class="insetNoBorder">
+<p>“The difference between great and mediocre data science is not about math or engineering: it is about asking the right question(s)…. No amount of technical competence or statistical rigor can make up for having solved a useless problem.” <span class="citation">(<a href="#ref-Cady2017" role="doc-biblioref">Cady 2017</a>)</span></p>
+</div>
+<div class="insetNoBorder">
+<p>Einstein is quoted as having said that if he had one hour to save the world he would spend fifty-five minutes defining the problem and only five minutes finding the solution.</p>
+</div>
+<div class="insetNoBorder">
+<p>“The most serious mistakes are not being made as a result of wrong answers. The truly dangerous thing is asking the wrong questions.”<br />
+Peter Drucker</p>
+</div>
+<div class="insetNoBorder">
+<p>“Successful analytic teams spend more time understanding the business problem and less time wading through lakes of data.” <span class="citation">(<a href="#ref-JTaylor" role="doc-biblioref">Taylor 2017</a>)</span></p>
+</div>
+<div class="insetNoBorder">
+<p>What we are finding is that in a lot of companies, there are great data scientists and great business people but what is missing is business people who know enough data analytics to say, here is the problem I would like you to help me with. And then they can take the outcome from the data scientists and see how they can best leverage it. That is where we must get to in the next couple of years if we want to take advantage of the digital technologies. <span class="citation">(<a href="#ref-ittner2019" role="doc-biblioref">Ittner 2019</a>)</span></p>
+</div>
+<p>The following case study demonstrates the importance of delving deeper into a situation and not simply focusing on the approach asked for by the client.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<div class="casestudy">
+<p>One of the common applications of analytics to is help predict and understand churn for telecommunications providers. Subscribers to cell phone plans are notorious for cancelling contracts and signing up with another carrier. People churn because they are unhappy with service, or they want a new phone, or they get a good price from another carrier. There are all sorts of reasons that people leave. This can be very expensive for the provider. It is usually far cheaper for the provider to take steps to keep a customer than to go find a new one.</p>
+<p>A large cell phone carrier in the United States called in a consultant to help with this problem. The carrier was experiencing considerable churn and asked the business analyst to find a way to predict who was most likely to leave the company and to determine what might be done to prevent that customer from leaving. This seemed like a reasonable request and one that could be addressed with analytics. The cell phone company had lots of data on its customers and a history of those customers that stayed and those that left. The consultant decided to look into the problem before digging into the data.</p>
+<p>What the consultant found was that the churn was occurring right around the time that the two-year contract was up. He asked managers in the company for a detailed explanation of how customers were contacted, how they were asked to sign up for a new contract, and what sort of communications were being sent to the customers. It turned out that that about two months prior to a customer’s contract being up, the company sent a reminder letter saying that the contract was coming up for renewal and asking that the customer sign up for another two years. This same letter was sent to all customers.</p>
+<p>Imagine you are a consumer with a cell phone company and you get a letter from the company saying that your contract ends in 60 days. What behavior does this trigger? Well, for many customers, it got them thinking about shopping around. It turned out that the very efforts to get customers to sign up for another contract were actually motivating many of them to leave the company. Many people don’t know when their contracts are up, and if left alone, they would continue with the company for years without switching. The company’s marketing department was triggering the churn. These letters were stopped and the churn went down.</p>
+<p>If the consultant had just gone directly to analyzing data, he might have totally missed this root cause of the problem. In fact he would be solving the wrong problem. The point is management wanted a predictive model for churn. The consultant could have done this, but the real solution would not be found. Understanding the real problem is therefore extremely important.</p>
+</div>
+</div>
+<div id="understanding-the-business" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Understanding the business</h2>
+<p>At the start, the goal of a project can be stated in vague terms. It is important to meet with stakeholders (those with an interest in the results of the project) to refine the objectives into operational terms and to obtain buy-in from those stakeholders. Instead, those individuals, the stakeholders, involved with the project should be considered. Stakeholders can include IT, executives in the customer department (marketing, accounting, finance, etc.), those who may be expected to use the resulting model, and those who might be affected by the project.</p>
+<p>The following tasks are needed during the business understanding phase (adapted from the CRISP model ):</p>
+<ol style="list-style-type: decimal">
+<li>Determine business objectives; that is, what is the basic goal of the project? In business situations it might be to gain new customers, increase the loyalty of current customers, or to reduce lost due to fraud.<br />
+</li>
+<li>Translate the business objectives into the technical metrics that can result from the analysis. For example, if customer loyalty is the problem, the goal of the analysis could be to identify those customers likely to stop using the company’s products or services. This objective might be further refined by stating a needed lead time prior to customer loss so that remedial action could be taken.<br />
+</li>
+<li>Develop a project plan – list the stages, required resources, risks, time duration, contingencies, and evaluation metrics.</li>
+</ol>
+</div>
+<div id="identifying-stakeholders" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Identifying stakeholders</h2>
+<p>Stakeholders – the people in the organization who care about the problem - can be part of the solution, can potentially derail the solution, can provide the resources needed to arrive at a solution, or can be in a position to take action on the results.</p>
+<p>Some questions to ask about stakeholders:</p>
+<ul>
+<li>Which executives have a stake in the outcome of the analysis?</li>
+<li>Have these executives been briefed on the problem and the solution approach?</li>
+<li>Can the key executives provide the necessary resources to implement recommendations?</li>
+<li>Do the key executives support analytic approaches to making decisions? Are there people with vested interests in a particular solution?</li>
+<li>Is there a plan for regular communication and feedback with interim results and progress? Do key stakeholders have certain styles of using information and making decisions?<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> (Based on <span class="citation">(<a href="#ref-Davenport2013" role="doc-biblioref">Davenport and Kim 2013</a>)</span>.)</li>
+</ul>
+</div>
+<div id="structured-versus-unstructured-problems" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Structured versus unstructured problems</h2>
+<p>The types of problems that could be addressed with analytics are wide-ranging:</p>
+<ul>
+<li>How can the Red Cross increase blood donations?</li>
+<li>Should a consumer products company increase ad spending for a certain brand or lower the price to stimulate sales?</li>
+<li>How do you increase the number of people who agree to be organ donors?</li>
+<li>How can a university increase its student retention rates?</li>
+<li>How much of a discount should a resort offer for booking tickets online 6 months early?</li>
+<li>Should a hotel offer a “surprise discount” on rooms at the time of check-in or should they offer it as people are leaving?</li>
+<li>How can a casino increase the lifetime value of a customer?</li>
+<li>Should a particular person be approved for a loan?</li>
+<li>Is this credit card transaction fraudulent?</li>
+</ul>
+<p>While these may seem to be very specific questions, attempting to structure the question to guide an analytics project would likely reveal that the questions are not well structured.</p>
+<p>Many challenging analytics problems are unstructured and difficult. Professionals are rewarded for their ability to solve difficult problems, not simply following rote procedures or relaying memorized information. When faced with an unstructured problem, it is even more important to work on carefully defining it. The following, based on <span class="citation">(<a href="#ref-Jonassen97" role="doc-biblioref">Jonassen 1997</a>)</span>, shows some of the characteristics which distinguish well-structured versus unstructured problems. (Figure<a href="business-understanding-and-problem-definition.html#fig:StructuredUnstructuredProblems">2.1</a>)</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:StructuredUnstructuredProblems"></span>
+<img src="images_process/StructuredUnstructuredProblems.PNG" alt="Structured versus unstructured problems." width="100%" />
+<p class="caption">
+Figure 2.1: Structured versus unstructured problems.
+</p>
+</div>
+</div>
+<div id="framing-the-problem" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Framing the problem</h2>
+<p>The term “framing” means the process of describing and interpreting a situation: framing focuses attention. The problem frame helps define the importance of a problem and also sets the direction for solving it. Depending upon how a problem or question is framed can lead to very different answers. For example, these two questions ask about the number 10 in different ways which will lead to different answers:</p>
+<ul>
+<li>What is the sum of 5 plus 5?</li>
+<li>What two numbers add up to 10?</li>
+</ul>
+<p>When a tentative analytics problem is identified, different frames will lead to different analytics approaches. For example, an insurance company may want to reduce the cost of fraudulent claims. Analytics could be used to address this problem, but depending on how the problem is framed will lead to different target variables and probably different analytic techniques. Consider the following different goals associated with reducing fraud:</p>
+<ul>
+<li>Identify cases that had the highest propensity of fraud?</li>
+<li>Identify current customers likely to commit fraud in the near future?</li>
+<li>Identify customers apply for a policy are likely to commit fraud and rejecting those applicants?</li>
+<li>Identify cases where there is the highest likelihood to recover monies?</li>
+<li>Identify case with largest potential dollar amount of fraud?</li>
+<li>Identify cases that will maximize the hourly return of investigators assigned to deal with fraudulent cases?</li>
+</ul>
+<p>The importance of problem framing is illustrated in this old story <span class="citation">(<a href="#ref-WhartonMD" role="doc-biblioref">Shoemaker and Russo 2001</a>)</span>.</p>
+<div class="insetNoBorder">
+<p>There is an old story about a Franciscan priest and a Jesuit priest who were both heavy smokers and somewhat troubled by their human fragility, especially about smoking when praying to the Lord.</p>
+<p>The Franciscan met with his prefect and asked, “Father, would it be permitted to smoke while praying to the Lord?” The answer was a resounding, “No!”</p>
+<p>The Jesuit also sought counsel, but asked his question differently. “Father, when in moments of weakness I smoke, would it be permitted to say a prayer to the Lord?” The answer was, “Yes, of course my son.”</p>
+</div>
+<p>In some cases, the first attempt at a problem statement focuses on symptoms, which may not address the root problem. For example, a symptom might be: “We are losing market share rapidly.” The problem definition might then be: “How do we regain market share?” <span class="citation">(<a href="#ref-Hauch2018" role="doc-biblioref">Hauch 2018</a>)</span> But this may not direct the analyst team to the real issue.</p>
+<p>One suggestion to get at the root of a problem through framing is to use “The 40-20-10-5 rule.” For all those problems that are difficult to define quickly, you can apply this rule that goes through 4 basic steps. State your problem in 40 words. Cut it down to 20, then to 10 and end up with a 5 words problem statement. If you can not keep it simple, probably you have not reached the roots of it yet.</p>
+<p>Another data scientist summarized key considerations to guide a team through a problem framing exercise. <span class="citation">(<a href="#ref-Arnuld" role="doc-biblioref">Arnuld 2020</a>)</span></p>
+<ol style="list-style-type: decimal">
+<li>See if you can solve the problem without using ML. Sometimes a simple heuristic is good enough.</li>
+<li>Be clear about what you want and state it without using ML. 3. Write your desired outcome in simple English</li>
+<li>What do you expect the model to output?</li>
+<li>What kind of ML problem you are solving e.g., if supervised then what kind: classification or regression. If classification then what kind? binary or multi-class? etc.</li>
+<li>What is a successful model in this case?</li>
+<li>What is a failed model in this case? Write all the cases. “Not being able to succeed” is not the only failure case.</li>
+<li>Quantify your success. How will you measure it in your model?</li>
+<li>Try to keep the model simple. A simple model’s result can justify if you need a complex model. Complex models are slower to train and difficult to understand.</li>
+<li>Build a simple model and deploy it. The biggest gain from ML tends to be the first launch. You can improve later and launch another version</li>
+</ol>
+<div class="insetNoBorder">
+<p><strong>Example of solving a simpler problem</strong></p>
+<p>Often, engineers make things more complicated than necessary. Consider the example of the NASA space pen. During the 1960s, NASA focused a major program on developing a pen that would write in zero gravity, while the Soviet space program used the much simpler and already-invented pencil.</p>
+<p>I don’t know for sure because I wasn’t there, but I strongly suspect this came about because of a miss in the problem statement. The Americans were working on this problem: How do we get a pen to write in zero gravity? The Soviets were working on a different problem: How do we write in zero gravity? It seems like such a small, subtle difference, but it had a huge impact on what work followed. <span class="citation">(<a href="#ref-Flinchbaugh2009" role="doc-biblioref">Flinchbaugh 2009</a>)</span></p>
+</div>
+</div>
+<div id="summary" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Summary</h2>
+<p>Preparing an effective, actionable definition of the problem prior to machine learning is universally recognized as being important. However, specifying exactly how to create such as problem definition cannot be codified in a simple process. As with many complex concepts, it is likely that “you will know it when you see it.” But, getting to that point requires creativity and hard work.</p>
+</div>
+<div id="appendix-some-tools-for-problem-definition" class="section level2 unnumbered">
+<h2>Appendix: Some tools for problem definition</h2>
+<p>Because of the critical importance of problem definition, there are many tools and strategies that have been developed to get started. A few of these are listed here.</p>
+<div id="right-to-left-thinking" class="section level3 unnumbered">
+<h3>Right to left thinking</h3>
+<p>One approach that can be very helpful is to turn the business objective into a decision to be made. For example, if the problem is that a company needs more customers, this could lead to a goal of getting new customers or working on keeping current customers. These goals will lead to very different data needs and analyses. If the goal is keeping current customers, then a model that predicts which specific customers are likely to leave can lead to actions to reduce the probability of those customers leaving. If on the other hand, the goal is to get new customers, then the model can be used to indicate which potential individuals are most likely to respond favorably to an offer.</p>
+</div>
+<div id="reversing-the-problem" class="section level3 unnumbered">
+<h3>Reversing the problem</h3>
+<p>Clearly identify the problem or challenge, and write it down. Brainstorm the reverse problem to generate reverse solution ideas. Allow the brainstorm ideas to flow freely. Do not reject anything at this stage.</p>
+<p>Instead of asking, “How do I solve or prevent this problem?” ask, “How could I possibly cause the problem?” Instead of asking “How do I achieve these results?” ask, “How could I possibly achieve the opposite effect?”</p>
+<p>Once you have brainstormed all the ideas to solve the reverse problem, now reverse these into solution ideas for the original problem or challenge. Evaluate these solution ideas to determine if a potential solution is suggested or at least the attributes of a potential solution? <span class="citation">(<a href="#ref-integratingEngineering" role="doc-biblioref">DeRusha and WOlfson, n.d.</a>)</span></p>
+</div>
+<div id="open-the-problem-with-whys" class="section level3 unnumbered">
+<h3>Open the problem with “whys”</h3>
+Consider the following:<br />
+
+<div class="insetNoBorder">
+<p>If I asked you to build a bridge for me, you could go off and build a bridge. Or you could come back to me with another question: “Why do you need a bridge?” I would likely tell you that I need a bridge to get to the other side of a river. Aha! This response opens up the frame of possible solutions. There are clearly many ways to get across a river besides using a bridge. You could dig a tunnel, take a ferry, paddle a canoe, use a zip line, or fly a hot-air balloon, to name a few.</p>
+<p>You can open the frame even farther by asking why I want to get to the other side of the river. Imagine that I told you that I work on the other side. This, again, provides valuable information and broadens the range of possible solutions even more. There are probably viable ways for me to earn a living without ever going across the river.
+Source: <span class="citation">(<a href="#ref-Seelig2013" role="doc-biblioref">Seelig 2013</a>)</span></p>
+</div>
+</div>
+<div id="challenge-assumptions" class="section level3 unnumbered">
+<h3>Challenge assumptions</h3>
+<p>Every problem — no matter how apparently simple it may be — comes with a long list of assumptions attached. Many of these assumptions may be inaccurate and could make your problem statement inadequate or even misguided.</p>
+<p>The first step to get rid of bad assumptions is to make them explicit. Write a list and expose as many assumptions as you can — especially those that may seem the most obvious and ‘untouchable.’ That, in itself, brings more clarity to the problem at hand. Essentially, you need to learn how to think like a philosopher.</p>
+<p>But go further and test each assumption for validity: think in ways that they might not be valid and their consequences. What you will find may surprise you: that many of those bad assumptions are self-imposed — with just a bit of scrutiny you are able to safely drop them. Be a skeptic. <span class="citation">(<a href="#ref-wikihowProblem" role="doc-biblioref">Clissold 2021</a>)</span></p>
+<div class="insetNoBorder">
+<p><strong>Example of challenging assumptions</strong></p>
+<p>Consider the interesting example of the mathematician Abraham Wald and the British Air Ministry. During World War II, the British Air Ministry engaged Mr. Wald to study the damage suffered by airplanes engaged in combat missions and use those results to recommend appropriate places for armor reinforcement. All returning planes were assessed for damage and the data was collected and analyzed. Patterns of damage soon became apparent, and the officers of the Royal Air Force concluded that the planes should be reinforced based on those patterns. <span class="citation">(<a href="#ref-Ellenberg2016" role="doc-biblioref">Ellenberg 2016</a>)</span></p>
+<p>Mr. Wald took a different approach. He reasoned that the damaged planes which made it back weren’t the real problem. Additional armor was needed most on planes which didn’t make it back. While he didn’t know for certain where the damage was on the lost planes, he could reason that it was different from that of the planes which safely returned. His task was to see the problem which wasn’t easily observed.</p>
+</div>
+</div>
+<div id="chunking" class="section level3 unnumbered">
+<h3>Chunking</h3>
+<ul>
+<li>Chunk up
+<ul>
+<li>Chunking up is about taking a broader view. Helicopter up to 30,000 feet. Survey the landscape to see the whole system.
+Ask ‘Why’ things happen to find higher-level purpose. Ask ‘what is this an instance of’ to find a more general classification.
+Use inductive reasoning to go from specific detail to general theories and explanations.</li>
+</ul></li>
+<li>Chunk down
+<ul>
+<li>Chunking down is about going into detail to find smaller and more specific elements of the system.
+Ask ‘How’ things happen to find lower-level detail. Ask ‘What, specifically’ to probe for more information. Ask ‘Give me an example’ to get specific instances of a class.
+Use deductive reasoning to go from general theories and ideas to specific cases and instances.</li>
+</ul></li>
+<li>Chunk up and down
+<ul>
+<li>Chunking up and down go well together as a way of looking differently at the same situation.
+Chunk up from the existing situation to find a general or broader view. Then chunk down somewhere else.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="problems" class="section level2 unnumbered">
+<h2>Problems</h2>
+<p><strong>Problem 1</strong> Virtually all data base systems today include capabilities to retrieve records and to create and manipulate tables efficiently. Queries return data from a database that fulfills specific constraints and criteria set by the user. OLAP uses a process of preaggregation to form data cubes, which enables retrieval more quickly, often with less computational power. Neither database queries nor OLAP, however, are considered data mining tools. Data mining addresses fundamentally different questions by
+constructing models of the data.</p>
+<ul>
+<li>Consider the following business questions. Take a few minutes and “twist” each question into an analytic modeling question.
+<ul>
+<li>Who are my best customers?</li>
+<li>What geographic areas do sales come from?</li>
+<li>How long do customers stay with my company?</li>
+<li>What do my customers buy, specifically?</li>
+<li>What share of the customer wallet do I have?</li>
+<li>Which suppliers are most reliable? What are the characteristics of the most reliable suppliers?</li>
+<li>Which salespeople provide the most profit?</li>
+<li>What is the perceived quality of my products?</li>
+<li>Which products are most profitable?</li>
+</ul></li>
+</ul>
+<p><strong>Problem 2</strong> A bank is interested in running a major promotion to increase its share of the new car loan market. Assuming the promotion is successful, the number of applications for new car loans will increase substantially. Therefore, it was suggested that a predictive analytics model be developed to speed up the process of loan acceptance or rejection, with the specific goal of quickly and automatically identifying applicants that are likely to default on the loan.</p>
+<p>A database of 5,500 automobile loans is available from the bank’s information system, covering loans made from July of 1999 through June of 2010.</p>
+<ul>
+<li>Variables for each loan include:
+<ul>
+<li>Whether or not the loan resulted in default<br />
+</li>
+<li>Amount of loan<br />
+</li>
+<li>Percentage of loan to value of automobile<br />
+</li>
+<li>Age of applicant<br />
+</li>
+<li>Gender of applicant<br />
+</li>
+<li>Current debt (monthly payments)<br />
+</li>
+<li>Monthly household income<br />
+</li>
+<li>Years in current residence<br />
+</li>
+<li>Years in previous residence<br />
+</li>
+<li>Number of dependents<br />
+</li>
+<li>Marital status<br />
+</li>
+<li>Credit score<br />
+</li>
+<li>Date of the loan<br />
+</li>
+<li>Duration of the loan in months</li>
+</ul></li>
+</ul>
+<p>What issues or questions would you have regarding this data set and prior to developing a predictive model?</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Arnuld" class="csl-entry">
+Arnuld. 2020. <span>“Some Key Things i Learned from Google’s " Introduction to Machine Learning Problem Framing" MOOC.”</span> https://www.linkedin.com/pulse/some-key-things-i-learned-from-googles-introduction-machine-on-data.
+</div>
+<div id="ref-Cady2017" class="csl-entry">
+Cady, Field. 2017. <em>The Data Science Handbook</em>. Hoboken, NJBoca Raton: John Wiley; Sons.
+</div>
+<div id="ref-wikihowProblem" class="csl-entry">
+Clissold, Rachel. 2021. <span>“How to Solve a Problem.”</span> https://www.wikihow.com/Solve-a-Problem.
+</div>
+<div id="ref-Davenport2013" class="csl-entry">
+Davenport, Thomas H., and Jinho Kim. 2013. <em>Keeping up with the Quants: Your Guide to Understanding and Using Analytics</em>. Boston: Harvard Business Review Press.
+</div>
+<div id="ref-integratingEngineering" class="csl-entry">
+DeRusha, Karen, and Bill WOlfson. n.d. <span>“Shift Your Lens: The Power of Re-Framing Problems.”</span> http://www.integratingengineering.org/workbook/documents/Problem.
+</div>
+<div id="ref-Ellenberg2016" class="csl-entry">
+Ellenberg, Jordan. 2016. <span>“Abraham Wald and the Missing Bullet Holes.”</span> https://medium.com/@penguinpress/an-excerpt-from-how-not-to-be-wrong-by-jordan-ellenberg-664e708cfc3d.
+</div>
+<div id="ref-Flinchbaugh2009" class="csl-entry">
+Flinchbaugh, Jamie. 2009. <span>“Leading Lean: Solve the Right Problem.”</span> https://www.assemblymag.com/articles/86658-leading-lean-solve-the-right-problem.
+</div>
+<div id="ref-Hauch2018" class="csl-entry">
+Hauch, Brian. 2018. <span>“Finding the True North of a Problem: Problem-Framing Principles for Design-Led Innovation.”</span> https://medium.com/nyc-design/finding-the-true-north-of-a-problem-problem-framing-principles-for-design-led-innovation-b0c7620317bf.
+</div>
+<div id="ref-ittner2019" class="csl-entry">
+Ittner, Christopher. 2019. <span>“How Digital Technology Is Transforming Cost Management.”</span> https://knowledge.wharton.upenn.edu/article/cost-management-in-the-digital-age/.
+</div>
+<div id="ref-Jonassen97" class="csl-entry">
+Jonassen, David. 1997. <span>“Instructional Design Models for Well-Structured and Ill-Structured Problem-Solving Learning Outcomes.”</span> <em>Educational Technology Research and Development</em>, 65–94.
+</div>
+<div id="ref-Seelig2013" class="csl-entry">
+Seelig, Tina. 2013. <span>“Shift Your Lens: The Power of Re-Framing Problems.”</span> http://stvp.stanford.edu/blog/?p=6435.
+</div>
+<div id="ref-WhartonMD" class="csl-entry">
+Shoemaker, Paul J. H., and J. Edward Russo. 2001. <span>“Knitr: Manging Frames to Make Better Decisions.”</span> In <em>Wharton on Making Decisions</em>, edited by Howard C. Kunreuther Hoch Stephen J. and Robert E. Gunther. John Wiley.
+</div>
+<div id="ref-JTaylor" class="csl-entry">
+Taylor, James. 2017. <span>“Bringing Business Clarity to CRISP-DM.”</span> https://www.kdnuggets.com/2017/01/business-clarity-crisp-dm.html.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>This is based on workshop presentation by the TMA consulting group. <a href="https://the-modeling-agency.com" class="uri">https://the-modeling-agency.com</a><a href="business-understanding-and-problem-definition.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Some stakeholders may want to see the “bottom line” without a lot of elaboration. Others want a clear logical path drawn out. Still others are more persuaded by anecdotes and stores.<a href="business-understanding-and-problem-definition.html#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="introduction-to-knime.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["TextbookDraft.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

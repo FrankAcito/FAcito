@@ -1,0 +1,199 @@
+.pa {
+  padding-left: 10px;
+  }
+.pb {
+  padding-left: 30px;
+  }
+.pc {
+  padding-left: 40px;
+  border-top: 1.0px solid navy;
+  border-bottom: 1.0px solid navy;
+  }
+p.caption {
+  color: black;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+
+h1 {
+  color: navy;
+  border-bottom: 1.5px solid navy;
+}
+h2 {
+  color: navy;
+  font-size: 100%;
+  border-bottom: 1.0px solid navy;
+  }
+
+h3 {
+  color: navy;
+  font-size: 40%;
+  border-top: 1.0px solid navy;
+}
+
+h4 {
+  color: navy;
+  font-size: 25%;
+}
+
+
+h5 {
+  color: navy;
+  font-size: 15%;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+/* add spacing between References */
+div.csl-entry {
+  margin-bottom: 15px
+}
+.inset {
+   line-height: 95%;
+   background-color: #F5F5F5;
+   font-size: 100%
+   text-align: left;
+   margin-right: 5px;
+   margin-left: 450px;
+   border: 0.1rem outset black;
+   padding-top: .1rem;
+   padding-bottom: .1rem;
+   padding-left: .25rem;
+   padding-right: .25rem;
+}
+.insetNoBorder {
+   line-height: 110%;
+   background-color: white;
+   font-family: "Times New Roman", Times, serif;
+   font-style: italic;
+   text-align: left;
+   font-size: 16pt;
+   margin-right: 15px;
+   margin-left: 15px;
+   padding-top: .1rem;
+   padding-bottom: .1rem;
+   padding-left: .25rem;
+   padding-right: .25rem;
+}
+
+.casestudy {
+   line-height: 100%;
+   background-color: white;
+   font-family: "Tahoma";
+   text-align: left;
+   font-size: 9pt;
+   border: 0.1rem outset black;
+   margin-right: 15px;
+   margin-left: 15px;
+   padding-top: .1rem;
+   padding-bottom: .1rem;
+   padding-left: .25rem;
+   padding-right: .25rem;
+}
+.table  {
+  border-top:  1px solid navy;
+  border-right: 1px solid navy;
+  border-bottom: 1.5px solid navy;
+  border-left: 1px solid navy;
+  padding: 1px;
+  color: black;
+  font-size: 10pt;
+  font-weight:bold;
+}
+
+.tablecompact  {
+  border-top:  1px solid navy;
+  border-right: 1px solid navy;
+  border-bottom: 1.5px solid navy;
+  border-left: 1px solid navy;
+  padding: 1px;
+  color: black;
+  font-size: 7pt;
+}
+
+table thead th { color: black; font-size:10pt; }
+.nobullet li {
+  list-style-type: none;
+  font-size: 85%;
+   line-height: 125%;
+}
+
+.book-body p.caption {
+  color: black;
+  background-color: white;
+  padding-left: 20px;
+  font-size: 10pt;
+  font-weight:bold;
+}
+
+caption {
+    padding-left: 0px;
+    padding-top: 10px;
+    caption-side: bottom;
+    color: black;
+    font-size: 10pt;
+    font-weight:bold;
+    line-height: .95;
+    width:inherit;
+}
+figure {
+  float: right;
+  width: 40%;
+  text-align: center;
+  font-style: italic;
+  border-style:outset black;
+  font-size: smaller;
+  text-indent: 0;
+  margin: 0.5em;
+  padding: 0.01em;
+}
+.bigbox {
+  background-color:white;
+  padding: 1em;
+  border-width: 2px;
+  border: black;
+}
+
+.box {
+  float: right;
+  font-size: 11pt;
+  font-style: italic;
+  line-height: 1.0;
+  margin-right: 15px;
+  margin-left: 5px;
+  width: 250px;
+  border-radius: 5px;
+  background-color:#F8F9F9;
+  padding: 1em;
+  border: thin silver solid;
+}
+
+video {
+  width: 620px;
+  height: 480px;
+}
+
+
+
+.chapterintroduction {
+  padding: 1em 1em 1em 4em;
+  margin-bottom: 2px;
+  background: white;
+  border-top: 2px solid #0000ff;
+  border-bottom: 2px solid #0000ff;
+  background-position: 0.5em 1.5em;
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 13 Tree models | Analytics with KNIME and R</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 13 Tree models | Analytics with KNIME and R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a draft." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 13 Tree models | Analytics with KNIME and R" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="F Acito" />
+
+
+<meta name="date" content="2021-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="k-nearest-neighbors.html"/>
+<link rel="next" href="neural-networks.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Cover page</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#what-is-analytics"><i class="fa fa-check"></i><b>1.1</b> What is analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-trends-in-analytics"><i class="fa fa-check"></i><b>1.2</b> Some trends in analytics</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#broadening-of-application-areas"><i class="fa fa-check"></i><b>1.2.1</b> Broadening of application areas</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#generalization-of-the-notion-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Generalization of the notion of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#a-trend-from-slicing-and-dicing-data-to-more-advanced-techniques"><i class="fa fa-check"></i><b>1.2.3</b> A trend from “slicing and dicing” data to more advanced techniques</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#more-advanced-data-visualization"><i class="fa fa-check"></i><b>1.2.4</b> More advanced data visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#the-analytics-process-model"><i class="fa fa-check"></i><b>1.3</b> The analytics process model</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html"><i class="fa fa-check"></i><b>2</b> Business understanding and problem definition</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#expert-views"><i class="fa fa-check"></i><b>2.1</b> Expert views</a></li>
+<li class="chapter" data-level="2.2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#understanding-the-business"><i class="fa fa-check"></i><b>2.2</b> Understanding the business</a></li>
+<li class="chapter" data-level="2.3" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#identifying-stakeholders"><i class="fa fa-check"></i><b>2.3</b> Identifying stakeholders</a></li>
+<li class="chapter" data-level="2.4" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#structured-versus-unstructured-problems"><i class="fa fa-check"></i><b>2.4</b> Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="2.5" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#framing-the-problem"><i class="fa fa-check"></i><b>2.5</b> Framing the problem</a></li>
+<li class="chapter" data-level="2.6" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#appendix-some-tools-for-problem-definition"><i class="fa fa-check"></i>Appendix: Some tools for problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#right-to-left-thinking"><i class="fa fa-check"></i>Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#reversing-the-problem"><i class="fa fa-check"></i>Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#open-the-problem-with-whys"><i class="fa fa-check"></i>Open the problem with “whys”</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#challenge-assumptions"><i class="fa fa-check"></i>Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#chunking"><i class="fa fa-check"></i>Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#problems"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduction to KNIME</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i><b>3.1</b> The KNIME Workbench</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#elements-of-the-knime-workbench"><i class="fa fa-check"></i><b>3.1.1</b> Elements of the KNIME Workbench</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#learning-to-use-knime"><i class="fa fa-check"></i><b>3.2</b> Learning to use KNIME</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-extensions-and-integrations"><i class="fa fa-check"></i><b>3.3</b> KNIME extensions and integrations</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-1-predicting-heart-disease"><i class="fa fa-check"></i><b>3.4</b> KNIME workflow example #1: Predicting heart disease</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-2-preparation-of-hospital-data"><i class="fa fa-check"></i><b>3.5</b> KNIME workflow example #2: Preparation of hospital data</a></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#summary-1"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#problems-1"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-preparation.html"><a href="data-preparation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="data-preparation.html"><a href="data-preparation.html#obtaining-the-needed-data"><i class="fa fa-check"></i><b>4.2</b> Obtaining the needed data</a></li>
+<li class="chapter" data-level="4.3" data-path="data-preparation.html"><a href="data-preparation.html#data-cleaning"><i class="fa fa-check"></i><b>4.3</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-preparation.html"><a href="data-preparation.html#missing-values"><i class="fa fa-check"></i><b>4.3.1</b> Missing values</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-preparation.html"><a href="data-preparation.html#outliers"><i class="fa fa-check"></i><b>4.3.2</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-preparation.html"><a href="data-preparation.html#feature-engineering"><i class="fa fa-check"></i><b>4.4</b> Feature engineering</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-preparation.html"><a href="data-preparation.html#data-transformations"><i class="fa fa-check"></i><b>4.4.1</b> Data transformations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-preparation.html"><a href="data-preparation.html#data-exploration"><i class="fa fa-check"></i><b>4.4.2</b> Data exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html"><i class="fa fa-check"></i><b>5</b> Principal components analytics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#approaches-to-dimension-reduction"><i class="fa fa-check"></i><b>5.1</b> Approaches to dimension reduction</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#the-pca-model"><i class="fa fa-check"></i><b>5.3</b> The PCA model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html"><i class="fa fa-check"></i><b>6</b> Evaluating predictive models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#training-testing-and-validation-samples"><i class="fa fa-check"></i><b>6.2</b> Training, Testing, and Validation samples</a></li>
+<li class="chapter" data-level="6.3" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-continuous-versus-discrete-targets"><i class="fa fa-check"></i><b>6.3</b> Evaluating continuous versus discrete targets</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-continuous-targets"><i class="fa fa-check"></i><b>6.3.1</b> Evaluating performance with continuous targets</a></li>
+<li class="chapter" data-level="6.3.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-classification-models"><i class="fa fa-check"></i><b>6.3.2</b> Evaluating performance with classification models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-techniques"><i class="fa fa-check"></i><b>7.2</b> Regression techniques</a></li>
+<li class="chapter" data-level="7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-explanation"><i class="fa fa-check"></i><b>7.3</b> Regression for explanation</a></li>
+<li class="chapter" data-level="7.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-prediction"><i class="fa fa-check"></i><b>7.4</b> Regression for prediction</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="multiple-regression.html"><a href="multiple-regression.html#revisiting-regression-assumptions"><i class="fa fa-check"></i><b>7.4.1</b> Revisiting regression assumptions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction-example-used-toyota-corollas"><i class="fa fa-check"></i><b>7.4.2</b> Prediction example: Used Toyota Corollas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-a-brief-history-of-regression"><i class="fa fa-check"></i>Appendix: A brief history of regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#problems-2"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#example-with-a-single-predictor"><i class="fa fa-check"></i><b>8.1</b> Example with a single predictor</a></li>
+<li class="chapter" data-level="8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#example-predictive-analytic-in-hr"><i class="fa fa-check"></i><b>8.2</b> Example: Predictive analytic in HR</a></li>
+<li class="chapter" data-level="8.3" data-path="logistic-regression.html"><a href="logistic-regression.html#predictor-interpretation-and-importance"><i class="fa fa-check"></i><b>8.3</b> Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="8.4" data-path="logistic-regression.html"><a href="logistic-regression.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Regularized logistic regression</a></li>
+<li class="chapter" data-level="8.5" data-path="logistic-regression.html"><a href="logistic-regression.html#probability-calibration"><i class="fa fa-check"></i><b>8.5</b> Probability calibration</a></li>
+<li class="chapter" data-level="8.6" data-path="logistic-regression.html"><a href="logistic-regression.html#evaluation-of-logistic-regression"><i class="fa fa-check"></i><b>8.6</b> Evaluation of logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>9</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ensemble-models.html"><a href="ensemble-models.html#creating-ensemble-models"><i class="fa fa-check"></i><b>9.1</b> Creating ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="ensemble-models.html"><a href="ensemble-models.html#reduced-variation"><i class="fa fa-check"></i><b>9.1.1</b> Reduced variation</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ensemble-models.html"><a href="ensemble-models.html#improved-performance"><i class="fa fa-check"></i><b>9.1.2</b> Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ensemble-models.html"><a href="ensemble-models.html#parallel-and-sequential-learners"><i class="fa fa-check"></i><b>9.2</b> Parallel and sequential learners</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ensemble-models.html"><a href="ensemble-models.html#bagging-bootstrap-aggregating"><i class="fa fa-check"></i><b>9.2.1</b> Bagging (Bootstrap Aggregating)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ensemble-models.html"><a href="ensemble-models.html#random-forests"><i class="fa fa-check"></i><b>9.2.2</b> Random Forests</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ensemble-models.html"><a href="ensemble-models.html#adaboost"><i class="fa fa-check"></i><b>9.2.3</b> AdaBoost</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ensemble-models.html"><a href="ensemble-models.html#gradient-boosting-machines"><i class="fa fa-check"></i><b>9.2.4</b> Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ensemble-models.html"><a href="ensemble-models.html#xgboost"><i class="fa fa-check"></i><b>9.2.5</b> XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ensemble-models.html"><a href="ensemble-models.html#example-of-ensemble-modeling-for-a-continuous-target"><i class="fa fa-check"></i><b>9.3</b> Example of ensemble modeling for a continuous target</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>10</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="naive-bayes.html"><a href="naive-bayes.html#a-thought-problem"><i class="fa fa-check"></i><b>10.1</b> A thought problem</a></li>
+<li class="chapter" data-level="10.2" data-path="naive-bayes.html"><a href="naive-bayes.html#bayes-theorem-applied-to-predictive-analytics"><i class="fa fa-check"></i><b>10.2</b> Bayes Theorem applied to predictive analytics</a></li>
+<li class="chapter" data-level="10.3" data-path="naive-bayes.html"><a href="naive-bayes.html#illustration-of-naïve-bayes-with-a-toy-data-set"><i class="fa fa-check"></i><b>10.3</b> Illustration of Naïve Bayes with a “toy” data set</a></li>
+<li class="chapter" data-level="10.4" data-path="naive-bayes.html"><a href="naive-bayes.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i><b>10.4</b> The assumption of conditional independence</a></li>
+<li class="chapter" data-level="10.5" data-path="naive-bayes.html"><a href="naive-bayes.html#naïve-bayes-with-continuous-predictors"><i class="fa fa-check"></i><b>10.5</b> Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="10.6" data-path="naive-bayes.html"><a href="naive-bayes.html#laplace-smoothing"><i class="fa fa-check"></i><b>10.6</b> Laplace Smoothing</a></li>
+<li class="chapter" data-level="10.7" data-path="naive-bayes.html"><a href="naive-bayes.html#example-using-naïve-bayes-with-churn-data"><i class="fa fa-check"></i><b>10.7</b> Example using naïve Bayes with churn data</a></li>
+<li class="chapter" data-level="10.8" data-path="naive-bayes.html"><a href="naive-bayes.html#spam-detection-using-naïve-bayes"><i class="fa fa-check"></i><b>10.8</b> Spam detection using naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>11</b> Deep learning</a></li>
+<li class="chapter" data-level="12" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>12</b> k Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#k-nearest-neighbors-and-memory-based-learning"><i class="fa fa-check"></i><b>12.1</b> k nearest neighbors and memory-based learning</a></li>
+<li class="chapter" data-level="12.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications"><i class="fa fa-check"></i><b>12.2</b> Typical applications</a></li>
+<li class="chapter" data-level="12.3" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#what-is-knn"><i class="fa fa-check"></i><b>12.3</b> What is kNN?</a></li>
+<li class="chapter" data-level="12.4" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-two-dimensional-graphic-example-of-knn"><i class="fa fa-check"></i><b>12.4</b> A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="12.5" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#example-of-knn-diagnosing-heart-disease"><i class="fa fa-check"></i><b>12.5</b> Example of kNN: Diagnosing heart disease</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#results"><i class="fa fa-check"></i><b>12.5.1</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-continuous-targets"><i class="fa fa-check"></i><b>12.6</b> kNN for continuous targets</a></li>
+<li class="chapter" data-level="12.7" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-multiclass-target-variables"><i class="fa fa-check"></i><b>12.7</b> kNN for multiclass target variables</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tree-models.html"><a href="tree-models.html"><i class="fa fa-check"></i><b>13</b> Tree models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="tree-models.html"><a href="tree-models.html#classification-trees"><i class="fa fa-check"></i><b>13.1</b> Classification trees</a></li>
+<li class="chapter" data-level="13.2" data-path="tree-models.html"><a href="tree-models.html#forming-classification-trees"><i class="fa fa-check"></i><b>13.2</b> Forming classification trees</a></li>
+<li class="chapter" data-level="13.3" data-path="tree-models.html"><a href="tree-models.html#varieties-of-classification-tree-algorithms"><i class="fa fa-check"></i><b>13.3</b> Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="13.4" data-path="tree-models.html"><a href="tree-models.html#criteria-for-splitting-and-growing-a-tree"><i class="fa fa-check"></i><b>13.4</b> Criteria for splitting and growing a tree</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tree-models.html"><a href="tree-models.html#the-gini-index"><i class="fa fa-check"></i><b>13.4.1</b> The Gini index</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tree-models.html"><a href="tree-models.html#information-gain"><i class="fa fa-check"></i><b>13.4.2</b> Information Gain</a></li>
+<li class="chapter" data-level="13.4.3" data-path="tree-models.html"><a href="tree-models.html#chi-square-as-a-splitting-criterion"><i class="fa fa-check"></i><b>13.4.3</b> Chi-square as a splitting criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="tree-models.html"><a href="tree-models.html#overfitting"><i class="fa fa-check"></i><b>13.5</b> Overfitting</a></li>
+<li class="chapter" data-level="13.6" data-path="tree-models.html"><a href="tree-models.html#example-of-a-classification-tree"><i class="fa fa-check"></i><b>13.6</b> Example of a classification tree</a></li>
+<li class="chapter" data-level="13.7" data-path="tree-models.html"><a href="tree-models.html#regression-trees"><i class="fa fa-check"></i><b>13.7</b> Regression trees</a>
+<ul>
+<li class="chapter" data-level="13.7.1" data-path="tree-models.html"><a href="tree-models.html#how-regression-trees-work"><i class="fa fa-check"></i><b>13.7.1</b> How regression trees work</a></li>
+<li class="chapter" data-level="13.7.2" data-path="tree-models.html"><a href="tree-models.html#example-predicting-home-prices"><i class="fa fa-check"></i><b>13.7.2</b> Example: Predicting home prices</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="tree-models.html"><a href="tree-models.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>13.8</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>14</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="neural-networks.html"><a href="neural-networks.html#what-are-artificial-neural-networks"><i class="fa fa-check"></i><b>14.1</b> What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="neural-networks.html"><a href="neural-networks.html#human-neurons-to-mathematical-models"><i class="fa fa-check"></i><b>14.1.1</b> Human neurons to mathematical models</a></li>
+<li class="chapter" data-level="14.1.2" data-path="neural-networks.html"><a href="neural-networks.html#activation-functions"><i class="fa fa-check"></i><b>14.1.2</b> Activation functions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="neural-networks.html"><a href="neural-networks.html#the-road-to-machine-learning-with-neural-nets"><i class="fa fa-check"></i><b>14.2</b> The road to machine learning with neural nets</a></li>
+<li class="chapter" data-level="14.3" data-path="neural-networks.html"><a href="neural-networks.html#example-of-a-neural-network"><i class="fa fa-check"></i><b>14.3</b> Example of a neural network</a></li>
+<li class="chapter" data-level="14.4" data-path="neural-networks.html"><a href="neural-networks.html#training-a-neural-net"><i class="fa fa-check"></i><b>14.4</b> Training a neural net</a></li>
+<li class="chapter" data-level="14.5" data-path="neural-networks.html"><a href="neural-networks.html#considerations-in-using-neural-nets"><i class="fa fa-check"></i><b>14.5</b> Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="neural-networks.html"><a href="neural-networks.html#missing-data"><i class="fa fa-check"></i><b>14.5.1</b> Missing data</a></li>
+<li class="chapter" data-level="14.5.2" data-path="neural-networks.html"><a href="neural-networks.html#representative-data"><i class="fa fa-check"></i><b>14.5.2</b> Representative data</a></li>
+<li class="chapter" data-level="14.5.3" data-path="neural-networks.html"><a href="neural-networks.html#all-eventualities-must-be-covered"><i class="fa fa-check"></i><b>14.5.3</b> All eventualities must be covered</a></li>
+<li class="chapter" data-level="14.5.4" data-path="neural-networks.html"><a href="neural-networks.html#unbalanced-data-sets"><i class="fa fa-check"></i><b>14.5.4</b> Unbalanced data sets</a></li>
+<li class="chapter" data-level="14.5.5" data-path="neural-networks.html"><a href="neural-networks.html#the-overfitting-problem"><i class="fa fa-check"></i><b>14.5.5</b> The overfitting problem</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="neural-networks.html"><a href="neural-networks.html#neural-network-example"><i class="fa fa-check"></i><b>14.6</b> Neural network example</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>15</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#approaches-to-forming-clusters"><i class="fa fa-check"></i><b>15.1</b> Approaches to forming clusters</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hierarchical-versus-partitioning-methods"><i class="fa fa-check"></i><b>15.1.1</b> Hierarchical versus partitioning methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hard-versus-soft-methods"><i class="fa fa-check"></i><b>15.1.2</b> “Hard” versus “soft” methods</a></li>
+<li class="chapter" data-level="15.1.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#applying-hierarchical-clusters"><i class="fa fa-check"></i><b>15.1.3</b> Applying hierarchical clusters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analytics with KNIME and R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tree-models" class="section level1" number="13">
+<h1><span class="header-section-number">Chapter 13</span> Tree models</h1>
+<p>Decision trees (aka tree-based models) are commonly used in data mining to perform predictive analytics, typically with a single categorical dependent variable and multiple predictor variables (which can be continuous or categorical). There are two major types of decision trees: classification trees and regression trees. Classification trees are discussed in the first section and regression trees are discussed in the second section. Decision tree algorithms are “automatic” in that the independent variables are selected by searching for optimal splits using a measure of “purity” or effect size.</p>
+<div id="classification-trees" class="section level2" number="13.1">
+<h2><span class="header-section-number">13.1</span> Classification trees</h2>
+<p>As an example, the results of a classification tree could inform customer targeting for a marketing campaign. Consider the hypothetical results of a tree that is based on four predictor variables:</p>
+<ol style="list-style-type: decimal">
+<li>Is the customer’s income greater or less than $70k?</li>
+<li>How old is the customer?</li>
+<li>Is the customer a college graduate?</li>
+<li>Is the customer male or female?</li>
+</ol>
+<p>A classification tree based on past data on purchases might produce a tree-like structure as shown in Figure <a href="tree-models.html#fig:DTExampleOfTree">13.1</a>.</p>
+<p>Notice that some of the branches terminate before all the variables are considered. This is because further splitting of the branch does not lead to any more useful differences.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTExampleOfTree"></span>
+<img src="images_trees/ExampleOfTree.PNG" alt="Initial calculations for the regression tree." width="50%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.1: Initial calculations for the regression tree.
+</p>
+</div>
+<p>Note that after splitting by income, the next variable selected for splitting differs depending on the income level. For income less than or equal to $70k, the next split is on age. For income greater than $70k, the split is on education. This is known as an interaction effect. Finally, note that the splits can be either on continuous variables such as age or on nominal variables such as gender. The process starts with the root node, which represents entire data set. The process proceeds by creating branches where the data is split into sub nodes. The final splits result in leaf or terminal nodes.</p>
+<p>From the hypothetical tree shown in Figure <a href="tree-models.html#fig:DTExampleOfTree">13.1</a>, a series of rules are produced:</p>
+<ul>
+<li>If Income ≤ $70,000 AND Age ≤ 30 THEN probability of purchase = 14%.</li>
+<li>If Income ≤ $70,000 AND Age &gt; 30 AND Female, THEN probability of purchase = 40%.</li>
+<li>If Income ≤ $70,000 AND Age &gt; 30 AND Male, THEN probability of purchase = 63%.</li>
+<li>If Income &gt; $70,000 AND No college, THEN probability of purchase = 38%.</li>
+<li>If Income &gt; $70,000 AND College graduate, THEN probability of purchase = 70%.</li>
+</ul>
+<p>A classification tree is not an inferential technique that is suitable for statistical hypothesis testing. One way to think about classification trees is that they recursively split data into smaller and smaller branches that are increasingly “pure” in terms of the target variable. To find a split, the program examines all the input variables and selects the one at each stage that is most effective according to the criteria in the algorithm.</p>
+<p>This search process involved with forming a tree violates the logical premises of classical statistical testing since the data is used to inform the splits into branches. However, when there are many observations and many variables and in cases where no well-defined theory exists, classification trees can help the researcher to “discover” relationships that can be tested later a different sample.</p>
+<p>Some common uses of classification trees are:</p>
+<ul>
+<li>Market segmentation – identifying segments most likely to purchase.</li>
+<li>Stratification – dividing cases into high/medium/low risk, for example.</li>
+<li>Prediction – creating rules and use them to predict future outcomes.</li>
+<li>Data reduction and variable screening – screening many variables to identify best prospects.</li>
+<li>Interaction detection – finding variables with effects which differ according to the levels of other variables.</li>
+<li>Category merging – recoding variables with large numbers of levels into fewer categories without substantial lose of predictive information. This is one attraction of classification trees: the technique works without much “thinking.”</li>
+</ul>
+</div>
+<div id="forming-classification-trees" class="section level2" number="13.2">
+<h2><span class="header-section-number">13.2</span> Forming classification trees</h2>
+<p>There are exponentially many possible classification trees with a given set of attributes. The number is very large because continuous predictors can be split in many ways and the same predictor can be used again and again as the tree is built. Since it is usually impossible to examine all possible tree structures in each problem, an algorithm is used to grow a tree that is reasonably accurate instead of optimal. Classification trees are known as “greedy algorithms” since they use a strategy of proceeding stage by stage and once a split in the data is made, the algorithm does not go back after making additional splits to check previous splits. Thus, locally optimum selections are made at each stage. The result is usually a very good model, but not one that is not necessarily optimal.</p>
+<p>However, there are dangers and costs associated with the approach. You put in a long list of variables and the program selects the best predictors (and the best point for splitting).</p>
+</div>
+<div id="varieties-of-classification-tree-algorithms" class="section level2" number="13.3">
+<h2><span class="header-section-number">13.3</span> Varieties of classification tree algorithms</h2>
+<p>A wide variety of different models and techniques has been developed all of which fall under the umbrella term of classification trees. Models for classification trees differ in terms of how branches of the tree are split off from the main trunk, in terms of stopping rules, the types of variables that can be used, what is provided in the output, etc. Several algorithms are available for classification trees including CART, C5.0, and CHAID. By no means will these give the same answers to a given problem. One reason is that the programs use different criteria to select which parent nodes to split, as shown in Table <a href="tree-models.html#tab:TreeMethods">13.1</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:TreeMethods">Table 13.1: </span>Characteristics of three classification tree algorithms.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Algorithm
+</th>
+<th style="text-align:left;">
+Splitting criterion
+</th>
+<th style="text-align:left;">
+Input variables
+</th>
+<th style="text-align:left;">
+Target variable
+</th>
+<th style="text-align:left;">
+Splits
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+CART
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Gini index
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Categorical or continuous
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Categorical
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Binary
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+C50
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Entropy
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Categorical or continuous
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Categorical
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Binary or multiway
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+CHAID
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Chi-square test
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Categorical
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Categorical
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Binary or multiway
+</td>
+</tr>
+</tbody>
+</table>
+<p>Classification trees have been around a long time, but until recently they were frequently discussed in derogatory terms. One of the first models, AID, was called a substitute for thinking. AID was an acronym for “automatic interaction detection.”
+Classification trees remain controversial, and some researchers claim that classification trees should not be used. By automatically combing through data sets in search of relationships, the models have the potential to find spurious associations that may appear to be plausible but are only artifacts due to randomness.</p>
+<p>That is very much true if you use classification trees on small samples and do not develop both training and testing subsets. The criticism is due to past applications where small data sets were used. In the era of plentiful data, these concerns no longer are as important. Data mining, after all, is for large data sets.</p>
+<p>For <em>continuous predictor variables</em>, all possible splits are considered. Thus, for n distinct values of a predictor, n-1 potential splits are considered. For nominal predictor variables, the number of possible splits into two groups depends upon the number of distinct categories. Table <a href="tree-models.html#tab:PossibleSplits">13.2</a> gives examples of the number of possible splits as a function of distinct categories.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:PossibleSplits">Table 13.2: </span>The number of possible binary splits by number of categories in a nominal predictor.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Categories
+</th>
+<th style="text-align:center;">
+Possible.splits
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+3
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+4
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+5
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+6
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; color: black !important;vertical-align: top">
+21
+</td>
+</tr>
+</tbody>
+</table>
+<p>In general, the number of possible splits as a function of categories is given by Sterling Numbers of the Second Kind <span class="citation">(<a href="#ref-Stirling" role="doc-biblioref"><span>“Wolfram MathWord: Stirling Numbers of the Second Kind,”</span> n.d.</a>)</span>.</p>
+</div>
+<div id="criteria-for-splitting-and-growing-a-tree" class="section level2" number="13.4">
+<h2><span class="header-section-number">13.4</span> Criteria for splitting and growing a tree</h2>
+<p>As noted above, various approaches have been developed for selecting a node to split in forming a classification tree. Three approaches for splitting are the Gini index, entropy, and chi-square. Each of these can measure the “purity” of a node.</p>
+<p>This data set has three possible predictors: Feature 1, Feature 2, and Feature 3. So, the first split could be on any of the three predictors.</p>
+<div id="the-gini-index" class="section level3" number="13.4.1">
+<h3><span class="header-section-number">13.4.1</span> The Gini index</h3>
+<p>The Gini index of “node purity,” <span class="math inline">\(G_{A}\)</span> is computed using equation <a href="tree-models.html#eq:Giniequation">(13.1)</a>.</p>
+<p><span class="math display" id="eq:Giniequation">\[\begin{equation}
+    \ \mathit{G_{A}}\; = 1 - (p_{0}^2\; + p_{1}^2\;)
+\tag{13.1}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(p_{0}\)</span> is the proportion of cases in the node that are at level “0” and <span class="math inline">\(p_{1}\)</span> the proportion that are at level “1.” Figure <a href="tree-models.html#fig:DTGiniIndexp0p1">13.2</a> shows the Gini index as <span class="math inline">\(p_{0}\)</span> and <span class="math inline">\(p_{1}\)</span> are varied. The maximum value for the index is .5 and is 0 for either all cases equal 0 or equal 1.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTGiniIndexp0p1"></span>
+<img src="images_trees/GiniIndexByP0P1.PNG" alt="The Gini index as a function of p0 and p1." width="50%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.2: The Gini index as a function of p0 and p1.
+</p>
+</div>
+<p>Some algorithms only consider splitting each node into two child nodes while others, such as CHAID can create multi-category nodes. For this example, binary splits in the data set are considered. The overall Gini index for a binary split is computed as the weighted average of the Gini values for the two possible branches.</p>
+<p>To consider splitting a node in two, <span class="math inline">\(G_{A}\)</span> is computed for each of the resulting nodes, which are labeled <span class="math inline">\(G_{A\_Left}\;\)</span> and <span class="math inline">\(G_{A\_Right}\;\)</span>. The total Gini index is then calculated as the weighted average of <span class="math inline">\(G_{A\_Left}\;\)</span> and <span class="math inline">\(G_{A\_Right}\;\)</span>, where the weights are the proportions of cases in the left and right nodes, given by <span class="math inline">\(w_{n\_Left}\)</span> and <span class="math inline">\(w_{n\_Right}\)</span> . So, the Gini index for a split is calculated with equation <a href="tree-models.html#eq:Giniequationsplit">(13.2)</a>.</p>
+<p><span class="math display" id="eq:Giniequationsplit">\[\begin{equation}
+    \ \mathit{G_{A\_split}\; = w_{n\_Left} \times  G_{A\_Left}\; + w_{n\_Right} \times  G_{A\_Right}\; }\;
+\tag{13.2}
+\end{equation}\]</span></p>
+</div>
+<div id="information-gain" class="section level3" number="13.4.2">
+<h3><span class="header-section-number">13.4.2</span> Information Gain</h3>
+<p>Information in a node is a measure of impurity, with higher values indicating greater impurity.
+The expected information in each node for a binary target variable, IInfo_A, is computed using equation <a href="tree-models.html#eq:Information">(13.3)</a>.</p>
+<p><span class="math display" id="eq:Information">\[\begin{equation}
+    \ \mathit{I_{Info\_A}\; = \sum_{i=1}^{2}   p_{i}\; \times \log_{2} p_{i}\;}\;
+\tag{13.3}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(p_{i}\)</span> is the proportion of cases in the node that are at level i (either 0 or 1). Figure <a href="tree-models.html#fig:DTInformationp0p1">13.3</a> shows how expected information varies with <span class="math inline">\(p_{0}\)</span> and <span class="math inline">\(p_{1}\)</span>. The maximum value for the index is 1.0 and is 0 for either all cases = 0 or all cases = 1.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTInformationp0p1"></span>
+<img src="images_trees/ExpectedInformation.PNG" alt="Expected information as a function of p0 and p1." width="50%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.3: Expected information as a function of p0 and p1.
+</p>
+</div>
+<p>To select a node to split, information gain is computed, which is the sum of the information values for the parent node minus the sum of he expected information values for the two child nodes.</p>
+<p>To consider splitting a node in two, <span class="math inline">\(I_{A}\)</span> is computed for each of the resulting nodes, which are labeled <span class="math inline">\(I_{A\_Left}\;\)</span> and <span class="math inline">\(I_{A\_Right}\;\)</span>. The information contained in the two child nodes is then calculated as the weighted average of <span class="math inline">\(I_{A\_Left}\;\)</span> and <span class="math inline">\(I_{A\_Right}\;\)</span>, where the weights are the proportions of cases in the left and right nodes, given by <span class="math inline">\(w_{n\_Left}\)</span> and <span class="math inline">\(w_{n\_Right}\)</span>. So, the information gain for a split is calculated with equation <a href="tree-models.html#eq:Informationsplit">(13.4)</a>.</p>
+<p><span class="math display" id="eq:Informationsplit">\[\begin{equation}
+    \ \mathit{I_{A\_split}\; = w_{n\_Left} \times  I_{A\_Left}\; + w_{n\_Right} \times  I_{A\_Right}\; }\;
+\tag{13.4}
+\end{equation}\]</span></p>
+</div>
+<div id="chi-square-as-a-splitting-criterion" class="section level3" number="13.4.3">
+<h3><span class="header-section-number">13.4.3</span> Chi-square as a splitting criterion</h3>
+<p>This approach to splitting nodes uses the chi-square statistic for selecting a parent node to split. In this case the preferred split is based on which split increases the chi-square value the most, since two nodes that are each “pure” node in terms of 1’s and 0’s will have a sum of chi-squares greater than nodes which are balanced. The formula used at each stage of the classification tree where the target is binary (labeled “0” and “1”) and binary splits are being considered is equation <a href="tree-models.html#eq:chisqare">(13.5)</a>.</p>
+<p><span class="math display" id="eq:chisqare">\[\begin{equation}
+    \ \mathit{\text{Chi-square}{_A}\;  = \sum_{i=1}^{2}   \frac{(a_i\; - e_i\;)^2 }{e_i}\;}\;
+\tag{13.5}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(a_{i}\)</span> and <span class="math inline">\(e_{i}\)</span> are the actual number and expected of 0’s in the node and <span class="math inline">\(a_{1}\)</span> and <span class="math inline">\(e_{1}\)</span> are the actual number and expected of 1’s in the node. Figure <a href="tree-models.html#fig:DTChiSquarep0p1">13.4</a> shows how shape of the chi-square value varies with different proportions of <span class="math inline">\(p_{0}\)</span> and <span class="math inline">\(p_{1}\)</span>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTChiSquarep0p1"></span>
+<img src="images_trees/ChiSquareasFunctionP0P1.PNG" alt="Chi-square as a function of p0 and p1." width="50%" style="background-color:#9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.4: Chi-square as a function of p0 and p1.
+</p>
+</div>
+<p>Note that as a node increases in “purity” in terms of <span class="math inline">\(p_{0}\)</span> or <span class="math inline">\(p_{1}\)</span>, chi-square increases. Therefore, the parent node with the highest sum of chi-squares for two child nodes is selected for splitting.</p>
+<p>To illustrate, consider the “toy” data in
+Table <a href="tree-models.html#tab:DTToyData">13.3</a>. This data consists of 20 observations, 9 zero responses and 11 responses of 1.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:DTToyData">Table 13.3: </span>Toy data set
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Feature 1
+</th>
+<th style="text-align:center;">
+Feature 2
+</th>
+<th style="text-align:center;">
+Feature 3
+</th>
+<th style="text-align:center;">
+Response
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F1_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F2_A
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+F3_B
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>The Gini index, information gain, and chi-square were computed for candidate splits on Features 1, 2, and 3. All three of the criteria (shown in Table <a href="tree-models.html#tab:InitialSplits">13.4</a> led to the same initial split on Feature 3, but this will not always be the case.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:InitialSplits">Table 13.4: </span>Criteria for initial splits..
+.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Feature to split
+</th>
+<th style="text-align:center;">
+Gini index
+</th>
+<th style="text-align:center;">
+Information gain
+</th>
+<th style="text-align:center;">
+Chi-square
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Feature 1
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.488
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.011
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.707
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Feature 2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.496
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.512
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1.955
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Feature 3
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.250
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.695
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+3.162
+</td>
+</tr>
+</tbody>
+</table>
+<p>The tree so far is shown in Figure <a href="tree-models.html#fig:DTTreeSoFar">13.5</a>:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTTreeSoFar"></span>
+<img src="images_trees/InitialSplit.PNG" alt="Split #1" width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.5: Split #1
+</p>
+</div>
+<p>Continuing with just the Gini index, the next possible splits are shown in Table <a href="tree-models.html#tab:SecondSplits">13.5</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:SecondSplits">Table 13.5: </span>Criteria for second splits.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Feature to split
+</th>
+<th style="text-align:center;">
+Gini index
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Split Node 2 by Feature 1
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.305
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Split Node 2 by Feature 2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.317
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Split Node 3 by Feature 1
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Split Node 3 by Feature 2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+0.167
+</td>
+</tr>
+</tbody>
+</table>
+<p>The best split at this stage is to split Node 3 by Feature 2. Then, the best split is to split Node 2 by Feature 1. The resulting tree is shown in <a href="tree-models.html#fig:DTFinalTree">13.6</a>. Note that the best split of Node 2 is based on Feature_1 while the best split on Node 3 is based on Feature 2. No further splits were made with this example.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTFinalTree"></span>
+<img src="images_trees/FinalTreeDiagram.PNG" alt="Final tree" width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.6: Final tree
+</p>
+</div>
+</div>
+</div>
+<div id="overfitting" class="section level2" number="13.5">
+<h2><span class="header-section-number">13.5</span> Overfitting</h2>
+<p>Trees can grow in complexity and are susceptible to overfitting data. Bramer defines overfitting as follows:</p>
+<div class="insetNoBorder">
+<p>A classification algorithm is said to overfit to the training data if it generates a classification tree … that depends too much on irrelevant features of the training instances, with the result that it performs well on the training data but relatively poorly on unseen instances.
+"Realistically, overfitting will always occur to a greater or lesser extent simply because the training set does not contain all possible instances. It only becomes a problem when the classification accuracy on unseen instances is significantly downgraded. <span class="citation">(<a href="#ref-Bramer2007" role="doc-biblioref">Bramer 2007</a>)</span></p>
+</div>
+<p>Figure <a href="tree-models.html#fig:DTOverfitting">13.7</a> shows conceptually how increasing the size of a classification tree by allowing more and more modes will usually increase the accuracy in the training data, but eventually increases error in the test or unseen data. Overfitting the training data fits the model to errors or idiosyncrasies of the training data which are not present in other data sets.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTOverfitting"></span>
+<img src="images_trees/OverfittingSplits.PNG" alt="How overfitting can degrade accuracy." width="60%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.7: How overfitting can degrade accuracy.
+</p>
+</div>
+<p>There are two general approaches to avoid overfitting:</p>
+<ul>
+<li>Simply avoid growing large trees – by providing a stopping rule such as the minimum number of observations in a node or the maximum number of splits.</li>
+<li>Grow a large tree and cut branches afterwards, which is known as pruning. The full tree is grown (early stopping might additionally be used), and each split is examined to determine if it brings a reliable improvement.</li>
+</ul>
+</div>
+<div id="example-of-a-classification-tree" class="section level2" number="13.6">
+<h2><span class="header-section-number">13.6</span> Example of a classification tree</h2>
+<p>Customer churn occurs when a customer (player, subscriber, user, etc.) ceases his or her relationship with a company. The full cost of customer churn includes both lost revenue as well as the marketing costs involved with replacing those customers with new ones. Reducing customer churn is a key business goal of nearly every online business because it is almost always more difficult and expensive to acquire a new customer than it is to retain a current paying customer.</p>
+<p>The ability to predict that a particular customer is at a high risk of churning, while there is still time to do something about it, represents an important potential for increasing revenue and profit.</p>
+<p>In the case of telecom companies, customers may cancel for many reasons, including poor service, availability of specific hardware, and price. Identifying potential churners before they quit can be the first step in efforts to lower the churn rate. It only makes financial sense to offer incentives only to potential churners and not to customers that are going to remain.</p>
+<p>Analytic techniques can be used to develop predictive models to identify likely churners based on customer characteristics and behaviors.</p>
+<p>For this example, a data set, TelcoChurn5000.csv, consisting of 5,000 customers of a telecom provider is available with the variables shown in Table <a href="tree-models.html#tab:TelcoVariables">13.6</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:TelcoVariables">Table 13.6: </span>Variables in the TelcoChurn5000.csv data set.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+State
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+2-letter code of the US state of customer residence
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Months w/ carrier
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Number of months with the telco provider
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Intl plan?
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+The customer has international plan (yes/no)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Intl mins
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Total minutes of international calls
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+# intl calls
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Total number of international calls
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+$ Intl
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Total charge of international calls
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Voice mail?
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+The customer has voice mail plan (yes/no)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+# vmail messages
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Number of voice-mail messages
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Call minutes
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Total minutes of calls
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+# of calls
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Total number of calls
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+$ Total
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Total monthly charges
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+# service calls
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Number of calls to customer service
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Churn
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Customer churn (yes/no)
+</td>
+</tr>
+</tbody>
+</table>
+<p>A classification tree was developed in KNIME using the workflow is shown in Figure <a href="tree-models.html#fig:DTWorkFlowChurn">13.8</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTWorkFlowChurn"></span>
+<img src="images_trees/WorkflowForTreeOnChurnData.PNG" alt="KNIME workflow for Churn data." width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.8: KNIME workflow for Churn data.
+</p>
+</div>
+<p>The nodes in the workflow are described in Table <a href="tree-models.html#tab:TelcoNodes">13.7</a>,</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:TelcoNodes">Table 13.7: </span>Descriptions of nodes in the churn workflow.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Node
+</th>
+<th style="text-align:left;">
+Label
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+File Reader
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+TelcoChurn5000.csv
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+2
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Statistics
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Descriptive statistics of Churn data set.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+3
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Partitioning
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+A 60/40 (Training/Test) random split of the data set stratified on Churn is formed. Set random seed = 123.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+4
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+SMOTE
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+SMOTE (Synthetic Minority Over-sampling Technique) oversamples the class of Churn = “no” to equal Churn = “yes.” This was done because the of the imbalance of Churn in the data: 707 “yes” and 4293 “no.”
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+5
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Statistics
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Descriptive statistics on Churn target variable showing balance.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+6
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Decision Tree Learner
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Set minimum records per node = 150 to pre-prune the classification tree.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+7
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Decision Tree Predictor
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Use the decision tree to create predictions of Churn on the unbalanced Training data (prior to running SMOTE).
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+8
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Scorer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Compute performance statistics and classification (confusion) matrix for the Training data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+9
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Decision Tree Predictor
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Use the decision tree to create predictions of Churn on unbalanced Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+10
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Scorer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Compute performance statistics and classification (confusion) matrix for the Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+11
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Joiner
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Join accuracy tables for Training and Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+12
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Excel Writer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Write accuracy tables to ChurnAccuracy.xlsx; include Row Key.
+</td>
+</tr>
+</tbody>
+</table>
+<p>The performance results for the Training and Test summarized from the Excel file are shown in Table <a href="tree-models.html#tab:TelcoMetrics">13.8</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:TelcoMetrics">Table 13.8: </span>Performance measures for the classification tree.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Metric
+</th>
+<th style="text-align:center;">
+Training data
+</th>
+<th style="text-align:center;">
+Test data
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+Accuracy
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.953
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.942
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+Cohen’s kappa
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.812
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.765
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+Precision
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.818
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.783
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+Sensitivity
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.861
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.816
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+Specificity
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.969
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.963
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+F-measure
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.839
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.799
+</td>
+</tr>
+</tbody>
+</table>
+<p>The classification tree performed quite well on this data set, with comparable
+performance for both the Training and Test data as shown in Tables <a href="tree-models.html#tab:confusionDTTrainingChurn">13.9</a> and <a href="tree-models.html#tab:confusionDTtestchurn">13.10</a>.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:confusionDTTrainingChurn">Table 13.9: </span>Confusion matrix for Churn Training data.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Training
+</th>
+<th style="text-align:center;">
+Churn=Yes
+</th>
+<th style="text-align:center;">
+Churn=No
+</th>
+<th style="text-align:center;">
+Totals
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+Churn=Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+365
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+59
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+424
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+Churn=No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+81
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+2495
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+2576
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;width: 8em; border-right:1px solid;vertical-align: top">
+Totals
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;width: 8em; border-right:1px solid;vertical-align: top">
+446
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;width: 8em; border-right:1px solid;vertical-align: top">
+2554
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;">
+3000
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:confusionDTtestchurn">Table 13.10: </span>Confusion matrix for Churn Test data.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Training
+</th>
+<th style="text-align:center;">
+Churn=Yes
+</th>
+<th style="text-align:center;">
+Churn=No
+</th>
+<th style="text-align:center;">
+Totals
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+Churn=Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+231
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+52
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+282
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+Churn=No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+64
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; border-right:1px solid;vertical-align: top">
+1653
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+1717
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;width: 8em; border-right:1px solid;vertical-align: top">
+Totals
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;width: 8em; border-right:1px solid;vertical-align: top">
+295
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;width: 8em; border-right:1px solid;vertical-align: top">
+1705
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px; Border-top: 1px solid;">
+2000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="regression-trees" class="section level2" number="13.7">
+<h2><span class="header-section-number">13.7</span> Regression trees</h2>
+<p>Decision trees can also be used to predict continuous target variables. In such applications these are known as regression trees. The analysis is much like the case with categorical target variables: the model produces a series of splits using selected predictor variables. With regression trees, much like ordinary regression, you can have continuous or nominal predictors. However, the other assumptions associated with linear regression regarding error distributions and so on, are not really relevant because regression trees are not a classical statistical technique.</p>
+<div id="how-regression-trees-work" class="section level3" number="13.7.1">
+<h3><span class="header-section-number">13.7.1</span> How regression trees work</h3>
+<p>Regression trees operate by successively dividing a data set into smaller and smaller groups that are more homogeneous with respect to the target variable. The groups are nodes and each node lower in the tree is more homogeneous in terms of the target variable than those nodes higher in the tree. The model starts with no predictors and then examines each possible predictor in turn to select the best variable for initial split.</p>
+<p>The process of building a regression tree is illustrated using a simple data set (DemoRegressionTrees.csv) consisting of 100 observations of home prices as the continuous target variable with area in square feet (either 1,000 or 2,000) and quality (either high or average) as the predictors. The first five and last five rows are shown in Table <a href="tree-models.html#tab:HousePriceDemoData">13.11</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:HousePriceDemoData">Table 13.11: </span>Performance measures for the classification tree.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Row
+</th>
+<th style="text-align:center;">
+Price in 000’s
+</th>
+<th style="text-align:center;">
+Area in sq. ft.
+</th>
+<th style="text-align:center;">
+Quality
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+1
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+203.8
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+High
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+195.0
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Average
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+3
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+200.9
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+High
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+4
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+403.2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+2000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+High
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+5
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+402.8
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+2000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+High
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+· · ·
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+· · ·
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+· · ·
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+· · ·
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+96
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+306.9
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+2000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+High
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+97
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+194.3
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Average
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+98
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+206.2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+High
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+99
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+310.1
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+2000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+High
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 6em; vertical-align: top">
+100
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+298.0
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+2000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Average
+</td>
+</tr>
+</tbody>
+</table>
+<p>The tree building process uses the criterion of minimizing the sum of squared errors as binary splits in the predictors are made. The initial sum of squares (<span class="math inline">\(SST_{I}\)</span>) is given by equation <a href="tree-models.html#eq:SSTI">(13.6)</a>.</p>
+<p><span class="math display" id="eq:SSTI">\[\begin{equation}
+    \ \mathit{\text{SST}{_I}\;  = \sum_{i=1}^{n} (y_{i}\; + \bar{y}\;)^2\; = 502,301}\;
+\tag{13.6}
+\end{equation}\]</span></p>
+<p>where n = the number of observations, <span class="math inline">\(y_{i}\)</span> = the price for observation i and <span class="math inline">\(\bar{y}\;\)</span> = the mean value of the prices.</p>
+<p>Next, splits are considered by area in square feet and quality. When a split is made, the sum of squares of each branch of the split is computed and added together. The sum of squares after splitting is subtracted from <span class="math inline">\(SST_{I}\)</span> and the split with the greatest reduction in sum of squares is selected.</p>
+<p>The sum of squares for the binary splits is given by <a href="tree-models.html#eq:SSTBinary">(13.7)</a>.</p>
+<p><span class="math display" id="eq:SSTBinary">\[\begin{equation}
+    \ \mathit{\text{SST}_{binary}\;  = \sum_{i=1}^{n_L} (y_{i}\; + \bar{y}_L\;)^2\; + \sum_{i=1}^{n_R} (y_{i}\; + \bar{y}_R\;)^2\;}
+    \tag{13.7}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(n_{j}\)</span> = the number of observations in the jth node
+after split, <span class="math inline">\(\bar{y}_L\;)\;\)</span> = the mean value of the prices in the jth node
+with j = L for left node and j = R for the right node.</p>
+<p>The results of the calculations are shown in Figure <a href="tree-models.html#fig:RTinitialsplits">13.9</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:RTinitialsplits"></span>
+<img src="images_trees/InitialCalculationsforDecisionTree.png" alt="Initial calculations for the regression tree." width="75%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.9: Initial calculations for the regression tree.
+</p>
+</div>
+<p>Splitting on area produced the greatest reduction in sum of squares and therefore the split should be made on area.</p>
+<p>In a larger problem, a recursive process is used, and each predictor is considered. Each potential split of a continuous predictor must be calculated, so that for a variable with k distinct values, k-1 splits considered.</p>
+<p>There are several different algorithms for regression trees, but a commonly used approach is the CART method. The depth of the tree can be controlled by the programs. <span class="citation">(<a href="#ref-Breiman1984" role="doc-biblioref">J. F. Breiman L. and Stone 1984</a>)</span></p>
+<p>The predictions are made using the terminal nodes at the bottom of the tree. The prediction estimates of the target variable equal the average value of the observations in each terminal node.</p>
+<p>Simple regression trees have a limitation, as we will see in an example. The limitation stems from the model structure itself because the estimates of the target are only made with the average value in each terminal node. Therefore, if there are only a few terminal nodes, then only a few different prediction values will be made. This happens even though the original target variable has many, perhaps hundreds or thousands of different values if the target is continuous.</p>
+<p>The predictions are said to have limited cardinality. Cardinality is just the number of distinct values in the set of predicted values. This by itself can limit the R2 and predictive accuracy of regression trees.</p>
+</div>
+<div id="example-predicting-home-prices" class="section level3" number="13.7.2">
+<h3><span class="header-section-number">13.7.2</span> Example: Predicting home prices</h3>
+<p>Next, an example again is based on predicting home prices. This data set has 522 observations in the file RealEstatePrices.csv. The variables in the data are listed in Table <a href="tree-models.html#tab:RealEstateVariables">13.12</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:RealEstateVariables">Table 13.12: </span>Performance measures for the classification tree.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:left;">
+Values
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Sales Price
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Continuous
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Finished square feet
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Continuous
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Air conditioning
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Yes or No
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Garage size
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+# of cars
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Pool
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Yes or No
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Year built
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Continuous
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Quality
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Fair, Moderate, or Best
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Lot size
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Continuous
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Adjacent to highway
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Yes or No
+</td>
+</tr>
+</tbody>
+</table>
+<p>A workflow (Figure <a href="tree-models.html#fig:DTWorkFlowRealEstate">13.10</a>) was created in KNIME to predict Sales Price on Test data using regression trees and, for comparison, ordinary linear regression.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DTWorkFlowRealEstate"></span>
+<img src="images_trees/WorkflowRealEstateRegressionTree.PNG" alt="KNIME workflow for Real Estate Example." width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.10: KNIME workflow for Real Estate Example.
+</p>
+</div>
+<p>The nodes in the workflow for this example are described in Table <a href="tree-models.html#tab:RealEstateNodes">13.13</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:RealEstateNodes">Table 13.13: </span>Node descriptions for Real Estate workflow.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Node
+</th>
+<th style="text-align:left;">
+Label
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+1
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+File Reader
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Read “RealEstateData.csv”
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+2
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Partitioning
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Randomly split data 70/30; set seed to 123.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+3
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Simple Regression Tree Learner
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Limit number of levels to 5; Minimum split node size = 10; Minimum node size = 5.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+4
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Simple Regression Tree Predictor
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Predict Sales Price on Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+5
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Numeric Scorer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Calculate performance measures on Regression Tree using Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+6
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Scatter Plot
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Plot Predicted vs. Actual for Regression Tree on Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+7
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Linear Regression Learner
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Run the same data using OLS.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+8
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Regression Predictor
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Predict Sales Price on Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+9
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Numeric Scorer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Calculate performance measures on OLS using Test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+10
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+Scatter Plot
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Plot Predicted vs. Actual for OLS on Test data.
+</td>
+</tr>
+</tbody>
+</table>
+<p>The results for the two analyses are shown in Table <a href="tree-models.html#tab:RealEstateMetrics">13.14</a>. Ordinary least squares regression performed slightly better in this example. One reason may be the limitation on the predicted values when using regression trees. There are only as many distinct predictive values as the number of terminal nodes. In the original Selling Price variable there are 131 distinct values. In the predicted values from the regression tree, there are only 30 distinct values, while there are 157 distinct values in the predictions using ordinary regression.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:RealEstateMetrics">Table 13.14: </span>Comparison of regression tree and OLS.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Metric
+</th>
+<th style="text-align:right;">
+Regression tree
+</th>
+<th style="text-align:right;">
+Ordinary regression
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+R-sqaured
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+0.813
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+0.836
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+mean absolute error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+36,544
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+36,710
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+mean squared error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+3,189,206,925
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+2,789,026,413
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+root mean squared error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+56,473
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+52,811
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+mean signed difference
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+-11,198
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+-4,908
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+mean absolute percentage error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+0.14
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+0.14
+</td>
+</tr>
+</tbody>
+</table>
+<p>Since the results from the regression tree and ordinary regression differed, an exploration of combining the two results was conducted. The predictions from the two models were averaged and compared the actual Selling Price data. The performance metrics for the averaged predictions are shown in Table <a href="tree-models.html#tab:RealEstateAveragedMetric">13.15</a>.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:RealEstateAveragedMetric">Table 13.15: </span>Performance metrics for averaged predictions.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Metric
+</th>
+<th style="text-align:right;">
+Averaged predictions
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10m; vertical-align: top">
+Rsquared
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+0.853
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10m; vertical-align: top">
+mean absolute error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+33,761
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10m; vertical-align: top">
+mean squared error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+2,510,151,735
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10m; vertical-align: top">
+root mean squared error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+50,101
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10m; vertical-align: top">
+mean signed difference
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+-8,053
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10m; vertical-align: top">
+mean absolute percentage error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+0.13
+</td>
+</tr>
+</tbody>
+</table>
+<p>The metrics indicate improved accuracy. In particular the root mean squared error (RMSE) was reduced to 50,101 compared with the RMSE for the regression tree of 56,473 and 52,811 for OLS. The RMSE for the averaged model was about 5% lower than the OLS mode. Whether or not this improvement is important, it does illustrate that combining prediction estimates can result in better performance. This is a similar effect to the one discussed in the chapter on ensemble models.</p>
+</div>
+</div>
+<div id="strengths-and-weaknesses" class="section level2" number="13.8">
+<h2><span class="header-section-number">13.8</span> Strengths and weaknesses</h2>
+<p>Decision trees are widely used in data mining but as with virtually every technique, there are both strengths and weaknesses.</p>
+<p><em>Strengths of decision trees</em></p>
+<ul>
+<li>Interpretation is usually straightforward and easy to demonstrate and explain.</li>
+<li>There are few underlying assumptions that must be met.</li>
+<li>The results are displayed in a tree-like structure, which is intuitively appealing. Rules generated are transparent.</li>
+<li>Interactions among predictor variables can be identified.</li>
+<li>Outliers and missing values can be handled without problems (with most algorithms).</li>
+<li>Non-linear relationships are handled without problems.</li>
+<li>Predictor variable selection is automatic.</li>
+<li>Binary, categorical, ordinal, and interval target and predictor variables can be used.</li>
+</ul>
+<p><em>Weaknesses of decision trees</em></p>
+<ul>
+<li>Slight changes in the data set can produce dramatically different results.</li>
+<li>Large datasets are needed.</li>
+<li>Careful validation is required to avoid over-fitting.</li>
+<li>The data snooping process can be misleading.</li>
+<li>There is a bias toward selecting categorical predictors with many levels.</li>
+<li>Considerable judgment and experimentation may be needed to develop a suitable result.</li>
+</ul>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Bramer2007" class="csl-entry">
+Bramer, Max. 2007. <em>Principles of Data Mining</em>. New York: Springer.
+</div>
+<div id="ref-Breiman1984" class="csl-entry">
+Breiman, JH Friedman, L., and CJ Stone. 1984. <em>Classification and Regression Trees</em>. Boca Raton: Chapman; Hall/CRC.
+</div>
+<div id="ref-Stirling" class="csl-entry">
+<span>“Wolfram MathWord: Stirling Numbers of the Second Kind.”</span> n.d. <a href="https://https://mathworld.wolfram.com/StirlingNumberoftheSecondKind.html">https://https://mathworld.wolfram.com/StirlingNumberoftheSecondKind.html</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="k-nearest-neighbors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="neural-networks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["TextbookDraft.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Multiple regression | Analytics with KNIME and R</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Multiple regression | Analytics with KNIME and R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a draft." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Multiple regression | Analytics with KNIME and R" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="F Acito" />
+
+
+<meta name="date" content="2021-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="evaluating-predictive-models.html"/>
+<link rel="next" href="logistic-regression.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Cover page</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#what-is-analytics"><i class="fa fa-check"></i><b>1.1</b> What is analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-trends-in-analytics"><i class="fa fa-check"></i><b>1.2</b> Some trends in analytics</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#broadening-of-application-areas"><i class="fa fa-check"></i><b>1.2.1</b> Broadening of application areas</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#generalization-of-the-notion-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Generalization of the notion of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#a-trend-from-slicing-and-dicing-data-to-more-advanced-techniques"><i class="fa fa-check"></i><b>1.2.3</b> A trend from “slicing and dicing” data to more advanced techniques</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#more-advanced-data-visualization"><i class="fa fa-check"></i><b>1.2.4</b> More advanced data visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#the-analytics-process-model"><i class="fa fa-check"></i><b>1.3</b> The analytics process model</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html"><i class="fa fa-check"></i><b>2</b> Business understanding and problem definition</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#expert-views"><i class="fa fa-check"></i><b>2.1</b> Expert views</a></li>
+<li class="chapter" data-level="2.2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#understanding-the-business"><i class="fa fa-check"></i><b>2.2</b> Understanding the business</a></li>
+<li class="chapter" data-level="2.3" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#identifying-stakeholders"><i class="fa fa-check"></i><b>2.3</b> Identifying stakeholders</a></li>
+<li class="chapter" data-level="2.4" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#structured-versus-unstructured-problems"><i class="fa fa-check"></i><b>2.4</b> Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="2.5" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#framing-the-problem"><i class="fa fa-check"></i><b>2.5</b> Framing the problem</a></li>
+<li class="chapter" data-level="2.6" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#appendix-some-tools-for-problem-definition"><i class="fa fa-check"></i>Appendix: Some tools for problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#right-to-left-thinking"><i class="fa fa-check"></i>Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#reversing-the-problem"><i class="fa fa-check"></i>Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#open-the-problem-with-whys"><i class="fa fa-check"></i>Open the problem with “whys”</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#challenge-assumptions"><i class="fa fa-check"></i>Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#chunking"><i class="fa fa-check"></i>Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#problems"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduction to KNIME</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i><b>3.1</b> The KNIME Workbench</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#elements-of-the-knime-workbench"><i class="fa fa-check"></i><b>3.1.1</b> Elements of the KNIME Workbench</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#learning-to-use-knime"><i class="fa fa-check"></i><b>3.2</b> Learning to use KNIME</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-extensions-and-integrations"><i class="fa fa-check"></i><b>3.3</b> KNIME extensions and integrations</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-1-predicting-heart-disease"><i class="fa fa-check"></i><b>3.4</b> KNIME workflow example #1: Predicting heart disease</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-2-preparation-of-hospital-data"><i class="fa fa-check"></i><b>3.5</b> KNIME workflow example #2: Preparation of hospital data</a></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#summary-1"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#problems-1"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-preparation.html"><a href="data-preparation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="data-preparation.html"><a href="data-preparation.html#obtaining-the-needed-data"><i class="fa fa-check"></i><b>4.2</b> Obtaining the needed data</a></li>
+<li class="chapter" data-level="4.3" data-path="data-preparation.html"><a href="data-preparation.html#data-cleaning"><i class="fa fa-check"></i><b>4.3</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-preparation.html"><a href="data-preparation.html#missing-values"><i class="fa fa-check"></i><b>4.3.1</b> Missing values</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-preparation.html"><a href="data-preparation.html#outliers"><i class="fa fa-check"></i><b>4.3.2</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-preparation.html"><a href="data-preparation.html#feature-engineering"><i class="fa fa-check"></i><b>4.4</b> Feature engineering</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-preparation.html"><a href="data-preparation.html#data-transformations"><i class="fa fa-check"></i><b>4.4.1</b> Data transformations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-preparation.html"><a href="data-preparation.html#data-exploration"><i class="fa fa-check"></i><b>4.4.2</b> Data exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html"><i class="fa fa-check"></i><b>5</b> Principal components analytics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#approaches-to-dimension-reduction"><i class="fa fa-check"></i><b>5.1</b> Approaches to dimension reduction</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#the-pca-model"><i class="fa fa-check"></i><b>5.3</b> The PCA model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html"><i class="fa fa-check"></i><b>6</b> Evaluating predictive models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#training-testing-and-validation-samples"><i class="fa fa-check"></i><b>6.2</b> Training, Testing, and Validation samples</a></li>
+<li class="chapter" data-level="6.3" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-continuous-versus-discrete-targets"><i class="fa fa-check"></i><b>6.3</b> Evaluating continuous versus discrete targets</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-continuous-targets"><i class="fa fa-check"></i><b>6.3.1</b> Evaluating performance with continuous targets</a></li>
+<li class="chapter" data-level="6.3.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-classification-models"><i class="fa fa-check"></i><b>6.3.2</b> Evaluating performance with classification models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-techniques"><i class="fa fa-check"></i><b>7.2</b> Regression techniques</a></li>
+<li class="chapter" data-level="7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-explanation"><i class="fa fa-check"></i><b>7.3</b> Regression for explanation</a></li>
+<li class="chapter" data-level="7.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-prediction"><i class="fa fa-check"></i><b>7.4</b> Regression for prediction</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="multiple-regression.html"><a href="multiple-regression.html#revisiting-regression-assumptions"><i class="fa fa-check"></i><b>7.4.1</b> Revisiting regression assumptions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction-example-used-toyota-corollas"><i class="fa fa-check"></i><b>7.4.2</b> Prediction example: Used Toyota Corollas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-a-brief-history-of-regression"><i class="fa fa-check"></i>Appendix: A brief history of regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#problems-2"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#example-with-a-single-predictor"><i class="fa fa-check"></i><b>8.1</b> Example with a single predictor</a></li>
+<li class="chapter" data-level="8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#example-predictive-analytic-in-hr"><i class="fa fa-check"></i><b>8.2</b> Example: Predictive analytic in HR</a></li>
+<li class="chapter" data-level="8.3" data-path="logistic-regression.html"><a href="logistic-regression.html#predictor-interpretation-and-importance"><i class="fa fa-check"></i><b>8.3</b> Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="8.4" data-path="logistic-regression.html"><a href="logistic-regression.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Regularized logistic regression</a></li>
+<li class="chapter" data-level="8.5" data-path="logistic-regression.html"><a href="logistic-regression.html#probability-calibration"><i class="fa fa-check"></i><b>8.5</b> Probability calibration</a></li>
+<li class="chapter" data-level="8.6" data-path="logistic-regression.html"><a href="logistic-regression.html#evaluation-of-logistic-regression"><i class="fa fa-check"></i><b>8.6</b> Evaluation of logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>9</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ensemble-models.html"><a href="ensemble-models.html#creating-ensemble-models"><i class="fa fa-check"></i><b>9.1</b> Creating ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="ensemble-models.html"><a href="ensemble-models.html#reduced-variation"><i class="fa fa-check"></i><b>9.1.1</b> Reduced variation</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ensemble-models.html"><a href="ensemble-models.html#improved-performance"><i class="fa fa-check"></i><b>9.1.2</b> Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ensemble-models.html"><a href="ensemble-models.html#parallel-and-sequential-learners"><i class="fa fa-check"></i><b>9.2</b> Parallel and sequential learners</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ensemble-models.html"><a href="ensemble-models.html#bagging-bootstrap-aggregating"><i class="fa fa-check"></i><b>9.2.1</b> Bagging (Bootstrap Aggregating)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ensemble-models.html"><a href="ensemble-models.html#random-forests"><i class="fa fa-check"></i><b>9.2.2</b> Random Forests</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ensemble-models.html"><a href="ensemble-models.html#adaboost"><i class="fa fa-check"></i><b>9.2.3</b> AdaBoost</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ensemble-models.html"><a href="ensemble-models.html#gradient-boosting-machines"><i class="fa fa-check"></i><b>9.2.4</b> Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ensemble-models.html"><a href="ensemble-models.html#xgboost"><i class="fa fa-check"></i><b>9.2.5</b> XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ensemble-models.html"><a href="ensemble-models.html#example-of-ensemble-modeling-for-a-continuous-target"><i class="fa fa-check"></i><b>9.3</b> Example of ensemble modeling for a continuous target</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>10</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="naive-bayes.html"><a href="naive-bayes.html#a-thought-problem"><i class="fa fa-check"></i><b>10.1</b> A thought problem</a></li>
+<li class="chapter" data-level="10.2" data-path="naive-bayes.html"><a href="naive-bayes.html#bayes-theorem-applied-to-predictive-analytics"><i class="fa fa-check"></i><b>10.2</b> Bayes Theorem applied to predictive analytics</a></li>
+<li class="chapter" data-level="10.3" data-path="naive-bayes.html"><a href="naive-bayes.html#illustration-of-naïve-bayes-with-a-toy-data-set"><i class="fa fa-check"></i><b>10.3</b> Illustration of Naïve Bayes with a “toy” data set</a></li>
+<li class="chapter" data-level="10.4" data-path="naive-bayes.html"><a href="naive-bayes.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i><b>10.4</b> The assumption of conditional independence</a></li>
+<li class="chapter" data-level="10.5" data-path="naive-bayes.html"><a href="naive-bayes.html#naïve-bayes-with-continuous-predictors"><i class="fa fa-check"></i><b>10.5</b> Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="10.6" data-path="naive-bayes.html"><a href="naive-bayes.html#laplace-smoothing"><i class="fa fa-check"></i><b>10.6</b> Laplace Smoothing</a></li>
+<li class="chapter" data-level="10.7" data-path="naive-bayes.html"><a href="naive-bayes.html#example-using-naïve-bayes-with-churn-data"><i class="fa fa-check"></i><b>10.7</b> Example using naïve Bayes with churn data</a></li>
+<li class="chapter" data-level="10.8" data-path="naive-bayes.html"><a href="naive-bayes.html#spam-detection-using-naïve-bayes"><i class="fa fa-check"></i><b>10.8</b> Spam detection using naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>11</b> Deep learning</a></li>
+<li class="chapter" data-level="12" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>12</b> k Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#k-nearest-neighbors-and-memory-based-learning"><i class="fa fa-check"></i><b>12.1</b> k nearest neighbors and memory-based learning</a></li>
+<li class="chapter" data-level="12.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications"><i class="fa fa-check"></i><b>12.2</b> Typical applications</a></li>
+<li class="chapter" data-level="12.3" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#what-is-knn"><i class="fa fa-check"></i><b>12.3</b> What is kNN?</a></li>
+<li class="chapter" data-level="12.4" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-two-dimensional-graphic-example-of-knn"><i class="fa fa-check"></i><b>12.4</b> A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="12.5" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#example-of-knn-diagnosing-heart-disease"><i class="fa fa-check"></i><b>12.5</b> Example of kNN: Diagnosing heart disease</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#results"><i class="fa fa-check"></i><b>12.5.1</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-continuous-targets"><i class="fa fa-check"></i><b>12.6</b> kNN for continuous targets</a></li>
+<li class="chapter" data-level="12.7" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-multiclass-target-variables"><i class="fa fa-check"></i><b>12.7</b> kNN for multiclass target variables</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tree-models.html"><a href="tree-models.html"><i class="fa fa-check"></i><b>13</b> Tree models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="tree-models.html"><a href="tree-models.html#classification-trees"><i class="fa fa-check"></i><b>13.1</b> Classification trees</a></li>
+<li class="chapter" data-level="13.2" data-path="tree-models.html"><a href="tree-models.html#forming-classification-trees"><i class="fa fa-check"></i><b>13.2</b> Forming classification trees</a></li>
+<li class="chapter" data-level="13.3" data-path="tree-models.html"><a href="tree-models.html#varieties-of-classification-tree-algorithms"><i class="fa fa-check"></i><b>13.3</b> Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="13.4" data-path="tree-models.html"><a href="tree-models.html#criteria-for-splitting-and-growing-a-tree"><i class="fa fa-check"></i><b>13.4</b> Criteria for splitting and growing a tree</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tree-models.html"><a href="tree-models.html#the-gini-index"><i class="fa fa-check"></i><b>13.4.1</b> The Gini index</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tree-models.html"><a href="tree-models.html#information-gain"><i class="fa fa-check"></i><b>13.4.2</b> Information Gain</a></li>
+<li class="chapter" data-level="13.4.3" data-path="tree-models.html"><a href="tree-models.html#chi-square-as-a-splitting-criterion"><i class="fa fa-check"></i><b>13.4.3</b> Chi-square as a splitting criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="tree-models.html"><a href="tree-models.html#overfitting"><i class="fa fa-check"></i><b>13.5</b> Overfitting</a></li>
+<li class="chapter" data-level="13.6" data-path="tree-models.html"><a href="tree-models.html#example-of-a-classification-tree"><i class="fa fa-check"></i><b>13.6</b> Example of a classification tree</a></li>
+<li class="chapter" data-level="13.7" data-path="tree-models.html"><a href="tree-models.html#regression-trees"><i class="fa fa-check"></i><b>13.7</b> Regression trees</a>
+<ul>
+<li class="chapter" data-level="13.7.1" data-path="tree-models.html"><a href="tree-models.html#how-regression-trees-work"><i class="fa fa-check"></i><b>13.7.1</b> How regression trees work</a></li>
+<li class="chapter" data-level="13.7.2" data-path="tree-models.html"><a href="tree-models.html#example-predicting-home-prices"><i class="fa fa-check"></i><b>13.7.2</b> Example: Predicting home prices</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="tree-models.html"><a href="tree-models.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>13.8</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>14</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="neural-networks.html"><a href="neural-networks.html#what-are-artificial-neural-networks"><i class="fa fa-check"></i><b>14.1</b> What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="neural-networks.html"><a href="neural-networks.html#human-neurons-to-mathematical-models"><i class="fa fa-check"></i><b>14.1.1</b> Human neurons to mathematical models</a></li>
+<li class="chapter" data-level="14.1.2" data-path="neural-networks.html"><a href="neural-networks.html#activation-functions"><i class="fa fa-check"></i><b>14.1.2</b> Activation functions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="neural-networks.html"><a href="neural-networks.html#the-road-to-machine-learning-with-neural-nets"><i class="fa fa-check"></i><b>14.2</b> The road to machine learning with neural nets</a></li>
+<li class="chapter" data-level="14.3" data-path="neural-networks.html"><a href="neural-networks.html#example-of-a-neural-network"><i class="fa fa-check"></i><b>14.3</b> Example of a neural network</a></li>
+<li class="chapter" data-level="14.4" data-path="neural-networks.html"><a href="neural-networks.html#training-a-neural-net"><i class="fa fa-check"></i><b>14.4</b> Training a neural net</a></li>
+<li class="chapter" data-level="14.5" data-path="neural-networks.html"><a href="neural-networks.html#considerations-in-using-neural-nets"><i class="fa fa-check"></i><b>14.5</b> Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="neural-networks.html"><a href="neural-networks.html#missing-data"><i class="fa fa-check"></i><b>14.5.1</b> Missing data</a></li>
+<li class="chapter" data-level="14.5.2" data-path="neural-networks.html"><a href="neural-networks.html#representative-data"><i class="fa fa-check"></i><b>14.5.2</b> Representative data</a></li>
+<li class="chapter" data-level="14.5.3" data-path="neural-networks.html"><a href="neural-networks.html#all-eventualities-must-be-covered"><i class="fa fa-check"></i><b>14.5.3</b> All eventualities must be covered</a></li>
+<li class="chapter" data-level="14.5.4" data-path="neural-networks.html"><a href="neural-networks.html#unbalanced-data-sets"><i class="fa fa-check"></i><b>14.5.4</b> Unbalanced data sets</a></li>
+<li class="chapter" data-level="14.5.5" data-path="neural-networks.html"><a href="neural-networks.html#the-overfitting-problem"><i class="fa fa-check"></i><b>14.5.5</b> The overfitting problem</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="neural-networks.html"><a href="neural-networks.html#neural-network-example"><i class="fa fa-check"></i><b>14.6</b> Neural network example</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>15</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#approaches-to-forming-clusters"><i class="fa fa-check"></i><b>15.1</b> Approaches to forming clusters</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hierarchical-versus-partitioning-methods"><i class="fa fa-check"></i><b>15.1.1</b> Hierarchical versus partitioning methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hard-versus-soft-methods"><i class="fa fa-check"></i><b>15.1.2</b> “Hard” versus “soft” methods</a></li>
+<li class="chapter" data-level="15.1.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#applying-hierarchical-clusters"><i class="fa fa-check"></i><b>15.1.3</b> Applying hierarchical clusters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analytics with KNIME and R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="multiple-regression" class="section level1" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Multiple regression</h1>
+<div id="introduction-2" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Introduction</h2>
+<div class="insetNoBorder">
+<p>This chapter covers one of the most versatile and useful techniques, ordinary least squares regression. Included in this chapter is a discussion of the distinction between explanatory and predictive modeling. Several examples of predictive modeling using regression are included.</p>
+</div>
+<p>Linear regression is arguably the most well-known of the many algorithms used in predictive analytics. There are several reasons for this. First, it is a logical, linear model which has many uses and is conceptually attractive. Linear relationships are easy to think about.</p>
+<p>Second, the technique itself is relatively easy to program, so there are many, many software tools available. It can easily be programmed in any language with just a few statements.</p>
+<p>Third, it is very flexible – it can be applied to many types of problems, even those that at first might not seem to be linear regression candidates. Many phenomena can be cast, at least approximately, into a linear model.</p>
+<p>Fourth, regression has multiple, distinct uses. It is often used to build models that explain how one or more independent variables affect a continuous, dependent variable. It is also used for control, in the sense that regression models can help identify cases that are in error or problematic. Finally, the focus in this course will be on regression for prediction.</p>
+<p>Fifth, regression has a long and elaborate history of development. It is a huge topic. There are many books and courses devoted to the subject. It’s been under development for more than 100 years. The basic idea is quite simple, but there are many exceptions, special cases, and assumptions that might not fit a particular situation. In ordinary regression, the target variable is continuous, but over the years many modifications to the basic model have led to new regression-type models such as Cox regression, Poisson regression, logistic regression, and others.</p>
+</div>
+<div id="regression-techniques" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Regression techniques</h2>
+<p>There exist several algorithms that perform different forms of regression that were developed to better align with the objectives of the analysis and characteristics of the data. Ordinary least squares, the topic of this chapter applies to problems where there is a single continuous target variable and one or more predictor variables, which can be continuous or categorical (or a mixture of both).</p>
+<p>The models covered in this chapter are:</p>
+<ul>
+<li>Ordinary linear regression</li>
+<li>Forward selection of features</li>
+<li>Backward selection of features</li>
+<li>Stepwise selection of features</li>
+<li>Lasso regression</li>
+</ul>
+<p>Note that regression-type problems can also be addressed using other techniques such as neural networks, support vector machines, and others. These will be discussed in other chapters</p>
+</div>
+<div id="regression-for-explanation" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Regression for explanation</h2>
+<p>Regression is used differently in different disciplines. In economics, psychology, sociology and other fields, regression is mostly used with the goal of developing causal explanations.<span class="citation">(<a href="#ref-Shmueli2010" role="doc-biblioref">Shmueli 2010</a>)</span></p>
+<p>It is assumed that most readers of this text have been introduced to multiple regression. The context for regression applications in most statistics texts is on building models with the objective of making causal inferences and explanation. A theoretical model is posed, predictor variables are identified, and observational data is collected (cross-sectional, longitudinal, or both). Hypotheses based on the theoretical model are tested using regression and related techniques. The aims of such studies include assessing both the statistical significance and magnitude of independent variables. This is a challenging task and accomplishing this with any degree of confidence requires considerations about several strict assumptions.</p>
+<p>Violations of any of these assumptions can cast doubt on the validity of the conclusions made from the analysis so three questions should be asked about each: (1) Is the assumption met in the current situation? (2) If not, how serious are the consequences of violation of the assumption? (3) If the assumption is violated and critical to the analysis, can remedial techniques be used to alleviate the consequences?</p>
+<p>The assumptions need to be met to confidently deduce statistical significance of the predictors and the overall regression model itself, the interpretability of the effect of each predictor on the target, and confidence intervals on estimates made by the model. The Gauss-Markov theorem states that for an additive linear model ordinary lease squares regression produces unbiased estimates that have the lowest variance of all possible linear estimators. This is usually given the acronym “BLUE” for “Best Linear Unbiased Estimators.” The four Gauss-Markov assumptions are:</p>
+<ul>
+<li>The dependent variable is a linear, additive function of a set of predictors plus an error term.</li>
+<li>The error term has a conditional mean of zero.</li>
+<li>The variance of the error term is constant for all values of the predictors (homoskedasticity).</li>
+<li>The error term is independently distributed (no autocorrelation).</li>
+</ul>
+<p>To this list, some or all the following assumptions are sometimes added:</p>
+<ul>
+<li>Predictor variables are not correlated with the error term.</li>
+<li>There is no perfect collinearity among the predictors.</li>
+<li>The error term is normally distributed (and relatedly, there are no outliers or observations with undue influence).</li>
+<li>The number of observations must be greater than the number of predictor variables (usually 5 to 10 times as many observations as predictors.)</li>
+<li>All the predictor variables have non-zero variability, i.e., are not constants.</li>
+</ul>
+<p>Violation of these assumption can result in biased estimates of the parameters of the regression model. The estimated size and variance of predictor coefficients can be biased upward or downward. In some cases, this can render the results totally misleading.</p>
+<div id="example-omitted-variable-bias" class="section level4 unnumbered">
+<h4>Example: Omitted variable bias</h4>
+<p>There is considerable controversy on the question of whether increased spending on public education leads to better student outcomes. For example, the Heritage Foundation published a report that concluded:</p>
+<div class="insetNoBorder">
+<p>Federal and state policymakers should resist proposals to increase funding for public education. Historical trends and other evidence suggest that simply increasing funding for public elementary and secondary Education has not led to corresponding improvement in academic achievement.(insert reference)</p>
+</div>
+<p>One approach to investigating this question is to look at expenditures per pupil in all 50 states plus the District of Columbia and measuring student performance. The performance criterion in the data set is the average combined SAT scores. The first 10 observations are shown in Table <a href="multiple-regression.html#tab:First10ExpenditureSATdata">7.1</a>. The hypothesis is that students in states in the that spend more per pupil on primary and secondary schools should be better prepared for college and thus perform better on the SAT college prep test.</p>
+<p>SAT scores were regressed on expenditures (in 1,000’s). The coefficient on expense is significant (p &lt; .001) and negative (-22.28), which suggests that increasing the spending on education results in lower performance on the SATs. If this is true, this finding has important implications for school funding. Those who argue against spending more on education may be right.</p>
+<p>It turns out that an important variable was omitted from the regression: the percentage of students taking the SAT by state. There was considerable variation in this measure, as shown in the chart in Figure <a href="multiple-regression.html#fig:PCTTAKINGSAT">7.1</a>. In Connecticut, more than 80% of students took the SAT while in Mississippi only 4% took the SAT. If the regression is run with expenditure per pupil and percentage taking the SAT, the conclusion is different. The coefficient on expense is positive (8.60) and significant (p = 0.046).</p>
+<p>The second analysis controlled percentage taking the SAT. This means that the effect of expenditures is estimated removing the effect of percentage taking the SAT. By including one or more control variables in a regression, their effects are separated from the variable of interest. The control variable itself is usually not of primary interest to the analyst. The point here is that omitting a key variable can lead to incorrect conclusions in regression. Explanatory models are more difficult and demanding than using regression for prediction.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:PCTTAKINGSAT"></span>
+<img src="images_regression/PCTTAKINGSAT.PNG" alt="Percent taking SAT by state and DC." width="90%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 7.1: Percent taking SAT by state and DC.
+</p>
+</div>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:First10ExpenditureSATdata">Table 7.1: </span>Expenditures on education and SAT scores.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+State + DC
+</th>
+<th style="text-align:center;">
+Expenditures per pupil
+</th>
+<th style="text-align:center;">
+Combined SAT score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Alabama
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+3627
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+991
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Alaska
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+8330
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+920
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Arizona
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+4309
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+932
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Arkansas
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+3700
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+1005
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+California
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+4491
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+897
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Colorado
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+5064
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+959
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Connecticut
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+7602
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+897
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Delaware
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+5865
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+892
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+District of Columbia
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+9259
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+840
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Florida
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+5276
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 15em; vertical-align: top">
+882
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="regression-for-prediction" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Regression for prediction</h2>
+<p>Predictive modeling is the process of using a statistical model such as regression to make predictions on new or future observations of the predictor variables. Image recognition, natural language processing, and many business problems there is frequently an emphasis on prediction rather than explanation.</p>
+<p>Breiman <span class="citation">(<a href="#ref-TwoCultures2001" role="doc-biblioref">L. Breiman 2001</a>)</span> described what he considered two cultures in statistics. He called the most prevalent approach the “data modeling culture.” Applications typically involve relatively small numbers of observations and a smaller number of predictors, and the most important aim was causal inference. This approach is consistent with the explanatory use of regression.</p>
+<p>A second approach (or culture) Breiman called the “algorithmic culture,” which focuses almost purely on predictive accuracy rather than statistical tests and interpretation of model parameters. These applications typically involved huge data sets, sometimes with millions of observations as well as many potential predictors. (In some cases, the number of potential predictors was even larger than the number of observations.) This new paradigm began in the 1980s and gained in popularity from the 1990s to the present. This is the domain of data mining, predictive analytics, machine learning, and big data.</p>
+<p>Many have been critical of this newer approach, beginning with comments on Breiman’s by Cox <span class="citation">(<a href="#ref-CoxTwoCultures2001" role="doc-biblioref">Cox 2001</a>)</span>, Efron <span class="citation">(<a href="#ref-EfronTwoCultures2001" role="doc-biblioref">Efron 2001</a>)</span>, and other leading classical statisticians. Despite the criticism there have been many successful applications of “pure prediction algorithms” <span class="citation">(<a href="#ref-Efron2020" role="doc-biblioref">Efron 2020</a>)</span>, in business, medicine, biology, and other fields. The potential for misleading or even dangerous predictions using these models remains and it is the responsibility of the analyst to carefully acknowledge both limitations as well as benefits of such models.</p>
+<div id="revisiting-regression-assumptions" class="section level3" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Revisiting regression assumptions</h3>
+<p>When regression is used for prediction rather than explanation, the role of assumptions is changed. The primary objective is prediction accuracy assessed on new data. This is usually assessed by creating training and test subsets of a data set with many observations. The training data is used to develop the predictive model and the test set is used to represent the “new” data.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> In fact, some of the assumptions may be violated, but if the model predicts well, it can be useful.</p>
+<p>Allison (2014) noted that outside of academia, “…regression is primarily used for prediction.” He further notes that there are important differences between using regression for explanation versus prediction. Specifically, he writes that omitted variable bias is much less of an issue when the goal is prediction. Multicollinearity (if it is not extreme) can be tolerated in predictive model since the coefficients on individual variables are not of primary concern. Measurement error in the predictor variables leads to bias in the estimates of regression coefficients, but again the estimates on predictor coefficients is not as critical. (Of course, with predictive applications, high degrees of measurement error can make predictions less accurate).</p>
+<p>Other differences between the two uses of regression include the following:</p>
+<ul>
+<li>Out-of-sample prediction accuracy is more important than R<sup>2</sup> with the original data set. However, high R<sup>2</sup> in the hold-out sample or samples is important for prediction. With causal modeling, even low R<sup>2</sup> values using the original data set are not as much of a concern. The hypothesis tests on the predictors in such applications are more important.</li>
+<li>Normality of the error term is not a requirement since hypothesis testing is not the goal of predictive regression.</li>
+</ul>
+<p>The perspectives on predictive regression discussed above are controversial and many statisticians would undoubtedly disagree with many of the statements made. In truth, causal modeling is important and if done well can lead to insights that are likely to have longer-run usefulness. However, for present purposes, the focus in this chapter on regression and the other chapters in the book will be on prediction. It is critical to understand that when a predictive model is created that ignores the traditional assumptions of regression, using the results as if causality has been established, it can lead to huge mistakes. While it may be of interest to find which predictor values had the greatest impact on the target variable, it cannot be assumed that manipulation of these impactful variables is likely to lead to expected changes in the target. Correlation, not causality, is obtained with predictive models.</p>
+<p>The one assumption that is critical for accurate predictive regression models is that the dependent variable is a linear, additive function of the predictors. Other algorithms, discussed in later chapters, can more or less “automatically” deal with complications such as non-linearity. With regression, however, it is up to the analyst to explore possible non-linear relationships and potential interactions among predictors. Failure to do so can lead to sub-optimal models. If some of the same predictors are transformed in some way, the accuracy of the regression model could be improved without additional collection of data.</p>
+</div>
+<div id="prediction-example-used-toyota-corollas" class="section level3" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> Prediction example: Used Toyota Corollas</h3>
+<p>A dataset with the prices of used Toyota Corolla for sale during the late summer of 2004 in The Netherlands was obtained from Kaggle. (reference) It has 1436 records containing details on 38 attributes, but only a subset was extracted with 1,000 observations and variables is used for this example. The variables included are price (the target variable) and the following predictors:</p>
+<ul>
+<li>Age of the car (in months)</li>
+<li>Mileage (in KM)</li>
+<li>Fuel type (Diesel, natural gas, or gasoline)</li>
+<li>Horsepower</li>
+<li>Automatic transmission (Yes or No)</li>
+<li>Engine displacement (in CC)</li>
+<li>Weight (in KM)</li>
+</ul>
+<p>The goal is to predict the price of a used Toyota Corolla based on its specifications. The KNIME workflow for this analysis shown in Figure <a href="multiple-regression.html#fig:Toyota1000OLSworkflow">7.2</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Toyota1000OLSworkflow"></span>
+<img src="images_regression/workflowToyotaRegression.PNG" alt="Workflow for OLS regression with Toyota Corolla price data." width="90%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 7.2: Workflow for OLS regression with Toyota Corolla price data.
+</p>
+</div>
+<p>The regression results are shown in Table <a href="multiple-regression.html#tab:ToyotaRegressionResults">7.2</a>. The measures show that the results for the training and test data are comparable. The training data shows better results for R<sup>2</sup> and root means square error while the measures are slightly better with the test data for mean absolute error and mean absolute percent error.</p>
+<table class=" lightable-paper" style="font-size: 12px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:ToyotaRegressionResults">Table 7.2: </span>Regression with Toyota1000 data.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Measure
+</th>
+<th style="text-align:right;">
+Training data
+</th>
+<th style="text-align:right;">
+Test data
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+R^2
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.871
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.825
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Mean absolute error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1028.513
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1005.412
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Root mean squared error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1385.478
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+1455.483
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Mean absolute percentage error
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.094
+</td>
+<td style="text-align:right;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.091
+</td>
+</tr>
+</tbody>
+</table>
+<p>A scatterplot of predicted price versus actual price for the test data indicates reasonable results. There is one clear outlier at row 221 (Figure <a href="multiple-regression.html#fig:ScatterplotToyotaRegression">7.3</a>). The presence of this outlier most likely explains why the measures involving the absolute value rather than the squared residuals are worse for the test data. Squaring the residuals (for R^2 and root mean square error)results in a greater effect on the performance measure.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ScatterplotToyotaRegression"></span>
+<img src="images_regression/ScatterplotToyotaRegression.png" alt="Predicted versus actual prices of Toyota Corollas." width="90%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 7.3: Predicted versus actual prices of Toyota Corollas.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ApartmentWorkflow"></span>
+<img src="images_regression/ApartmentRegressionWorkflow.PNG" alt="KNIME workflow for regression analysis of apartment prices." width="90%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 7.4: KNIME workflow for regression analysis of apartment prices.
+</p>
+</div>
+</div>
+</div>
+<div id="appendix-a-brief-history-of-regression" class="section level2 unnumbered">
+<h2>Appendix: A brief history of regression</h2>
+<p>The term regression and the basic idea behind it came from a British scientist, Sir Francis Galton. He was interested in heredity and evolution; this is not surprising since he was a cousin of Charles Darwin. <span class="citation">(<a href="#ref-Stanton2001" role="doc-biblioref">Stanton 2001</a>)</span></p>
+<figure>
+<img src="images_regression/galton.PNG" width="102" height="150" >
+<FIGCAPTION style="float:right">
+Sir Francis Galton.
+</FIGCAPTION>
+</figure>
+<p>Galton asked the following question: “What is the relationship between the heights of children and heights of their parents?” He was an empirical scientist. So, he collected data on pairs of parents and children and carefully studied the data. He created a chart with the children’s heights (as adults) versus the height of their parents. (Figure <a href="multiple-regression.html#fig:regressionHeightParents2">7.5</a>) He fit a line to the data such that the line was as close as possible to the observations - the blue line shown in the chart. Once Galton fitted the line, he calculated the intercept and slope.</p>
+<p>The slope and intercept of the fitted line, .611 and 26.4 respectively, are shown at the top of the chart.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:regressionHeightParents2"></span>
+<img src="images_regression/regressionHeightParents2.PNG" alt="Height of children vs. height of parents." width="75%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 7.5: Height of children vs. height of parents.
+</p>
+</div>
+<p>As expected, Galton found that tall parents had tended to have tall children, but the relationship was not perfect. A one-to-one relationship between parents’ heights and the height of their children would follow the red line in Figure <a href="multiple-regression.html#fig:regressionHeightParents2">7.5</a>. Instead, there was evidence that the adult height of children of tall parents regressed or reverted to the mean height of all adults, shown as the blue line in the chart. For example, if a parent’s height was about 72 inches, the expected height of the children would be 70 inches. This was also found to be true for shorter parents. If a parent’s height was about 64 inches, the expected height of the children would be 65 inches. So, the heights of children also tended toward the mean height of all adults.</p>
+<p>Galton use the term regression as this idea of reverting or returning to a norm. People then took this idea of drawing a line through data and estimating the equation, applied it to many other types of problems, and called the process regression, after Galton, even though the context and meaning were different. Karl Pearson, a collaborator, and lab assistant to Galton, developed the mathematics of regression that we have today.</p>
+</div>
+<div id="problems-2" class="section level2 unnumbered">
+<h2>Problems</h2>
+<p><strong>Problem 1</strong></p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-TwoCultures2001" class="csl-entry">
+———. 2001. <span>“Statistical Modeling: The Two Cultures.”</span> <em>Statistical Science</em>, 199–215.
+</div>
+<div id="ref-CoxTwoCultures2001" class="csl-entry">
+Cox, D. R. 2001. <span>“Comment on: Statistical Modeling: The Two Cultures.”</span> <em>Statistical Science</em>, 216–18.
+</div>
+<div id="ref-EfronTwoCultures2001" class="csl-entry">
+Efron, B. 2001. <span>“Comment on: Statistical Modeling: The Two Cultures.”</span> <em>Statistical Science</em>, 218–19.
+</div>
+<div id="ref-Efron2020" class="csl-entry">
+———. 2020. <span>“Prediction, Estimation, and Attribution.”</span> <em>International Statistical Review</em>, S28–59.
+</div>
+<div id="ref-Shmueli2010" class="csl-entry">
+Shmueli, Galit. 2010. <span>“To Explain or Predict.”</span> <em>Statistical Science</em>, 289–310.
+</div>
+<div id="ref-Stanton2001" class="csl-entry">
+Stanton, Jeffrey M. 2001. <span>“Galton, Pearson, and the Peas: A Brief History of Linear Regression for Statistics Instructors.”</span> <em>Journal of Statistics Education</em>, S28–59.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="11">
+<li id="fn11"><p>Of course, ability of the model to predict accurately in truly new situations needs to be continuously monitored as the context of the problem may change. This is important for causal regression applications as well.<a href="multiple-regression.html#fnref11" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="evaluating-predictive-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="logistic-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["TextbookDraft.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

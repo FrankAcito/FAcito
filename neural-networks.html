@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 14 Neural networks | Analytics with KNIME and R</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 14 Neural networks | Analytics with KNIME and R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a draft." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 14 Neural networks | Analytics with KNIME and R" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="F Acito" />
+
+
+<meta name="date" content="2021-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tree-models.html"/>
+<link rel="next" href="cluster-analysis.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Cover page</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#what-is-analytics"><i class="fa fa-check"></i><b>1.1</b> What is analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-trends-in-analytics"><i class="fa fa-check"></i><b>1.2</b> Some trends in analytics</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#broadening-of-application-areas"><i class="fa fa-check"></i><b>1.2.1</b> Broadening of application areas</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#generalization-of-the-notion-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Generalization of the notion of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#a-trend-from-slicing-and-dicing-data-to-more-advanced-techniques"><i class="fa fa-check"></i><b>1.2.3</b> A trend from “slicing and dicing” data to more advanced techniques</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#more-advanced-data-visualization"><i class="fa fa-check"></i><b>1.2.4</b> More advanced data visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#the-analytics-process-model"><i class="fa fa-check"></i><b>1.3</b> The analytics process model</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html"><i class="fa fa-check"></i><b>2</b> Business understanding and problem definition</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#expert-views"><i class="fa fa-check"></i><b>2.1</b> Expert views</a></li>
+<li class="chapter" data-level="2.2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#understanding-the-business"><i class="fa fa-check"></i><b>2.2</b> Understanding the business</a></li>
+<li class="chapter" data-level="2.3" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#identifying-stakeholders"><i class="fa fa-check"></i><b>2.3</b> Identifying stakeholders</a></li>
+<li class="chapter" data-level="2.4" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#structured-versus-unstructured-problems"><i class="fa fa-check"></i><b>2.4</b> Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="2.5" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#framing-the-problem"><i class="fa fa-check"></i><b>2.5</b> Framing the problem</a></li>
+<li class="chapter" data-level="2.6" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#appendix-some-tools-for-problem-definition"><i class="fa fa-check"></i>Appendix: Some tools for problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#right-to-left-thinking"><i class="fa fa-check"></i>Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#reversing-the-problem"><i class="fa fa-check"></i>Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#open-the-problem-with-whys"><i class="fa fa-check"></i>Open the problem with “whys”</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#challenge-assumptions"><i class="fa fa-check"></i>Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#chunking"><i class="fa fa-check"></i>Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#problems"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduction to KNIME</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i><b>3.1</b> The KNIME Workbench</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#elements-of-the-knime-workbench"><i class="fa fa-check"></i><b>3.1.1</b> Elements of the KNIME Workbench</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#learning-to-use-knime"><i class="fa fa-check"></i><b>3.2</b> Learning to use KNIME</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-extensions-and-integrations"><i class="fa fa-check"></i><b>3.3</b> KNIME extensions and integrations</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-1-predicting-heart-disease"><i class="fa fa-check"></i><b>3.4</b> KNIME workflow example #1: Predicting heart disease</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-2-preparation-of-hospital-data"><i class="fa fa-check"></i><b>3.5</b> KNIME workflow example #2: Preparation of hospital data</a></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#summary-1"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#problems-1"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-preparation.html"><a href="data-preparation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="data-preparation.html"><a href="data-preparation.html#obtaining-the-needed-data"><i class="fa fa-check"></i><b>4.2</b> Obtaining the needed data</a></li>
+<li class="chapter" data-level="4.3" data-path="data-preparation.html"><a href="data-preparation.html#data-cleaning"><i class="fa fa-check"></i><b>4.3</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-preparation.html"><a href="data-preparation.html#missing-values"><i class="fa fa-check"></i><b>4.3.1</b> Missing values</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-preparation.html"><a href="data-preparation.html#outliers"><i class="fa fa-check"></i><b>4.3.2</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-preparation.html"><a href="data-preparation.html#feature-engineering"><i class="fa fa-check"></i><b>4.4</b> Feature engineering</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-preparation.html"><a href="data-preparation.html#data-transformations"><i class="fa fa-check"></i><b>4.4.1</b> Data transformations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-preparation.html"><a href="data-preparation.html#data-exploration"><i class="fa fa-check"></i><b>4.4.2</b> Data exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html"><i class="fa fa-check"></i><b>5</b> Principal components analytics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#approaches-to-dimension-reduction"><i class="fa fa-check"></i><b>5.1</b> Approaches to dimension reduction</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#the-pca-model"><i class="fa fa-check"></i><b>5.3</b> The PCA model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html"><i class="fa fa-check"></i><b>6</b> Evaluating predictive models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#training-testing-and-validation-samples"><i class="fa fa-check"></i><b>6.2</b> Training, Testing, and Validation samples</a></li>
+<li class="chapter" data-level="6.3" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-continuous-versus-discrete-targets"><i class="fa fa-check"></i><b>6.3</b> Evaluating continuous versus discrete targets</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-continuous-targets"><i class="fa fa-check"></i><b>6.3.1</b> Evaluating performance with continuous targets</a></li>
+<li class="chapter" data-level="6.3.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-classification-models"><i class="fa fa-check"></i><b>6.3.2</b> Evaluating performance with classification models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-techniques"><i class="fa fa-check"></i><b>7.2</b> Regression techniques</a></li>
+<li class="chapter" data-level="7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-explanation"><i class="fa fa-check"></i><b>7.3</b> Regression for explanation</a></li>
+<li class="chapter" data-level="7.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-prediction"><i class="fa fa-check"></i><b>7.4</b> Regression for prediction</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="multiple-regression.html"><a href="multiple-regression.html#revisiting-regression-assumptions"><i class="fa fa-check"></i><b>7.4.1</b> Revisiting regression assumptions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction-example-used-toyota-corollas"><i class="fa fa-check"></i><b>7.4.2</b> Prediction example: Used Toyota Corollas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-a-brief-history-of-regression"><i class="fa fa-check"></i>Appendix: A brief history of regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#problems-2"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#example-with-a-single-predictor"><i class="fa fa-check"></i><b>8.1</b> Example with a single predictor</a></li>
+<li class="chapter" data-level="8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#example-predictive-analytic-in-hr"><i class="fa fa-check"></i><b>8.2</b> Example: Predictive analytic in HR</a></li>
+<li class="chapter" data-level="8.3" data-path="logistic-regression.html"><a href="logistic-regression.html#predictor-interpretation-and-importance"><i class="fa fa-check"></i><b>8.3</b> Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="8.4" data-path="logistic-regression.html"><a href="logistic-regression.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Regularized logistic regression</a></li>
+<li class="chapter" data-level="8.5" data-path="logistic-regression.html"><a href="logistic-regression.html#probability-calibration"><i class="fa fa-check"></i><b>8.5</b> Probability calibration</a></li>
+<li class="chapter" data-level="8.6" data-path="logistic-regression.html"><a href="logistic-regression.html#evaluation-of-logistic-regression"><i class="fa fa-check"></i><b>8.6</b> Evaluation of logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>9</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ensemble-models.html"><a href="ensemble-models.html#creating-ensemble-models"><i class="fa fa-check"></i><b>9.1</b> Creating ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="ensemble-models.html"><a href="ensemble-models.html#reduced-variation"><i class="fa fa-check"></i><b>9.1.1</b> Reduced variation</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ensemble-models.html"><a href="ensemble-models.html#improved-performance"><i class="fa fa-check"></i><b>9.1.2</b> Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ensemble-models.html"><a href="ensemble-models.html#parallel-and-sequential-learners"><i class="fa fa-check"></i><b>9.2</b> Parallel and sequential learners</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ensemble-models.html"><a href="ensemble-models.html#bagging-bootstrap-aggregating"><i class="fa fa-check"></i><b>9.2.1</b> Bagging (Bootstrap Aggregating)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ensemble-models.html"><a href="ensemble-models.html#random-forests"><i class="fa fa-check"></i><b>9.2.2</b> Random Forests</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ensemble-models.html"><a href="ensemble-models.html#adaboost"><i class="fa fa-check"></i><b>9.2.3</b> AdaBoost</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ensemble-models.html"><a href="ensemble-models.html#gradient-boosting-machines"><i class="fa fa-check"></i><b>9.2.4</b> Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ensemble-models.html"><a href="ensemble-models.html#xgboost"><i class="fa fa-check"></i><b>9.2.5</b> XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ensemble-models.html"><a href="ensemble-models.html#example-of-ensemble-modeling-for-a-continuous-target"><i class="fa fa-check"></i><b>9.3</b> Example of ensemble modeling for a continuous target</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>10</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="naive-bayes.html"><a href="naive-bayes.html#a-thought-problem"><i class="fa fa-check"></i><b>10.1</b> A thought problem</a></li>
+<li class="chapter" data-level="10.2" data-path="naive-bayes.html"><a href="naive-bayes.html#bayes-theorem-applied-to-predictive-analytics"><i class="fa fa-check"></i><b>10.2</b> Bayes Theorem applied to predictive analytics</a></li>
+<li class="chapter" data-level="10.3" data-path="naive-bayes.html"><a href="naive-bayes.html#illustration-of-naïve-bayes-with-a-toy-data-set"><i class="fa fa-check"></i><b>10.3</b> Illustration of Naïve Bayes with a “toy” data set</a></li>
+<li class="chapter" data-level="10.4" data-path="naive-bayes.html"><a href="naive-bayes.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i><b>10.4</b> The assumption of conditional independence</a></li>
+<li class="chapter" data-level="10.5" data-path="naive-bayes.html"><a href="naive-bayes.html#naïve-bayes-with-continuous-predictors"><i class="fa fa-check"></i><b>10.5</b> Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="10.6" data-path="naive-bayes.html"><a href="naive-bayes.html#laplace-smoothing"><i class="fa fa-check"></i><b>10.6</b> Laplace Smoothing</a></li>
+<li class="chapter" data-level="10.7" data-path="naive-bayes.html"><a href="naive-bayes.html#example-using-naïve-bayes-with-churn-data"><i class="fa fa-check"></i><b>10.7</b> Example using naïve Bayes with churn data</a></li>
+<li class="chapter" data-level="10.8" data-path="naive-bayes.html"><a href="naive-bayes.html#spam-detection-using-naïve-bayes"><i class="fa fa-check"></i><b>10.8</b> Spam detection using naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>11</b> Deep learning</a></li>
+<li class="chapter" data-level="12" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>12</b> k Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#k-nearest-neighbors-and-memory-based-learning"><i class="fa fa-check"></i><b>12.1</b> k nearest neighbors and memory-based learning</a></li>
+<li class="chapter" data-level="12.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications"><i class="fa fa-check"></i><b>12.2</b> Typical applications</a></li>
+<li class="chapter" data-level="12.3" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#what-is-knn"><i class="fa fa-check"></i><b>12.3</b> What is kNN?</a></li>
+<li class="chapter" data-level="12.4" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-two-dimensional-graphic-example-of-knn"><i class="fa fa-check"></i><b>12.4</b> A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="12.5" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#example-of-knn-diagnosing-heart-disease"><i class="fa fa-check"></i><b>12.5</b> Example of kNN: Diagnosing heart disease</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#results"><i class="fa fa-check"></i><b>12.5.1</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-continuous-targets"><i class="fa fa-check"></i><b>12.6</b> kNN for continuous targets</a></li>
+<li class="chapter" data-level="12.7" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-multiclass-target-variables"><i class="fa fa-check"></i><b>12.7</b> kNN for multiclass target variables</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tree-models.html"><a href="tree-models.html"><i class="fa fa-check"></i><b>13</b> Tree models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="tree-models.html"><a href="tree-models.html#classification-trees"><i class="fa fa-check"></i><b>13.1</b> Classification trees</a></li>
+<li class="chapter" data-level="13.2" data-path="tree-models.html"><a href="tree-models.html#forming-classification-trees"><i class="fa fa-check"></i><b>13.2</b> Forming classification trees</a></li>
+<li class="chapter" data-level="13.3" data-path="tree-models.html"><a href="tree-models.html#varieties-of-classification-tree-algorithms"><i class="fa fa-check"></i><b>13.3</b> Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="13.4" data-path="tree-models.html"><a href="tree-models.html#criteria-for-splitting-and-growing-a-tree"><i class="fa fa-check"></i><b>13.4</b> Criteria for splitting and growing a tree</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tree-models.html"><a href="tree-models.html#the-gini-index"><i class="fa fa-check"></i><b>13.4.1</b> The Gini index</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tree-models.html"><a href="tree-models.html#information-gain"><i class="fa fa-check"></i><b>13.4.2</b> Information Gain</a></li>
+<li class="chapter" data-level="13.4.3" data-path="tree-models.html"><a href="tree-models.html#chi-square-as-a-splitting-criterion"><i class="fa fa-check"></i><b>13.4.3</b> Chi-square as a splitting criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="tree-models.html"><a href="tree-models.html#overfitting"><i class="fa fa-check"></i><b>13.5</b> Overfitting</a></li>
+<li class="chapter" data-level="13.6" data-path="tree-models.html"><a href="tree-models.html#example-of-a-classification-tree"><i class="fa fa-check"></i><b>13.6</b> Example of a classification tree</a></li>
+<li class="chapter" data-level="13.7" data-path="tree-models.html"><a href="tree-models.html#regression-trees"><i class="fa fa-check"></i><b>13.7</b> Regression trees</a>
+<ul>
+<li class="chapter" data-level="13.7.1" data-path="tree-models.html"><a href="tree-models.html#how-regression-trees-work"><i class="fa fa-check"></i><b>13.7.1</b> How regression trees work</a></li>
+<li class="chapter" data-level="13.7.2" data-path="tree-models.html"><a href="tree-models.html#example-predicting-home-prices"><i class="fa fa-check"></i><b>13.7.2</b> Example: Predicting home prices</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="tree-models.html"><a href="tree-models.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>13.8</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>14</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="neural-networks.html"><a href="neural-networks.html#what-are-artificial-neural-networks"><i class="fa fa-check"></i><b>14.1</b> What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="neural-networks.html"><a href="neural-networks.html#human-neurons-to-mathematical-models"><i class="fa fa-check"></i><b>14.1.1</b> Human neurons to mathematical models</a></li>
+<li class="chapter" data-level="14.1.2" data-path="neural-networks.html"><a href="neural-networks.html#activation-functions"><i class="fa fa-check"></i><b>14.1.2</b> Activation functions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="neural-networks.html"><a href="neural-networks.html#the-road-to-machine-learning-with-neural-nets"><i class="fa fa-check"></i><b>14.2</b> The road to machine learning with neural nets</a></li>
+<li class="chapter" data-level="14.3" data-path="neural-networks.html"><a href="neural-networks.html#example-of-a-neural-network"><i class="fa fa-check"></i><b>14.3</b> Example of a neural network</a></li>
+<li class="chapter" data-level="14.4" data-path="neural-networks.html"><a href="neural-networks.html#training-a-neural-net"><i class="fa fa-check"></i><b>14.4</b> Training a neural net</a></li>
+<li class="chapter" data-level="14.5" data-path="neural-networks.html"><a href="neural-networks.html#considerations-in-using-neural-nets"><i class="fa fa-check"></i><b>14.5</b> Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="neural-networks.html"><a href="neural-networks.html#missing-data"><i class="fa fa-check"></i><b>14.5.1</b> Missing data</a></li>
+<li class="chapter" data-level="14.5.2" data-path="neural-networks.html"><a href="neural-networks.html#representative-data"><i class="fa fa-check"></i><b>14.5.2</b> Representative data</a></li>
+<li class="chapter" data-level="14.5.3" data-path="neural-networks.html"><a href="neural-networks.html#all-eventualities-must-be-covered"><i class="fa fa-check"></i><b>14.5.3</b> All eventualities must be covered</a></li>
+<li class="chapter" data-level="14.5.4" data-path="neural-networks.html"><a href="neural-networks.html#unbalanced-data-sets"><i class="fa fa-check"></i><b>14.5.4</b> Unbalanced data sets</a></li>
+<li class="chapter" data-level="14.5.5" data-path="neural-networks.html"><a href="neural-networks.html#the-overfitting-problem"><i class="fa fa-check"></i><b>14.5.5</b> The overfitting problem</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="neural-networks.html"><a href="neural-networks.html#neural-network-example"><i class="fa fa-check"></i><b>14.6</b> Neural network example</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>15</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#approaches-to-forming-clusters"><i class="fa fa-check"></i><b>15.1</b> Approaches to forming clusters</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hierarchical-versus-partitioning-methods"><i class="fa fa-check"></i><b>15.1.1</b> Hierarchical versus partitioning methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hard-versus-soft-methods"><i class="fa fa-check"></i><b>15.1.2</b> “Hard” versus “soft” methods</a></li>
+<li class="chapter" data-level="15.1.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#applying-hierarchical-clusters"><i class="fa fa-check"></i><b>15.1.3</b> Applying hierarchical clusters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analytics with KNIME and R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="neural-networks" class="section level1" number="14">
+<h1><span class="header-section-number">Chapter 14</span> Neural networks</h1>
+<p>Artificial neural networks are a class of extremely powerful techniques that have become quite popular in recent years. The reason is that they can produce very accurate predictions when used in supervised data mining applications.</p>
+<p>These networks are very flexible algorithms that can be applied to different types of modeling including supervised and unsupervised problems.</p>
+<p>Neural networks can be used in place of or in conjunction with logistic regression and decision trees when there is a categorical dependent variable. Neural networks are very flexible – they also work with continuous dependent variable, so they can be used in a regression-type setting.</p>
+<p>In applications where regression, logit, decision trees, and other techniques might be used, neural nets can evolve much more complex, more flexible, and potentially more accurate models. The downside is that the models are often difficult to interpret and explain.</p>
+<p>Neural nets are especially effective where there are many input variables, and these have non-linear relationships with the target variable. What’s fascinating about neural nets is that the model structure needs only to be specified in terms of the number of nodes and hidden layers. The analyst does not have to be concerned about non-linearities and/or interactions among predictors.</p>
+<p>In a sense, when using neural nets, the computer learns from the data. A specific model is not specified as with regression models. Instead, the process works like this: “Here’s my data, this is how complicated the net can be. Develop a predictive the model.” These are not statistical models but rather powerful computer programs. Thus, no assumptions are made about normality, linearity, etc. This has led to the concept of “machine learning.”</p>
+<p>The flexibility and complexity of neural net models is both the source of the attractiveness of neural nets as well as part of the challenges with effectively using them. Neural nets work best when there is many observations where training, validation, and test subsets can be formed.</p>
+<p>Neural nets can be actually very easy to apply and use with modern software. There are many software programs available.
+The resulting models when using neural networks can be quite complicated even though in one sense these are just a combination of non-linear regression models. It’s the combination of many simple models that makes artificial neural nets complicated.</p>
+<div id="what-are-artificial-neural-networks" class="section level2" number="14.1">
+<h2><span class="header-section-number">14.1</span> What are artificial neural networks?</h2>
+<p>The “artificial” adjective is used because these models were inspired by attempts to simulate biological neural systems.
+The first neural networks were not originally developed by data analysts, computer experts, or statisticians. It was the original research into human brain activity that led to the development of the computer models.</p>
+<p>The artificial neural net works this way, too, although the number of elements in even the most complicated neural networks is nowhere near the billions in the human brain. (The human brain is thought to contain 100 billion neurons.) So, artificial neural nets as used in data mining are nowhere near as proficient or as complicated as the human brain. Despite this, much of the terminology persists from the original research that was done on the human brain, with terminology being used with terms such as neurons, learning, nodes, activation functions, and synapses in machine learning neural networks.</p>
+<div id="human-neurons-to-mathematical-models" class="section level3" number="14.1.1">
+<h3><span class="header-section-number">14.1.1</span> Human neurons to mathematical models</h3>
+<p>Figure <a href="neural-networks.html#fig:BiologicalNeuronImage">14.1</a> (Source: <span class="citation">(<a href="#ref-Unal2021" role="doc-biblioref">Unal and Başçiftci 2021</a>)</span>) is a simplified model of a typical human neuron. In very basic terms, the neuron works as follows. The dendrites receive chemical and electrical signals from other neurons. The soma (nucleus) processes the information from the dendrites and creates an output which is transmitted by the axon. The axon is then connected via synapses to other neurons. With many neurons combined in a network, the result is the powerful capabilities of the human mind.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:BiologicalNeuronImage"></span>
+<img src="images_neuralNets/BiologicalNeuronImage.PNG" alt="Simplified model of human neural net" width="60%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 14.1: Simplified model of human neural net
+</p>
+</div>
+<p>In 1943 McCulloch and Pitts, two neurophysiologists at Yale University, were interested in understanding the anatomy and functioning of the human brain <span class="citation">(<a href="#ref-McCullochPitts1943" role="doc-biblioref">McCulloch and Pitts 1943</a>)</span>. They proposed a mathematical model to explain how human neurons worked to make decisions and create insights. They hypothesized that the human brain works by using millions of relatively simple elements, essentially on-off switches.</p>
+<p>Their idea was that a very complicated set of behaviors, such as those evidenced by the human brain, can arise from a set of relatively simple units if enough of them are acting in concert or sequence. McCulloch and Pitts proposed that the neurons were activated in a binary manner - either “fire” or “not-fire.” The basic element in their model can be stated mathematically as:</p>
+<p><span class="math display">\[\begin{equation}
+  {S} = \sum_{i=1}^{n} I_{i} W_{i}   
+ \end{equation}\]</span></p>
+<p><span class="math display">\[y(S) =
+\begin{cases}
+1, &amp; \text{if } S\geq T\\
+0, &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>Where <span class="math inline">\(I_1\)</span>, <span class="math inline">\(I_2\)</span>,…,<span class="math inline">\(I_n\)</span> are binary input values and <span class="math inline">\(W_1\)</span>, <span class="math inline">\(W_2\)</span>,…, <span class="math inline">\(W_n\)</span> are weights associated with each input, <span class="math inline">\(S\)</span> is the weighted sum of inputs and <span class="math inline">\(T\)</span> is the threshold value for the neuron activation.</p>
+</div>
+<div id="activation-functions" class="section level3" number="14.1.2">
+<h3><span class="header-section-number">14.1.2</span> Activation functions</h3>
+<p>The weighted sum is submitted to an <em>activation function</em>, which translates the sum into a value based on the range of the function. (Figure <a href="neural-networks.html#fig:ActivationFunctions">14.2</a>). While it is possible to have a linear activation function, most activation functions are non-linear. Using only linear activations would essentially re-create ordinary regression using neural networks.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ActivationFunctions"></span>
+<img src="images_neuralNets/ActivationFunctions.PNG" alt="Examples of activation functions used in neural nets" width="60%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 14.2: Examples of activation functions used in neural nets
+</p>
+</div>
+<p>Non-linear activation functions enable neural networks to model complex relationships between the inputs and outputs. In fact, neural nets can approximate any function to any desired degree of accuracy. This is known as the “universal approximation theorem” <span class="citation">(<a href="#ref-Nielsen2019" role="doc-biblioref">Nielsen 2019</a>)</span>.<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a></p>
+</div>
+</div>
+<div id="the-road-to-machine-learning-with-neural-nets" class="section level2" number="14.2">
+<h2><span class="header-section-number">14.2</span> The road to machine learning with neural nets</h2>
+<p>Beginning in the 1950s when digital computers became available, computer scientists became aware of the perceptrons based on the work of the Yale University professors.</p>
+<p>Scientists began trying to teach computers to learn. One example of the problems solved by these early neural networks was how to balance a broom standing upright on a moving car by controlling the motions of the cart back and forth. As the broom starts falling to the left, the cart learns to move to the left keep the room upright. While this was interesting, the promises of this early work were not realized.</p>
+<p>Scientists began trying to teach computers to learn. One example of the problems solved by these early neural networks was how to balance a broom standing upright on a moving car by controlling the motions of the cart back and forth. As the broom starts falling to the left, the cart learns to move to the left keep the room upright. While this was interesting, the promises of this early work were not realized.</p>
+<p>The excitement of the early 1950s gave way to disillusionment by the late 1960s. The disillusionment stemmed from the publication of a book by Marvin Minsky and Seymour Papert in 1969 showed some basic problems with perceptrons <span class="citation">(<a href="#ref-Minsky1969" role="doc-biblioref">Minsky and Papert 1969</a>)</span>. For example, a perceptron could <strong>not</strong> model the so-called XOR (exclusive OR) problem. (Table <a href="neural-networks.html#tab:XORExample">14.1</a>.) The effect of Minsky and Papert’s paper was that funding for research into neural nets dried up for more than 10 years.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:XORExample">Table 14.1: </span>The XOR problem
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Input A
+</th>
+<th style="text-align:center;">
+Input B
+</th>
+<th style="text-align:center;">
+Output
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+1
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+1
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+1
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+1
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>By the early 1980s, however, researchers had devised a way to incorporate multiple layers of perceptrons into models and this multiple layering enabled these models to become extremely flexible. After that flurry of research developed.<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a></p>
+</div>
+<div id="example-of-a-neural-network" class="section level2" number="14.3">
+<h2><span class="header-section-number">14.3</span> Example of a neural network</h2>
+<p>The class Iris data set consists of 150 observations 4 measured attributes (sepal length, sepal with, petal length, and petal.width) and one type of Iris as the target (setosa, versicolor, and virginica). The data was divided randomly into a training set (60%) and validation set ((40%). A neural network was fitted to the training data with a single hidden layer that had two nodes.</p>
+<p>The resultant network is shown with the 19 parameter estimates in Figure <a href="neural-networks.html#fig:irisNN">14.3</a>. The circles with “1” represent the constant terms.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:irisNN"></span>
+<img src="images_neuralNets/irisNN.PNG" alt="Neural net for Iris data" width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 14.3: Neural net for Iris data
+</p>
+</div>
+<p>The results are shown in two confusion matrices, one for the training data (Table <a href="neural-networks.html#tab:Iristrainingresults">14.2</a>) and one for the validation data(Table <a href="neural-networks.html#tab:IRISValidationResults">14.3</a>). No errors were made with the training data and just two with the validation data. Reduced accuracy with the validation data is expected since this data was not used to create the model.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:Iristrainingresults">Table 14.2: </span>Neural net results for the Iris training data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Training data
+</th>
+<th style="text-align:center;">
+setosa
+</th>
+<th style="text-align:center;">
+versicolor
+</th>
+<th style="text-align:center;">
+virginica
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+setosa
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+32
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+versicolor
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+28
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+viginica
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+30
+</td>
+</tr>
+</tbody>
+</table>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:IRISValidationResults">Table 14.3: </span>Neural net results for the Iris validation data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Validation data
+</th>
+<th style="text-align:center;">
+setosa
+</th>
+<th style="text-align:center;">
+versicolor
+</th>
+<th style="text-align:center;">
+virginica
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+setosa
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+18
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+versicolor
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+22
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+viginica
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="training-a-neural-net" class="section level2" number="14.4">
+<h2><span class="header-section-number">14.4</span> Training a neural net</h2>
+<p>There are several ways that have been developed for estimating the weights in a neural net. We don’t say estimation were talking about neural nets. We say training. And we use training data to adjust the weights and the model.</p>
+<p>Probably the most common structure of a neural network is the so-called feed-forward model. This means that when the network is trained, the input data flows through the model in only one direction toward the output or target. There is no feedback built into the model. (This is not to be confused with the estimation technique called back-propagation, discussed below.)</p>
+<p>Training a neural net is analogous to finding the coefficients for the best fit in regression model. One key difference, however, is with regression there is a single best fitting linear model which optimizes the fit to the set of training observations. There is no equivalent method for calculating the best set of weights for a neural network. Instead, an optimization model or routine is used to minimize some error function, such as the average squared error. This doesn’t guarantee an optimal result, but instead looks for a good result. (It is possible to get local optima.)</p>
+<p>Probably the most common training method is called the back propagation method. It starts by randomly assigning a set of weights in the model and then calculates the value of the target. This provides the initial model, which most likely is not very good.</p>
+<p>Then, the error from the initial model is calculated by subtracting the predicted target value calculated by the neural net from the actual value of the target. This error is then fed back through the model and the weights are adjusted up or down to try to minimize the error. The name back propagation is suggested because the errors are sent back to the network.</p>
+<p>The adjustments made to the model weights are determined through a strategy called gradient descent. A gradient is a partial derivative of a function with more than one input variable. The gradient is measure of how much and in which direction the output of a function changes with small changes in the inputs. The sizes of changes in the gradient are set by the learning rate. Setting the learning rate too high may cause the algorithm to miss the optimum. Setting the learning rate too low is likely to lead to the optimum but at the cost of excessive computer time.</p>
+<p>The learning process is repeated many times repeated until some criterion is reached, such as a pre-set value of computer processing time, a specified maximum number of iterations, or until the error associated with the weights is negligible.</p>
+<p>This can be a slow process in terms of the number of iterations are required, but with modern computers many analyses can be completed in a matter of seconds. However, for some problems it could be hours. The actual mechanisms are quite sophisticated, having been developed over a period by mathematicians and computer scientists.</p>
+</div>
+<div id="considerations-in-using-neural-nets" class="section level2" number="14.5">
+<h2><span class="header-section-number">14.5</span> Considerations in using neural nets</h2>
+<div id="missing-data" class="section level3" number="14.5.1">
+<h3><span class="header-section-number">14.5.1</span> Missing data</h3>
+<p>Neural nets cannot handle missing data, so imputation of values must be performed if any data values are missing.</p>
+</div>
+<div id="representative-data" class="section level3" number="14.5.2">
+<h3><span class="header-section-number">14.5.2</span> Representative data</h3>
+<p>The training, verification and test data must be representative of the underlying model. The old computer science adage “garbage in, garbage out” could not apply more strongly than in neural modeling. If training data is not representative, then the model’s worth is at best compromised. At worst, it may be useless. It is worth spelling out the kind of problems which can corrupt a training set:</p>
+</div>
+<div id="all-eventualities-must-be-covered" class="section level3" number="14.5.3">
+<h3><span class="header-section-number">14.5.3</span> All eventualities must be covered</h3>
+<p>A neural network can only learn from cases that are present. If people with incomes over $100,000 per year might be bad credit risks and your training data does not include anyone with incomes over $40,000 per year, you cannot expect the model to make correct decisions on previously unseen cases. Extrapolation is dangerous with any model, but some types of neural network may make particularly poor predictions in such circumstances.</p>
+<p>A network learns the easiest features it can. A classic (possibly apocryphal) illustration of this is a vision project designed to automatically recognize tanks. A network is trained on a hundred pictures including tanks, and a hundred not. It achieves a perfect 100% score. When tested on new data, it proves hopeless. The reason? The pictures of tanks are taken on dark, rainy days, the pictures without on sunny days. The network learns to distinguish the (trivial matter of) differences in overall light intensity. To work, the network would need training cases including all weather and lighting conditions under which it is expected to operate - not to mention all types of terrain, angles of shot, and distances.</p>
+</div>
+<div id="unbalanced-data-sets" class="section level3" number="14.5.4">
+<h3><span class="header-section-number">14.5.4</span> Unbalanced data sets</h3>
+<p>Since a network minimizes an overall error, the proportion of types of data in the set is critical. A network trained on a data set with 900 good cases and 100 bad will bias its decision towards good cases, as this allows the algorithm to lower the overall error (which is much more heavily influenced by the good cases). If the representation of good and bad cases is different in the real population, the network’s decisions may be wrong. A good example would be disease diagnosis. Perhaps 90% of patients routinely tested are clear of a disease. A network is trained on an available data set with a 90/10 split. It is then used in diagnosis on patients complaining of specific problems, where the likelihood of disease is 50/50. The network will react over-cautiously and fail to recognize disease in some unhealthy patients.</p>
+<p>In contrast, if trained on the “complaints” data, and then tested on “routine” data, the network may raise a high number of false positives. In such circumstances, the data set may need to be crafted to take account of the distribution of data (e.g., you could replicate the less numerous cases, or remove some of the numerous cases), or the network’s decisions modified by the inclusion of a loss matrix (Bishop, 1995). Often, the best approach is to ensure even representation of different cases, then to interpret the network’s decisions accordingly.</p>
+</div>
+<div id="the-overfitting-problem" class="section level3" number="14.5.5">
+<h3><span class="header-section-number">14.5.5</span> The overfitting problem</h3>
+<p>As with other data mining techniques the neural net model is trained on a separate set of data and then tested and validated on separate data sets. This is particularly important when using neural nets.</p>
+<p>Neural nets can predict too well. That is, given enough flexibility with several hidden layers and a large number of nodes, neural net model can be developed to perfectly predict the target in the training data.</p>
+<p>The problem is that over fitting like this does not generalize well. In other words, when you take a model that was fit perfectly to the training data, it may not predict the validation or testing data sets very well at all. This is overlearning. With sufficient iterations and enough nodes, neural nets can even fit random data.</p>
+<p>To illustrate this, the Iris data set was again used. This time, however, the predictor variables were ordered randomly. This meant that the predictors (sepal length, sepal with, petal length, and petal.width) and target (setosa, versicolor, and virginica) were no longer correctly matched This time a larger neural net was specified with two hidden layers, each with 10 nodes.</p>
+The results are shown in the following two tables. The first confusion matrix is for the randomized training data. (Table <a href="neural-networks.html#tab:IristrainingRANDOMDATA">14.4</a>) Note that perfect assignment of the types of Iris flowers was obtained.
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:IristrainingRANDOMDATA">Table 14.4: </span>Neural net results on training data: Randomized Iris data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Training data
+</th>
+<th style="text-align:center;">
+setosa
+</th>
+<th style="text-align:center;">
+versicolor
+</th>
+<th style="text-align:center;">
+virginica
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+setosa
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+30
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+versicolor
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+31
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+viginica
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+0
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+29
+</td>
+</tr>
+</tbody>
+</table>
+<p>The second confusion matrix, which applied the model to the validation data, showed that model was overfit. (Table <a href="neural-networks.html#tab:IRISValidationRANDOMDATA">14.5</a>) The model could not accurately predict new data.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:IRISValidationRANDOMDATA">Table 14.5: </span>Neural net results on validation data: Randomized Iris data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Validation data
+</th>
+<th style="text-align:center;">
+setosa
+</th>
+<th style="text-align:center;">
+versicolor
+</th>
+<th style="text-align:center;">
+virginica
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+setosa
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+8
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+7
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+versicolor
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+2
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+5
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+viginica
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+10
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+7
+</td>
+<td style="text-align:center;width: 6em; color: black !important;background-color: white !important;padding: 2px;">
+7
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="neural-network-example" class="section level2" number="14.6">
+<h2><span class="header-section-number">14.6</span> Neural network example</h2>
+<p>The German credit data was used to illustrate a neural network. The data set contains 1,000 observations with 20 predictors and a binary target: “Credit risk.” A study of credit card defaults in Taiwan is available from the Machine Learning The source is the Repository at UCI <span class="citation">(<a href="#ref-creditSouthGerman" role="doc-biblioref">Gromping 2019b</a>)</span> with a detailed report on the corrections provided by <span class="citation">(<a href="#ref-creditSouthGermanCorrected" role="doc-biblioref">Gromping 2019a</a>)</span>. The number of “bad” credit ratings has been oversampled; the actual prevalence of “bad” credit is about 5%. The “good” versus “bad” ratings are based on the debtor’s assessment of risk prior to granting credit. There are also unequal costs of errors for this example.</p>
+<p>To account for the differences in the cost of errors, the cutoff threshold for predicting from the neural net had to be changed. The structure of the matrix and the resultant threshold is in Figure <a href="neural-networks.html#fig:CostMatrixCreditExample">14.4</a>. The threshold was computed as 0.93 based on the costs and revenues associated with each cell in the 2X2 table using the approach developed by <span class="citation">(<a href="#ref-CharlesElkan01" role="doc-biblioref">Elkan 2001</a>)</span>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:CostMatrixCreditExample"></span>
+<img src="images_neuralNets/CostMatrixCreditExample.PNG" alt="Threshold calculations" width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 14.4: Threshold calculations
+</p>
+</div>
+<p>The variables in the German credit data set are shown in Table <a href="neural-networks.html#tab:CreditDataVariables">14.6</a>.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:CreditDataVariables">Table 14.6: </span>Variables in the German credit data set.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Status of existing checking account
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Status of the debtor’s checking account with the bank
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Duration in months
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Credit duration in months
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Credit history
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+History of compliance with previous or concurrent credit contracts
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Purpose
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Purpose for which the credit is needed
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Credit amount
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Credit amount
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Savings account/bonds
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Debtor’s savings
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Present employment since
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Duration of debtor’s employment with current employer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Installment rate in percentage of disposable income
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Credit installments as a percentage of debtor’s disposable income
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Personal status and sex
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Combined information on sex and marital status
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Other debtors / guarantors
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Is there another debtor or a guarantor for the credit?
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Present residence since
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Length of time (in years) the debtor lives in the present residence
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Property
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+The debtor’s most valuable property
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Age in years
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Age in years
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Other installment plans
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Installment plans from providers other than the credit-giving bank
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Housing
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Type of housing the debtor lives in
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Number of existing credits at this bank
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Number of credits including (or had) at this bank
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Job
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Type of debtor’s job
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Number of people being liable to provide maintenance for
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Binary (1 or 2)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Telephone
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Is there a telephone landline registered on the debtor’s name?
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Foreign worker
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Is the debtor a foreign worker?
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 35em; border-left:1px solid;border-right:1px solid;vertical-align: top">
+Score
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 40em; border-right:1px solid;vertical-align: top">
+Has the credit contract been complied with (good) or not (bad)?
+</td>
+</tr>
+</tbody>
+</table>
+<p>The KNIME workflow for this example is shown below. (Figure <a href="neural-networks.html#fig:WorkflowGermanCredit">14.5</a></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:WorkflowGermanCredit"></span>
+<img src="images_neuralNets/WorkflowGermanCredit.PNG" alt="Workflow for neural net analysis of German Credit data set" width="90%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 14.5: Workflow for neural net analysis of German Credit data set
+</p>
+</div>
+<p>A description of each node is shown Table <a href="neural-networks.html#tab:NodesForGermanCreditNN">14.7</a>.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:NodesForGermanCreditNN">Table 14.7: </span>Description of workflow nodes for German Credit neural net anslysis.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Node
+</th>
+<th style="text-align:left;">
+Label
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+1
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+File Reader
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Read CreditScore.csv
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+2
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Category to Number
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Transfform all categorical variables to dummy indicators.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+3
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Normalizer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Normanlize all variables to 0-1 min-max.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+4
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Partitioning
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Create training and validation data sets (70/30 ratio).
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+5
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Rprop MLP Learner
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Neural net analysis using multi-layer perceptron model.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+6
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+MLP Predictor
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Predict target using the validation data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+7
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Scorer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Assess predictions using threshold of 0.50.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+8
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Rule Engine
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Change threshold to 0.93.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 2em; vertical-align: top">
+9
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Scorer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 20em; vertical-align: top">
+Assess predictions using threshold of 0.93.
+</td>
+</tr>
+</tbody>
+</table>
+<p>The results for the neural nets analysis are shown in Figure <a href="neural-networks.html#fig:ConfusionMatricesGermanCredit">14.6</a> for both the 0.50 threshold and the 0.93 threshold. Note that increasing the threshold to assign a prediction to the “good” category to 0.93 reduced the overall performance of the model. While the number of correct “good” predictions decreased, the number of correct “bad” predictions increased.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ConfusionMatricesGermanCredit"></span>
+<img src="images_neuralNets/ConfusionMatricesGermanCredit.PNG" alt="Results from neural net analysis" width="40%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 14.6: Results from neural net analysis
+</p>
+</div>
+<p>As noted above, the number of “bad” credit ratings has been oversampled to be 30% but the actual percentage of “bad” credit is about 5%. So, the confusion matrices need to be rebalanced to reflect the correct percentages. The rebalanced confusion matrices are shown below. (Figure <a href="neural-networks.html#fig:RebalancedConfusionMatricesAndNetRevenue">14.7</a>) Rebalancing is a straightforward process of adjusting each cell of the matrices so that the row margin totals (the actual numbers of “good” and “bad” credit cases) match the population.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:RebalancedConfusionMatricesAndNetRevenue"></span>
+<img src="images_neuralNets/RebalancedConfusionMatricesAndNetRevenue.PNG" alt="Workflow for neural net analysis of German Credit data set" width="90%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 14.7: Workflow for neural net analysis of German Credit data set
+</p>
+</div>
+<p>Also shown in Figure<a href="neural-networks.html#fig:RebalancedConfusionMatricesAndNetRevenue">14.7</a> are the costs (and revenues, represented by negative costs) associated with each cell of the confusion matrix. By multiplying each cell of the predictions times the corresponding cell of the cost matrix, an overall net cost or revenue can be estimated. In this example, the predictions using the 0.93 threshold resulted in a revenue of 8,771 compared with the 0.50 default threshold which resulted in a revenue of 4,900. So, despite the reduced accuracy achieved with the higher threshold, the bank would be better off foregoing some good customers to avoid making bad credit decisions.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-CharlesElkan01" class="csl-entry">
+Elkan, Charles. 2001. <span>“The Foundations of Cost-Sensitive Learning.”</span> In <em>Proceedings of the Seventeenth International Joint Conference on Artificial Intelligence</em>. http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=B24CDCB3FA2EBC3A4D5AEB2B35160B90?doi=10.1.1.29.514&amp;rep=rep1&amp;type=pdf.
+</div>
+<div id="ref-creditSouthGermanCorrected" class="csl-entry">
+Gromping, U. 2019a. <span>“South German Credit Data: Correcting a Widely Used Data Set.”</span> http://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf.
+</div>
+<div id="ref-creditSouthGerman" class="csl-entry">
+———. 2019b. <span>“South German Credit (UPDATE) Data Set.”</span> https://archive.ics.uci.edu/ml/datasets/South+German+Credit+.
+</div>
+<div id="ref-Jaspreet2016" class="csl-entry">
+Jaspreet. 2016. <span>“A Concise History of Neural Networks.”</span> https://towardsdatascience.com/a-concise-history-of-neural-networks-2070655d3fec.
+</div>
+<div id="ref-McCullochPitts1943" class="csl-entry">
+McCulloch, Warren S., and Walter H. Pitts. 1943. <span>“A Logical Calculus of the Ideas Immanent in Nervous Activity.”</span> <em>Bulletin of Mathematical Biophysics</em>, 114–33.
+</div>
+<div id="ref-Minsky1969" class="csl-entry">
+Minsky, Marvin, and Seymour Papert. 1969. <em>Perceptrons: An Introduction to Computational Geometry</em>. Cambridge, Mass.: MIT Press.
+</div>
+<div id="ref-Nielsen2019" class="csl-entry">
+Nielsen, Michael. 2019. <span>“Neural Networks and Deep Learning.”</span> http://neuralnetworksanddeeplearning.com/.
+</div>
+<div id="ref-Unal2021" class="csl-entry">
+Unal, Hamit Taner, and Fatih Başçiftci. 2021. <span>“Evolutionary Design of Neural Network Architectures: A Review of Three Decades of Research.”</span> https://link.springer.com/article/10.1007/s10462-021-10049-5.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="14">
+<li id="fn14"><p>Michael Nielsen has an excellent, free online book called <em>Neural Networks and Deep Learning</em>,<span class="citation">(<a href="#ref-Nielsen2019" role="doc-biblioref">Nielsen 2019</a>)</span>.<a href="neural-networks.html#fnref14" class="footnote-back">↩︎</a></p></li>
+<li id="fn15"><p>For more on the history of neural nets, consult "A concise history of neural networks by Jaspreet <span class="citation">(<a href="#ref-Jaspreet2016" role="doc-biblioref">Jaspreet 2016</a>)</span><a href="neural-networks.html#fnref15" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tree-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cluster-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["TextbookDraft.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

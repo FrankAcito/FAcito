@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Introduciton to KNIME | Analytics with KNIME and R</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Introduciton to KNIME | Analytics with KNIME and R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a draft." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Introduciton to KNIME | Analytics with KNIME and R" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="F Acito" />
+
+
+<meta name="date" content="2021-11-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="business-understanding-and-problem-definition.html"/>
+<link rel="next" href="data-preparation.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Cover page</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#what-is-analytics"><i class="fa fa-check"></i><b>1.1</b> What is analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-trends-in-analytics"><i class="fa fa-check"></i><b>1.2</b> Some trends in analytics</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#broadening-of-applicaiton-areas"><i class="fa fa-check"></i><b>1.2.1</b> Broadening of applicaiton areas</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#generalization-of-the-notion-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Generalization of the notion of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#a-trend-from-slicing-and-dicing-data-to-more-advanced-techniques"><i class="fa fa-check"></i><b>1.2.3</b> A trend from “slicing and dicing” data to more advanced techniques</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#more-advanced-data-visualization"><i class="fa fa-check"></i><b>1.2.4</b> More advanced data visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#the-analytics-process-model"><i class="fa fa-check"></i><b>1.3</b> The analytics process model</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html"><i class="fa fa-check"></i><b>2</b> Business understanding and problem definition</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#expert-views"><i class="fa fa-check"></i><b>2.1</b> Expert views</a></li>
+<li class="chapter" data-level="2.2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#understanding-the-business"><i class="fa fa-check"></i><b>2.2</b> Understanding the business</a></li>
+<li class="chapter" data-level="2.3" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#identifying-stakeholders"><i class="fa fa-check"></i><b>2.3</b> Identifying stakeholders</a></li>
+<li class="chapter" data-level="2.4" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#structured-versus-unstructured-problems"><i class="fa fa-check"></i><b>2.4</b> Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="2.5" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#framing-the-problem"><i class="fa fa-check"></i><b>2.5</b> Framing the problem</a></li>
+<li class="chapter" data-level="2.6" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#appendix-some-tools-for-problem-definition"><i class="fa fa-check"></i>Appendix: Some tools for problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#right-to-left-thinking"><i class="fa fa-check"></i>Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#reversing-the-problem"><i class="fa fa-check"></i>Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#open-the-problem-with-whys"><i class="fa fa-check"></i>Open the problem with “whys”</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#challenge-assumptions"><i class="fa fa-check"></i>Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#chunking"><i class="fa fa-check"></i>Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#problems"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduciton-to-knime.html"><a href="introduciton-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduciton to KNIME</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduciton-to-knime.html"><a href="introduciton-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i><b>3.1</b> The KNIME Workbench</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="introduciton-to-knime.html"><a href="introduciton-to-knime.html#elements-of-the-knime-workbench"><i class="fa fa-check"></i><b>3.1.1</b> Elements of the KNIME Workbench</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="introduciton-to-knime.html"><a href="introduciton-to-knime.html#learning-to-use-knime"><i class="fa fa-check"></i><b>3.2</b> Learning to use KNIME</a></li>
+<li class="chapter" data-level="3.3" data-path="introduciton-to-knime.html"><a href="introduciton-to-knime.html#example-knime-workflow-predicting-heart-disease"><i class="fa fa-check"></i><b>3.3</b> Example KNIME workflow: Predicting heart disease</a></li>
+<li class="chapter" data-level="3.4" data-path="introduciton-to-knime.html"><a href="introduciton-to-knime.html#summary-1"><i class="fa fa-check"></i><b>3.4</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="introduciton-to-knime.html"><a href="introduciton-to-knime.html#problems-1"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-preparation.html"><a href="data-preparation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="data-preparation.html"><a href="data-preparation.html#obtaining-the-needed-data"><i class="fa fa-check"></i><b>4.2</b> Obtaining the needed data</a></li>
+<li class="chapter" data-level="4.3" data-path="data-preparation.html"><a href="data-preparation.html#data-cleaning"><i class="fa fa-check"></i><b>4.3</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-preparation.html"><a href="data-preparation.html#missing-values"><i class="fa fa-check"></i><b>4.3.1</b> Missing values</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-preparation.html"><a href="data-preparation.html#outliers"><i class="fa fa-check"></i><b>4.3.2</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-preparation.html"><a href="data-preparation.html#feature-engineering"><i class="fa fa-check"></i><b>4.4</b> Feature engineering</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-preparation.html"><a href="data-preparation.html#data-transformations"><i class="fa fa-check"></i><b>4.4.1</b> Data transformations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-preparation.html"><a href="data-preparation.html#data-exploration"><i class="fa fa-check"></i><b>4.4.2</b> Data exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html"><i class="fa fa-check"></i><b>5</b> Principal components analytics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#approaches-to-dimension-reduction"><i class="fa fa-check"></i><b>5.1</b> Approaches to dimension reduction</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#the-pca-model"><i class="fa fa-check"></i><b>5.3</b> The PCA model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html"><i class="fa fa-check"></i><b>6</b> Evaluating predictive models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#training-testing-and-validation-samples"><i class="fa fa-check"></i><b>6.2</b> Training, Testing, and Validation samples</a></li>
+<li class="chapter" data-level="6.3" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-continuous-versus-discrete-targets"><i class="fa fa-check"></i><b>6.3</b> Evaluating continuous versus discrete targets</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-continuous-targets"><i class="fa fa-check"></i><b>6.3.1</b> Evaluating performance with continuous targets</a></li>
+<li class="chapter" data-level="6.3.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-classification-models"><i class="fa fa-check"></i><b>6.3.2</b> Evaluating performance with classification models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-techniques"><i class="fa fa-check"></i><b>7.2</b> Regression techniques</a></li>
+<li class="chapter" data-level="7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-explanation"><i class="fa fa-check"></i><b>7.3</b> Regression for explanation</a></li>
+<li class="chapter" data-level="7.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-prediction"><i class="fa fa-check"></i><b>7.4</b> Regression for prediction</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="multiple-regression.html"><a href="multiple-regression.html#revisiting-regression-assumptions"><i class="fa fa-check"></i><b>7.4.1</b> Revisiting regression assumptions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction-example-used-toyota-corollas"><i class="fa fa-check"></i><b>7.4.2</b> Prediction example: Used Toyota Corollas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-a-brief-history-of-regression"><i class="fa fa-check"></i>Appendix: A brief history of regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#problems-2"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#example-with-a-single-predictor"><i class="fa fa-check"></i><b>8.1</b> Example with a single predictor</a></li>
+<li class="chapter" data-level="8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#example-predictive-analytic-in-hr"><i class="fa fa-check"></i><b>8.2</b> Example: Predictive analytic in HR</a></li>
+<li class="chapter" data-level="8.3" data-path="logistic-regression.html"><a href="logistic-regression.html#predictor-interpretation-and-importance"><i class="fa fa-check"></i><b>8.3</b> Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="8.4" data-path="logistic-regression.html"><a href="logistic-regression.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Regularized logistic regression</a></li>
+<li class="chapter" data-level="8.5" data-path="logistic-regression.html"><a href="logistic-regression.html#probability-calibration"><i class="fa fa-check"></i><b>8.5</b> Probability calibration</a></li>
+<li class="chapter" data-level="8.6" data-path="logistic-regression.html"><a href="logistic-regression.html#evaluation-of-logistic-regression"><i class="fa fa-check"></i><b>8.6</b> Evaluation of logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>9</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ensemble-models.html"><a href="ensemble-models.html#creating-ensemble-models"><i class="fa fa-check"></i><b>9.1</b> Creating ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="ensemble-models.html"><a href="ensemble-models.html#reduced-variation"><i class="fa fa-check"></i><b>9.1.1</b> Reduced variation</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ensemble-models.html"><a href="ensemble-models.html#improved-performance"><i class="fa fa-check"></i><b>9.1.2</b> Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ensemble-models.html"><a href="ensemble-models.html#parallel-and-sequential-learners"><i class="fa fa-check"></i><b>9.2</b> Parallel and sequential learners</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ensemble-models.html"><a href="ensemble-models.html#bagging-bootstrap-aggregating"><i class="fa fa-check"></i><b>9.2.1</b> Bagging (Bootstrap Aggregating)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ensemble-models.html"><a href="ensemble-models.html#random-forests"><i class="fa fa-check"></i><b>9.2.2</b> Random Forests</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ensemble-models.html"><a href="ensemble-models.html#adaboost"><i class="fa fa-check"></i><b>9.2.3</b> AdaBoost</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ensemble-models.html"><a href="ensemble-models.html#gradient-boosting-machines"><i class="fa fa-check"></i><b>9.2.4</b> Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ensemble-models.html"><a href="ensemble-models.html#xgboost"><i class="fa fa-check"></i><b>9.2.5</b> XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ensemble-models.html"><a href="ensemble-models.html#example-of-ensemble-modeling-for-a-continuous-target"><i class="fa fa-check"></i><b>9.3</b> Example of ensemble modeling for a continuous target</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>10</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="naive-bayes.html"><a href="naive-bayes.html#a-thought-problem"><i class="fa fa-check"></i><b>10.1</b> A thought problem</a></li>
+<li class="chapter" data-level="10.2" data-path="naive-bayes.html"><a href="naive-bayes.html#bayes-theorem-applied-to-predictive-analytics"><i class="fa fa-check"></i><b>10.2</b> Bayes Theorem applied to predictive analytics</a></li>
+<li class="chapter" data-level="10.3" data-path="naive-bayes.html"><a href="naive-bayes.html#illustration-of-naïve-bayes-with-a-toy-data-set"><i class="fa fa-check"></i><b>10.3</b> Illustration of Naïve Bayes with a “toy” data set</a></li>
+<li class="chapter" data-level="10.4" data-path="naive-bayes.html"><a href="naive-bayes.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i><b>10.4</b> The assumption of conditional independence</a></li>
+<li class="chapter" data-level="10.5" data-path="naive-bayes.html"><a href="naive-bayes.html#naïve-bayes-with-continuous-predictors"><i class="fa fa-check"></i><b>10.5</b> Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="10.6" data-path="naive-bayes.html"><a href="naive-bayes.html#laplace-smoothing"><i class="fa fa-check"></i><b>10.6</b> Laplace Smoothing</a></li>
+<li class="chapter" data-level="10.7" data-path="naive-bayes.html"><a href="naive-bayes.html#example-using-naïve-bayes-with-churn-data"><i class="fa fa-check"></i><b>10.7</b> Example using naïve Bayes with churn data</a></li>
+<li class="chapter" data-level="10.8" data-path="naive-bayes.html"><a href="naive-bayes.html#spam-detection-using-naïve-bayes"><i class="fa fa-check"></i><b>10.8</b> Spam detection using naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>11</b> Deep learning</a></li>
+<li class="chapter" data-level="12" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>12</b> k Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#k-nearest-neighbors-and-memory-based-learning"><i class="fa fa-check"></i><b>12.1</b> k nearest neighbors and memory-based learning</a></li>
+<li class="chapter" data-level="12.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications"><i class="fa fa-check"></i><b>12.2</b> Typical applications</a></li>
+<li class="chapter" data-level="12.3" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#what-is-knn"><i class="fa fa-check"></i><b>12.3</b> What is kNN?</a></li>
+<li class="chapter" data-level="12.4" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-two-dimensional-graphic-example-of-knn"><i class="fa fa-check"></i><b>12.4</b> A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="12.5" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#example-of-knn-diagnosing-heart-disease"><i class="fa fa-check"></i><b>12.5</b> Example of kNN: Diagnosing heart disease</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#results"><i class="fa fa-check"></i><b>12.5.1</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-continuous-targets"><i class="fa fa-check"></i><b>12.6</b> kNN for continuous targets</a></li>
+<li class="chapter" data-level="12.7" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-multiclass-target-variables"><i class="fa fa-check"></i><b>12.7</b> kNN for multiclass target variables</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tree-models.html"><a href="tree-models.html"><i class="fa fa-check"></i><b>13</b> Tree models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="tree-models.html"><a href="tree-models.html#classification-trees"><i class="fa fa-check"></i><b>13.1</b> Classification trees</a></li>
+<li class="chapter" data-level="13.2" data-path="tree-models.html"><a href="tree-models.html#forming-classification-trees"><i class="fa fa-check"></i><b>13.2</b> Forming classification trees</a></li>
+<li class="chapter" data-level="13.3" data-path="tree-models.html"><a href="tree-models.html#varieties-of-classification-tree-algorithms"><i class="fa fa-check"></i><b>13.3</b> Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="13.4" data-path="tree-models.html"><a href="tree-models.html#criteria-for-splitting-and-growing-a-tree"><i class="fa fa-check"></i><b>13.4</b> Criteria for splitting and growing a tree</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tree-models.html"><a href="tree-models.html#the-gini-index"><i class="fa fa-check"></i><b>13.4.1</b> The Gini index</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tree-models.html"><a href="tree-models.html#information-gain"><i class="fa fa-check"></i><b>13.4.2</b> Information Gain</a></li>
+<li class="chapter" data-level="13.4.3" data-path="tree-models.html"><a href="tree-models.html#chi-square-as-a-splitting-criterion"><i class="fa fa-check"></i><b>13.4.3</b> Chi-square as a splitting criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="tree-models.html"><a href="tree-models.html#overfitting"><i class="fa fa-check"></i><b>13.5</b> Overfitting</a></li>
+<li class="chapter" data-level="13.6" data-path="tree-models.html"><a href="tree-models.html#example-of-a-classification-tree"><i class="fa fa-check"></i><b>13.6</b> Example of a classification tree</a></li>
+<li class="chapter" data-level="13.7" data-path="tree-models.html"><a href="tree-models.html#regression-trees"><i class="fa fa-check"></i><b>13.7</b> Regression trees</a>
+<ul>
+<li class="chapter" data-level="13.7.1" data-path="tree-models.html"><a href="tree-models.html#how-regression-trees-work"><i class="fa fa-check"></i><b>13.7.1</b> How regression trees work</a></li>
+<li class="chapter" data-level="13.7.2" data-path="tree-models.html"><a href="tree-models.html#example-predicting-home-prices"><i class="fa fa-check"></i><b>13.7.2</b> Example: Predicting home prices</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="tree-models.html"><a href="tree-models.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>13.8</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>14</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="neural-networks.html"><a href="neural-networks.html#what-are-artificial-neural-networks"><i class="fa fa-check"></i><b>14.1</b> What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="neural-networks.html"><a href="neural-networks.html#human-neurons-to-mathematical-models"><i class="fa fa-check"></i><b>14.1.1</b> Human neurons to mathematical models</a></li>
+<li class="chapter" data-level="14.1.2" data-path="neural-networks.html"><a href="neural-networks.html#activation-functions"><i class="fa fa-check"></i><b>14.1.2</b> Activation functions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="neural-networks.html"><a href="neural-networks.html#the-road-to-machine-learning-with-neural-nets"><i class="fa fa-check"></i><b>14.2</b> The road to machine learning with neural nets</a></li>
+<li class="chapter" data-level="14.3" data-path="neural-networks.html"><a href="neural-networks.html#example-of-a-neural-network"><i class="fa fa-check"></i><b>14.3</b> Example of a neural network</a></li>
+<li class="chapter" data-level="14.4" data-path="neural-networks.html"><a href="neural-networks.html#training-a-neural-net"><i class="fa fa-check"></i><b>14.4</b> Training a neural net</a></li>
+<li class="chapter" data-level="14.5" data-path="neural-networks.html"><a href="neural-networks.html#considerations-in-using-neural-nets"><i class="fa fa-check"></i><b>14.5</b> Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="neural-networks.html"><a href="neural-networks.html#missing-data"><i class="fa fa-check"></i><b>14.5.1</b> Missing data</a></li>
+<li class="chapter" data-level="14.5.2" data-path="neural-networks.html"><a href="neural-networks.html#representative-data"><i class="fa fa-check"></i><b>14.5.2</b> Representative data</a></li>
+<li class="chapter" data-level="14.5.3" data-path="neural-networks.html"><a href="neural-networks.html#all-eventualities-must-be-covered"><i class="fa fa-check"></i><b>14.5.3</b> All eventualities must be covered</a></li>
+<li class="chapter" data-level="14.5.4" data-path="neural-networks.html"><a href="neural-networks.html#unbalanced-data-sets"><i class="fa fa-check"></i><b>14.5.4</b> Unbalanced data sets</a></li>
+<li class="chapter" data-level="14.5.5" data-path="neural-networks.html"><a href="neural-networks.html#the-overfitting-problem"><i class="fa fa-check"></i><b>14.5.5</b> The overfitting problem</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="neural-networks.html"><a href="neural-networks.html#neural-network-example"><i class="fa fa-check"></i><b>14.6</b> Neural network example</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>15</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#approaches-to-forming-clusters"><i class="fa fa-check"></i><b>15.1</b> Approaches to forming clusters</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hierarchical-versus-partitioning-methods"><i class="fa fa-check"></i><b>15.1.1</b> Hierarchical versus partitioning methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hard-versus-soft-methods"><i class="fa fa-check"></i><b>15.1.2</b> “Hard” versus “soft” methods</a></li>
+<li class="chapter" data-level="15.1.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#applying-hierarchical-clusters"><i class="fa fa-check"></i><b>15.1.3</b> Applying hierarchical clusters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analytics with KNIME and R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduciton-to-knime" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Introduciton to KNIME</h1>
+<hr />
+<div class="insetNoBorder">
+<p>The KNIME platform is presented along with links to resources including tutorials and documentation. A step-by-step example of using KNIME is shown to demonstrate how KNIME can be used to analyze a small data set.</p>
+</div>
+<hr />
+<p>KNIME is a comprehensive tool for analytics and data mining which uses an intuitive drag and drop workflow canvas. While KNIME can be (and is) used by professional data analysts, it is an excellent “low code” platform for learning predictive analytics and data mining. KNIME workflows provide a graphic representation of the steps taken in an analysis, which makes the analysis self-documenting. This makes it easy to communicate your analyses with others and to see how to reproduce your analyses.</p>
+<p>KNIME was developed by a group at the University of Konstanz in Germany beginning in 2004 and the first release was in 2006. As noted on its web site, KNIME is committed to open source:</p>
+<div class="insetNoBorder">
+<p>“Unlike other open-source products, KNIME Analytics Platform is not a cut-down version and there are no artificial limitations on execution environment or data size: If you have enough local or cloud-based space and compute power, you can run projects with billions of rows, as many KNIME users currently do.” ref: <a href="https://www.knime.com/knime-open-source-story" class="uri">https://www.knime.com/knime-open-source-story</a></p>
+</div>
+<p>There is a commercial server version of KNIME which is needed for deploying KNIME on the web, but this is not needed for learning. Everything else is available with the open-source version.</p>
+<p>There are several features which make KNIME stand out from its competitors:</p>
+<ol style="list-style-type: decimal">
+<li>KNIME is free to use on your machine.</li>
+<li>KNIME runs on Windows, Mac, and Linux machines.</li>
+<li>KNIME has over 4,000 nodes for data source connections, transformations, machine learning, and visualization.</li>
+<li>While KNIME includes a broad array of data processing and analysis capabilities, it is fully extensible by creating custom nodes using Python or R.</li>
+<li>Many of the capabilities of two other analytic platforms, H2O and WEKA, are also integrated into KNIME and work seamlessly in the drag and drop workflow.</li>
+<li>A variety of data file types can be used including csv, Excel, and, using an easily installed extension, databases.</li>
+<li>Data can be exported to Excel, Tableau, Spotfire, Power BI, and other reporting platforms.</li>
+<li>There is a large active community of users that can answer questions and provide help.</li>
+<li>Many ready-to-use workflows are available which can be easily installed in your own work environment by dragging and dropping from the KNIME site.</li>
+<li>Extensive documentation, learning modules, videos, and training events are available.</li>
+</ol>
+<div id="the-knime-workbench" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> The KNIME Workbench</h2>
+The main sections of the KNIME Workbench are shown in Figure <a href="introduciton-to-knime.html#fig:KNIMEWorkbench">3.1</a>. A brief description of each section is provided below, but for more detail see <span class="citation">(<a href="#ref-KNIMEWorkbench" role="doc-biblioref">KNIME 2020</a>)</span>.<br />
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:KNIMEWorkbench"></span>
+<img src="images_KNIME_chapter/KNIMEWorkbench.PNG" alt="The KNIME Workbench" width="100%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 3.1: The KNIME Workbench
+</p>
+</div>
+<div id="elements-of-the-knime-workbench" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Elements of the KNIME Workbench</h3>
+<ul>
+<li><strong>KNIME Explorer</strong> This provides links to the available workflows on your machine as well as those available from KNIME servers including workflow examples from KNIME and the KNIME community.<br />
+</li>
+<li><strong>Workflow Coach</strong> This is a handy tool to help you build an analytic workflow. For any node selected in your workflow, suggested next nodes are listed. The suggestions are based on usage statistics from the KNIME Community.<br />
+</li>
+<li><strong>Node Repository</strong> Listed in this area are the analysis nodes installed on your machine. Nodes are available to read and write files, explore and transform data, run basic and advanced analytics, and create visualizations. A core set of nodes is included when you install KNIME, but thousands of additional nodes are available and easily installed. The nodes are organized by categories, but you can also use the search box on the top of the node repository to find nodes.<br />
+</li>
+<li><strong>Workflow Editor</strong> This is the canvas for editing the currently active workflow. The workflow is created by dragging nodes from the Node Repository and linking them appropriately.</li>
+<li><strong>Outline</strong> This area shows a small overview of the current workflow.</li>
+<li><strong>Console</strong> This shows the processing taking place when executing a workflow. It also provides warnings and error messages.</li>
+<li><strong>Node Description</strong> For each node selected in a workflow, a detailed description is provided including the general function of the node, available settings, and input and/or output ports.</li>
+</ul>
+</div>
+</div>
+<div id="learning-to-use-knime" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Learning to use KNIME</h2>
+<p>Learning to use KNIME takes some time, but extensive, free written and video resources are available. A “Getting Started Guide” is available at <a href="https://www.knime.com/getting-started-guide">Getting started with KNIME</a></p>
+<p>A series of self-paced courses are online and free. The courses include exercises and solutions. <a href="https://www.knime.com/knime-courses">KNIME Self-Paced Courses</a> There are four levels of self-paced courses:</p>
+<ul>
+<li>Level 1 courses
+<ul>
+<li>KNIME Analytics Platform for Data Scientists: Basics</li>
+<li>KNIME Analytics Platform for Data Wranglers: Basics</li>
+</ul></li>
+<li>Level 2 courses
+<ul>
+<li>KNIME Analytics Platform for Data Scientists: Advanced</li>
+<li>KNIME Analytics Platform for Data Wranglers: Advanced</li>
+</ul></li>
+<li>Level 3 course
+<ul>
+<li>KNIME Server Course: Productionizing and Collaboration</li>
+</ul></li>
+<li>Level 4 courses
+<ul>
+<li>Introduction to Big Data with KNIME Analytics Platform</li>
+<li>Introduction to Text Processing</li>
+</ul></li>
+</ul>
+<p>This is a link to all the documentation which can be read or downloaded. <a href="https://docs.knime.com/">KNIME Documentation</a></p>
+<p>Individual documents for specific topics are available as follows:</p>
+<ul>
+<li><a href="https://docs.knime.com/2021-06/analytics_platform_quickstart_guide/analytics_platform_quickstart_guide.pdf">KNIME QuickStart Guide</a></li>
+<li><a href="https://docs.knime.com/2021-06/analytics_platform_installation_guide/index.html#_installing_knime_analytics_platform">KNIME Analytics Platform Installation Guide</a></li>
+<li><a href="https://docs.knime.com/2021-06/analytics_platform_workbench_guide/index.html#workspaces">KNIME Workbench Guide</a></li>
+<li><a href="https://docs.knime.com/2021-06/analytics_platform_extensions_and_integrations/index.html#knime-extensions">Extensions and Integrations Guide</a></li>
+<li><a href="https://docs.knime.com/2021-06/analytics_platform_flow_control_guide/index.html#introduction">KNIME Flow Control Guide</a></li>
+<li><a href="https://docs.knime.com/2021-06/analytics_platform_components_guide/index.html#introduction">KNIME Components Guide</a></li>
+<li><a href="https://docs.knime.com/2021-06/integrated_deployment_guide/index.html#introduction">KNIME Integrated Deployment Guide</a></li>
+<li><a href="https://docs.knime.com/2021-06/analytics_platform_file_handling_guide/index.html#introduction">KNIME File Handling Guide</a></li>
+</ul>
+<p>A free “bootcamp” for KNIME is available from UDEMY with 50 video instructional lectures running over four hours. The course starts with installation and setup and proceeds to demonstrate practical applications in machine learning. <a href="https://www.udemy.com/course/knime-bootcamp/?utm_source=adwords&amp;utm_medium=udemyads&amp;utm_campaign=DSA_Catchall_la.EN_cc.US&amp;utm_content=deal4584&amp;utm_term=_._ag_95911180068_._ad_532194018659_._kw__._de_c_._dm__._pl__._ti_dsa-406594358574_._li_1017003_._pd__._&amp;matchtype=b&amp;gclid=Cj0KCQjw-4SLBhCVARIsACrhWLU2guN4xrT1kpWLRyTT0bvOLxphVvZbPX6TLsvSR9Gws9BnwaAU5hQaAg-ZEALw_wcB">Bootcamp for KNIME Analytics Platform</a></p>
+</div>
+<div id="example-knime-workflow-predicting-heart-disease" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Example KNIME workflow: Predicting heart disease</h2>
+<p>The following example is included to illustrate how KNIME can be used to build a model. Do not be concerned if some of the details are unfamiliar at this point; these details will be covered in later chapters of the book.</p>
+<p>The example involves a cardiovascular disease data set. Mortality rates for cardiovascular diseases high and increasing, especially in developing regions of the world. In the United States 1 in 4 deaths each year are from heart disease. If the presence of heart disease can be predicted using a physician’s examination and laboratory tests, this would be a valuable diagnostic tool. Such a prediction is difficult because because there are several contributory variables, including diabetes, high blood pressure, high cholesterol, abnormal pulse rate, and other factors.</p>
+<p>A data set from the Cleveland Clinic is available from the UCI Machine Learning Repository <span class="citation">(<a href="#ref-heartdiseaseUCI" role="doc-biblioref">Aha 1988</a>)</span>. The data set has 297<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> rows, 13 predictor values, and 1 target (heart disease versus no heart disease). Since the target variable has just two levels, logistic regression was run in KNIME. (Details on logistic regression and other models are provided in later chapters.) A step-by-step illustration of running KNIME is shown in the next six figures.</p>
+<p>The first few rows of the data set are shown in Figure <a href="introduciton-to-knime.html#fig:C1PNG">3.2</a>. The KNIME node “CSV Reader” was used to input the data. (Many other data formats can be read by KNIME as well.)</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:C1PNG"></span>
+<img src="images_KNIME_chapter/C1.PNG" alt="Read data from a .CSV file." width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 3.2: Read data from a .CSV file.
+</p>
+</div>
+<p>Good practice in building machine learning models is to create a model using part of the data and test the model using a separate section of the data. Accordingly, the KNIME node “Partitioning” was used to create training and test data subsets. 70% of the sample was used for training and 30% for testing. (Figure <a href="introduciton-to-knime.html#fig:C2PNG">3.3</a>) The 70/30 ratio is typical, but not the only split that can be used.</p>
+<p>The data was split randomly; to make the splitting repeatable, a seed was set (arbitrarily at “123”). Also, the random selection was done in a stratified manner so that the ratio of “heart disease” versus “no heart disease” would be equal (or nearly equal) in both the training and test subsets.</p>
+<p>The Partitioning node has two outputs: the upper output is the training data and the lower output is the test data subset.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:C2PNG"></span>
+<img src="images_KNIME_chapter/C2.PNG" alt="Create training and test data sets" width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 3.3: Create training and test data sets
+</p>
+</div>
+<p>Performing a logistic regression in KNIME involves two nodes. The first node, shown in Figure <a href="introduciton-to-knime.html#fig:C3PNG">3.4</a>, “learns” the logistic model. Note that the upper output from the Paritioning node (the training data) was used to build the model. There are three outputs from the Logistic Regression Learning: the upper output (shown as a black square) contains the model itself; the middle output arrow contains the coefficients from the model; and the lower output arrow has information about the modeling process (not used in this example).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:C3PNG"></span>
+<img src="images_KNIME_chapter/C3.PNG" alt="Run logistic regression on training data" width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 3.4: Run logistic regression on training data
+</p>
+</div>
+<p>The Logistic Regression Predictor (Figure <a href="introduciton-to-knime.html#fig:C4PNG">3.5</a>) two inputs: the square input takes the model built in the Learner node. The lower arrow input takes the test data from the Partitioning node. The Logistic Regression Predictor uses these inputs to create predictions for the test data which is output in the single arrow on the right of the node.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:C4PNG"></span>
+<img src="images_KNIME_chapter/C4.PNG" alt="Predict 'heart disease' using the logistic regression model on the test data." width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 3.5: Predict ‘heart disease’ using the logistic regression model on the test data.
+</p>
+</div>
+<p>The Scorer node (Figure <a href="introduciton-to-knime.html#fig:C5PNG">3.6</a>)in KNIME is designed to evaluate the performance of models where the target variable is binary, such as is the case in this example. The input to this node is a data table with the actual and predicted values for the test data set. Using this data, a cross-tabulation called a “confusion matrix” can be derived.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:C5PNG"></span>
+<img src="images_KNIME_chapter/C5.PNG" alt="Score the logistic regression results on the test data." width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 3.6: Score the logistic regression results on the test data.
+</p>
+</div>
+<p>The 2 X 2 confusion matrix is shown in Figure <a href="introduciton-to-knime.html#fig:C6PNG">3.7</a>. This table shows both accurate and inaccurate predictions. In this example, the prediction accuracy was under 80%, which is not sufficient for clinical diagnoses. Perhaps a different model with more data could be developed to improve accuracy. Especially of concern in the results shown in the confusion matrix is the 11 cases where heart disease was “present,” but the model predicted “not present.” Adjustments to the prediction mechanism could be made to err more on the side of predicting “present” when the fact is “not present,” since this is arguably less serious than the other type of error.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:C6PNG"></span>
+<img src="images_KNIME_chapter/C6.PNG" alt="The confusion matrix and accuracy measures for predicting 'heart disease'" width="80%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 3.7: The confusion matrix and accuracy measures for predicting ‘heart disease’
+</p>
+</div>
+<p>Additional performance measures are also provided by the Scorer node and these will be discussed in the chapter on model evaluation.</p>
+</div>
+<div id="summary-1" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Summary</h2>
+<p>KNIME is the main platform that will be used throughout this text for most of the analyses. It is important to download and install KNIME prior to continuing with the next chapters and to become familiar with KNIME by working some of the problems.</p>
+</div>
+<div id="problems-1" class="section level2 unnumbered">
+<h2>Problems</h2>
+<p><strong>Problem 1</strong></p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-heartdiseaseUCI" class="csl-entry">
+Aha, David W. 1988. <span>“Heart Disease Data Set.”</span> https://archive.ics.uci.edu/ml/datasets/heart+disease.
+</div>
+<div id="ref-KNIMEWorkbench" class="csl-entry">
+KNIME. 2020. <span>“KNIME Workbench Guide.”</span> https://docs.knime.com/2018-12/analytics_platform_workbench_guide/index.html#workspaces.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>Six rows were dropped due to missing values.<a href="introduciton-to-knime.html#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="business-understanding-and-problem-definition.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-preparation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

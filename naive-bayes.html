@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Naive Bayes | Analytics with KNIME and R</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Naive Bayes | Analytics with KNIME and R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a draft." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Naive Bayes | Analytics with KNIME and R" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="F Acito" />
+
+
+<meta name="date" content="2021-11-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ensemble-models.html"/>
+<link rel="next" href="deep-learning.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Cover page</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#what-is-analytics"><i class="fa fa-check"></i><b>1.1</b> What is analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-trends-in-analytics"><i class="fa fa-check"></i><b>1.2</b> Some trends in analytics</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#broadening-of-application-areas"><i class="fa fa-check"></i><b>1.2.1</b> Broadening of application areas</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#generalization-of-the-notion-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Generalization of the notion of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#a-trend-from-slicing-and-dicing-data-to-more-advanced-techniques"><i class="fa fa-check"></i><b>1.2.3</b> A trend from “slicing and dicing” data to more advanced techniques</a></li>
+<li class="chapter" data-level="1.2.4" data-path="intro.html"><a href="intro.html#more-advanced-data-visualization"><i class="fa fa-check"></i><b>1.2.4</b> More advanced data visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#the-analytics-process-model"><i class="fa fa-check"></i><b>1.3</b> The analytics process model</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html"><i class="fa fa-check"></i><b>2</b> Business understanding and problem definition</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#expert-views"><i class="fa fa-check"></i><b>2.1</b> Expert views</a></li>
+<li class="chapter" data-level="2.2" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#understanding-the-business"><i class="fa fa-check"></i><b>2.2</b> Understanding the business</a></li>
+<li class="chapter" data-level="2.3" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#identifying-stakeholders"><i class="fa fa-check"></i><b>2.3</b> Identifying stakeholders</a></li>
+<li class="chapter" data-level="2.4" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#structured-versus-unstructured-problems"><i class="fa fa-check"></i><b>2.4</b> Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="2.5" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#framing-the-problem"><i class="fa fa-check"></i><b>2.5</b> Framing the problem</a></li>
+<li class="chapter" data-level="2.6" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#summary"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#appendix-some-tools-for-problem-definition"><i class="fa fa-check"></i>Appendix: Some tools for problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#right-to-left-thinking"><i class="fa fa-check"></i>Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#reversing-the-problem"><i class="fa fa-check"></i>Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#open-the-problem-with-whys"><i class="fa fa-check"></i>Open the problem with “whys”</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#challenge-assumptions"><i class="fa fa-check"></i>Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#chunking"><i class="fa fa-check"></i>Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="business-understanding-and-problem-definition.html"><a href="business-understanding-and-problem-definition.html#problems"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduction to KNIME</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i><b>3.1</b> The KNIME Workbench</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#elements-of-the-knime-workbench"><i class="fa fa-check"></i><b>3.1.1</b> Elements of the KNIME Workbench</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#learning-to-use-knime"><i class="fa fa-check"></i><b>3.2</b> Learning to use KNIME</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-extensions-and-integrations"><i class="fa fa-check"></i><b>3.3</b> KNIME extensions and integrations</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-1-predicting-heart-disease"><i class="fa fa-check"></i><b>3.4</b> KNIME workflow example #1: Predicting heart disease</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-workflow-example-2-preparation-of-hospital-data"><i class="fa fa-check"></i><b>3.5</b> KNIME workflow example #2: Preparation of hospital data</a></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#summary-1"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#problems-1"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data preparation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-preparation.html"><a href="data-preparation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="data-preparation.html"><a href="data-preparation.html#obtaining-the-needed-data"><i class="fa fa-check"></i><b>4.2</b> Obtaining the needed data</a></li>
+<li class="chapter" data-level="4.3" data-path="data-preparation.html"><a href="data-preparation.html#data-cleaning"><i class="fa fa-check"></i><b>4.3</b> Data cleaning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-preparation.html"><a href="data-preparation.html#missing-values"><i class="fa fa-check"></i><b>4.3.1</b> Missing values</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-preparation.html"><a href="data-preparation.html#outliers"><i class="fa fa-check"></i><b>4.3.2</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-preparation.html"><a href="data-preparation.html#feature-engineering"><i class="fa fa-check"></i><b>4.4</b> Feature engineering</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-preparation.html"><a href="data-preparation.html#data-transformations"><i class="fa fa-check"></i><b>4.4.1</b> Data transformations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-preparation.html"><a href="data-preparation.html#data-exploration"><i class="fa fa-check"></i><b>4.4.2</b> Data exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html"><i class="fa fa-check"></i><b>5</b> Principal components analytics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#approaches-to-dimension-reduction"><i class="fa fa-check"></i><b>5.1</b> Approaches to dimension reduction</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-components-analytics.html"><a href="principal-components-analytics.html#the-pca-model"><i class="fa fa-check"></i><b>5.3</b> The PCA model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html"><i class="fa fa-check"></i><b>6</b> Evaluating predictive models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#training-testing-and-validation-samples"><i class="fa fa-check"></i><b>6.2</b> Training, Testing, and Validation samples</a></li>
+<li class="chapter" data-level="6.3" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-continuous-versus-discrete-targets"><i class="fa fa-check"></i><b>6.3</b> Evaluating continuous versus discrete targets</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-continuous-targets"><i class="fa fa-check"></i><b>6.3.1</b> Evaluating performance with continuous targets</a></li>
+<li class="chapter" data-level="6.3.2" data-path="evaluating-predictive-models.html"><a href="evaluating-predictive-models.html#evaluating-performance-with-classification-models"><i class="fa fa-check"></i><b>6.3.2</b> Evaluating performance with classification models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-techniques"><i class="fa fa-check"></i><b>7.2</b> Regression techniques</a></li>
+<li class="chapter" data-level="7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-explanation"><i class="fa fa-check"></i><b>7.3</b> Regression for explanation</a></li>
+<li class="chapter" data-level="7.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-for-prediction"><i class="fa fa-check"></i><b>7.4</b> Regression for prediction</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="multiple-regression.html"><a href="multiple-regression.html#revisiting-regression-assumptions"><i class="fa fa-check"></i><b>7.4.1</b> Revisiting regression assumptions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction-example-used-toyota-corollas"><i class="fa fa-check"></i><b>7.4.2</b> Prediction example: Used Toyota Corollas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-a-brief-history-of-regression"><i class="fa fa-check"></i>Appendix: A brief history of regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#problems-2"><i class="fa fa-check"></i>Problems</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>8</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="logistic-regression.html"><a href="logistic-regression.html#example-with-a-single-predictor"><i class="fa fa-check"></i><b>8.1</b> Example with a single predictor</a></li>
+<li class="chapter" data-level="8.2" data-path="logistic-regression.html"><a href="logistic-regression.html#example-predictive-analytic-in-hr"><i class="fa fa-check"></i><b>8.2</b> Example: Predictive analytic in HR</a></li>
+<li class="chapter" data-level="8.3" data-path="logistic-regression.html"><a href="logistic-regression.html#predictor-interpretation-and-importance"><i class="fa fa-check"></i><b>8.3</b> Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="8.4" data-path="logistic-regression.html"><a href="logistic-regression.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>8.4</b> Regularized logistic regression</a></li>
+<li class="chapter" data-level="8.5" data-path="logistic-regression.html"><a href="logistic-regression.html#probability-calibration"><i class="fa fa-check"></i><b>8.5</b> Probability calibration</a></li>
+<li class="chapter" data-level="8.6" data-path="logistic-regression.html"><a href="logistic-regression.html#evaluation-of-logistic-regression"><i class="fa fa-check"></i><b>8.6</b> Evaluation of logistic regression</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>9</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ensemble-models.html"><a href="ensemble-models.html#creating-ensemble-models"><i class="fa fa-check"></i><b>9.1</b> Creating ensemble models</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="ensemble-models.html"><a href="ensemble-models.html#reduced-variation"><i class="fa fa-check"></i><b>9.1.1</b> Reduced variation</a></li>
+<li class="chapter" data-level="9.1.2" data-path="ensemble-models.html"><a href="ensemble-models.html#improved-performance"><i class="fa fa-check"></i><b>9.1.2</b> Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="ensemble-models.html"><a href="ensemble-models.html#parallel-and-sequential-learners"><i class="fa fa-check"></i><b>9.2</b> Parallel and sequential learners</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ensemble-models.html"><a href="ensemble-models.html#bagging-bootstrap-aggregating"><i class="fa fa-check"></i><b>9.2.1</b> Bagging (Bootstrap Aggregating)</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ensemble-models.html"><a href="ensemble-models.html#random-forests"><i class="fa fa-check"></i><b>9.2.2</b> Random Forests</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ensemble-models.html"><a href="ensemble-models.html#adaboost"><i class="fa fa-check"></i><b>9.2.3</b> AdaBoost</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ensemble-models.html"><a href="ensemble-models.html#gradient-boosting-machines"><i class="fa fa-check"></i><b>9.2.4</b> Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ensemble-models.html"><a href="ensemble-models.html#xgboost"><i class="fa fa-check"></i><b>9.2.5</b> XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ensemble-models.html"><a href="ensemble-models.html#example-of-ensemble-modeling-for-a-continuous-target"><i class="fa fa-check"></i><b>9.3</b> Example of ensemble modeling for a continuous target</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>10</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="naive-bayes.html"><a href="naive-bayes.html#a-thought-problem"><i class="fa fa-check"></i><b>10.1</b> A thought problem</a></li>
+<li class="chapter" data-level="10.2" data-path="naive-bayes.html"><a href="naive-bayes.html#bayes-theorem-applied-to-predictive-analytics"><i class="fa fa-check"></i><b>10.2</b> Bayes Theorem applied to predictive analytics</a></li>
+<li class="chapter" data-level="10.3" data-path="naive-bayes.html"><a href="naive-bayes.html#illustration-of-naïve-bayes-with-a-toy-data-set"><i class="fa fa-check"></i><b>10.3</b> Illustration of Naïve Bayes with a “toy” data set</a></li>
+<li class="chapter" data-level="10.4" data-path="naive-bayes.html"><a href="naive-bayes.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i><b>10.4</b> The assumption of conditional independence</a></li>
+<li class="chapter" data-level="10.5" data-path="naive-bayes.html"><a href="naive-bayes.html#naïve-bayes-with-continuous-predictors"><i class="fa fa-check"></i><b>10.5</b> Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="10.6" data-path="naive-bayes.html"><a href="naive-bayes.html#laplace-smoothing"><i class="fa fa-check"></i><b>10.6</b> Laplace Smoothing</a></li>
+<li class="chapter" data-level="10.7" data-path="naive-bayes.html"><a href="naive-bayes.html#example-using-naïve-bayes-with-churn-data"><i class="fa fa-check"></i><b>10.7</b> Example using naïve Bayes with churn data</a></li>
+<li class="chapter" data-level="10.8" data-path="naive-bayes.html"><a href="naive-bayes.html#spam-detection-using-naïve-bayes"><i class="fa fa-check"></i><b>10.8</b> Spam detection using naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>11</b> Deep learning</a></li>
+<li class="chapter" data-level="12" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>12</b> k Nearest Neighbors</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#k-nearest-neighbors-and-memory-based-learning"><i class="fa fa-check"></i><b>12.1</b> k nearest neighbors and memory-based learning</a></li>
+<li class="chapter" data-level="12.2" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications"><i class="fa fa-check"></i><b>12.2</b> Typical applications</a></li>
+<li class="chapter" data-level="12.3" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#what-is-knn"><i class="fa fa-check"></i><b>12.3</b> What is kNN?</a></li>
+<li class="chapter" data-level="12.4" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-two-dimensional-graphic-example-of-knn"><i class="fa fa-check"></i><b>12.4</b> A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="12.5" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#example-of-knn-diagnosing-heart-disease"><i class="fa fa-check"></i><b>12.5</b> Example of kNN: Diagnosing heart disease</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#results"><i class="fa fa-check"></i><b>12.5.1</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-continuous-targets"><i class="fa fa-check"></i><b>12.6</b> kNN for continuous targets</a></li>
+<li class="chapter" data-level="12.7" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#knn-for-multiclass-target-variables"><i class="fa fa-check"></i><b>12.7</b> kNN for multiclass target variables</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tree-models.html"><a href="tree-models.html"><i class="fa fa-check"></i><b>13</b> Tree models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="tree-models.html"><a href="tree-models.html#classification-trees"><i class="fa fa-check"></i><b>13.1</b> Classification trees</a></li>
+<li class="chapter" data-level="13.2" data-path="tree-models.html"><a href="tree-models.html#forming-classification-trees"><i class="fa fa-check"></i><b>13.2</b> Forming classification trees</a></li>
+<li class="chapter" data-level="13.3" data-path="tree-models.html"><a href="tree-models.html#varieties-of-classification-tree-algorithms"><i class="fa fa-check"></i><b>13.3</b> Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="13.4" data-path="tree-models.html"><a href="tree-models.html#criteria-for-splitting-and-growing-a-tree"><i class="fa fa-check"></i><b>13.4</b> Criteria for splitting and growing a tree</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tree-models.html"><a href="tree-models.html#the-gini-index"><i class="fa fa-check"></i><b>13.4.1</b> The Gini index</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tree-models.html"><a href="tree-models.html#information-gain"><i class="fa fa-check"></i><b>13.4.2</b> Information Gain</a></li>
+<li class="chapter" data-level="13.4.3" data-path="tree-models.html"><a href="tree-models.html#chi-square-as-a-splitting-criterion"><i class="fa fa-check"></i><b>13.4.3</b> Chi-square as a splitting criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="tree-models.html"><a href="tree-models.html#overfitting"><i class="fa fa-check"></i><b>13.5</b> Overfitting</a></li>
+<li class="chapter" data-level="13.6" data-path="tree-models.html"><a href="tree-models.html#example-of-a-classification-tree"><i class="fa fa-check"></i><b>13.6</b> Example of a classification tree</a></li>
+<li class="chapter" data-level="13.7" data-path="tree-models.html"><a href="tree-models.html#regression-trees"><i class="fa fa-check"></i><b>13.7</b> Regression trees</a>
+<ul>
+<li class="chapter" data-level="13.7.1" data-path="tree-models.html"><a href="tree-models.html#how-regression-trees-work"><i class="fa fa-check"></i><b>13.7.1</b> How regression trees work</a></li>
+<li class="chapter" data-level="13.7.2" data-path="tree-models.html"><a href="tree-models.html#example-predicting-home-prices"><i class="fa fa-check"></i><b>13.7.2</b> Example: Predicting home prices</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="tree-models.html"><a href="tree-models.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>13.8</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>14</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="neural-networks.html"><a href="neural-networks.html#what-are-artificial-neural-networks"><i class="fa fa-check"></i><b>14.1</b> What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="neural-networks.html"><a href="neural-networks.html#human-neurons-to-mathematical-models"><i class="fa fa-check"></i><b>14.1.1</b> Human neurons to mathematical models</a></li>
+<li class="chapter" data-level="14.1.2" data-path="neural-networks.html"><a href="neural-networks.html#activation-functions"><i class="fa fa-check"></i><b>14.1.2</b> Activation functions</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="neural-networks.html"><a href="neural-networks.html#the-road-to-machine-learning-with-neural-nets"><i class="fa fa-check"></i><b>14.2</b> The road to machine learning with neural nets</a></li>
+<li class="chapter" data-level="14.3" data-path="neural-networks.html"><a href="neural-networks.html#example-of-a-neural-network"><i class="fa fa-check"></i><b>14.3</b> Example of a neural network</a></li>
+<li class="chapter" data-level="14.4" data-path="neural-networks.html"><a href="neural-networks.html#training-a-neural-net"><i class="fa fa-check"></i><b>14.4</b> Training a neural net</a></li>
+<li class="chapter" data-level="14.5" data-path="neural-networks.html"><a href="neural-networks.html#considerations-in-using-neural-nets"><i class="fa fa-check"></i><b>14.5</b> Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="neural-networks.html"><a href="neural-networks.html#missing-data"><i class="fa fa-check"></i><b>14.5.1</b> Missing data</a></li>
+<li class="chapter" data-level="14.5.2" data-path="neural-networks.html"><a href="neural-networks.html#representative-data"><i class="fa fa-check"></i><b>14.5.2</b> Representative data</a></li>
+<li class="chapter" data-level="14.5.3" data-path="neural-networks.html"><a href="neural-networks.html#all-eventualities-must-be-covered"><i class="fa fa-check"></i><b>14.5.3</b> All eventualities must be covered</a></li>
+<li class="chapter" data-level="14.5.4" data-path="neural-networks.html"><a href="neural-networks.html#unbalanced-data-sets"><i class="fa fa-check"></i><b>14.5.4</b> Unbalanced data sets</a></li>
+<li class="chapter" data-level="14.5.5" data-path="neural-networks.html"><a href="neural-networks.html#the-overfitting-problem"><i class="fa fa-check"></i><b>14.5.5</b> The overfitting problem</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="neural-networks.html"><a href="neural-networks.html#neural-network-example"><i class="fa fa-check"></i><b>14.6</b> Neural network example</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>15</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#approaches-to-forming-clusters"><i class="fa fa-check"></i><b>15.1</b> Approaches to forming clusters</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hierarchical-versus-partitioning-methods"><i class="fa fa-check"></i><b>15.1.1</b> Hierarchical versus partitioning methods</a></li>
+<li class="chapter" data-level="15.1.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#hard-versus-soft-methods"><i class="fa fa-check"></i><b>15.1.2</b> “Hard” versus “soft” methods</a></li>
+<li class="chapter" data-level="15.1.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#applying-hierarchical-clusters"><i class="fa fa-check"></i><b>15.1.3</b> Applying hierarchical clusters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analytics with KNIME and R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="naive-bayes" class="section level1" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Naive Bayes</h1>
+<div id="a-thought-problem" class="section level2" number="10.1">
+<h2><span class="header-section-number">10.1</span> A thought problem</h2>
+<p>A police officer has a breathalyzer which indicates false drunkenness in 5% of the cases in which the driver is sober. However, the breathalyzers never fail to detect a truly drunk person. Suppose on a given evening 1 in 1,000 drivers are driving with alcohol over the legal limit. A traffic checkpoint stop is set up, drivers are selected at random, and the selected drivers are required to take a breathalyzer test.</p>
+<figure>
+<p>
+<img   src="images_naiveBayes/breathalyzertest.png" >
+<FIGCAPTION syle="float:right">
+Over the limit?
+</FIGCAPTION>
+</p>
+</figure>
+<p>Assume that a particular driver is found to be over the legal limit for alcohol for according to the breathalyzer. Assume nothing else about the driver. What is the probability that driver really is over the limit?</p>
+<p>Many people have answered that the probability is as high as 0.95, but the correct probability is about 0.02. How can the proper probability that the person is really drunk be estimated? This calls for Bayes Theorem.</p>
+<p>Bayes’ theorem is a formula that describes how to update the prior probability of an event when additional evidence is made available. Prior probabilities from a Bayesian perspective are based on the known likelihoods from historical data. In the example of random checks of drivers, the prior is 1/1000 or .001 that the driver is drunk.</p>
+<p>To estimate the probability of identifying a drunk driver, the results of the breathalyzer can be used to update the probability estimate. The revised probability is called the posterior probability. To determine the posterior probability, Bayes theorem can be used. The goal is to find the probability that the driver is drunk given that the breathalyzer indicated he/she is drunk, which can be represented as:</p>
+<div class="nobullet">
+<ul>
+<li><em>p</em>(drunk|POS), where “POS” means that the breathalyzer indicates that the driver is drunk_</li>
+</ul>
+</div>
+Bayes’ Theorem tells us that:<br />
+
+<div class="nobullet">
+<ul>
+<li><em>p(drunk|POS) = [p(POS|drunk) X p(drunk)] / p(POS)</em></li>
+<li><em>where p(POS) = p(POS|drunk) X p(drunk) + p(POS|Sober) X p(Sober)</em></li>
+</ul>
+</div>
+We have the following data:<br />
+
+<div class="nobullet">
+<ul>
+<li><em>p(drunk) = 0.001</em></li>
+<li><em>p(Sober) = 0.999</em></li>
+<li><em>p(POS|drunk) = 1.00 (the breathalyzer is 100% accurate if the person is actually drunk)</em></li>
+<li><em>p(POS|sober) = 0.05 (the breathalyzer mistakenly reports a sober driver is drunk 5% of the time)</em></li>
+</ul>
+</div>
+<p>Given the data and a positive indication on the breathalyzer test for a randomly selected driver, what is the probability that the person is drunk?</p>
+<div class="nobullet">
+<ul>
+<li><em>The numerator of Bayes formula = [p(POS|drunk) X p(drunk)] = [1.00 X 0.001] =0.001</em></li>
+<li><em>The denominator of Bayes formula = p(POS|drunk) X p(drunk) + p(POS|Sober) X p(Sober) = 1.0 X 0.001 + 0.05 X 0.999 = 0.001 + .04995 = 0.05095</em></li>
+</ul>
+</div>
+<p>Substituting the numerator and denominator into Bayes theorem yields:</p>
+<div class="nobullet">
+<ul>
+<li><em>p(drunk|POS) = 0.001 / 0.05095 = .0196</em></li>
+</ul>
+</div>
+<p>The framework of Bayes theorem can be applied to a supervised analytics problem.</p>
+</div>
+<div id="bayes-theorem-applied-to-predictive-analytics" class="section level2" number="10.2">
+<h2><span class="header-section-number">10.2</span> Bayes Theorem applied to predictive analytics</h2>
+Consider a case of a cable service provider that has over two million subscribers. The company decides to perform a test market to predict whether current customers will subscribe to a new service.
+<figure>
+<p>
+<img src="images_naiveBayes/SmallerReverandBayes.png"  >
+<FIGCAPTION syle="float:right">
+Reverend Bayes.
+</FIGCAPTION>
+</p>
+</figure>
+<p>The test involved sending an offer to a random sample of 1,000 current customers. This can be cast as a Bayesian model. Using the results of the test, the company would like a predictive model to use for the rest of its customers.</p>
+<p>The test results were that 400 customers bought the new service, so the prior probability of purchase was 0.40. This is illustrated in Figure <a href="naive-bayes.html#fig:BuyersNonBuyers">10.1</a> which has a grid representing the 1,000 customers in the test.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:BuyersNonBuyers"></span>
+<img src="images_naiveBayes/BuyersNonBuyers.PNG" alt="Overall results of the test market." width="75%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.1: Overall results of the test market.
+</p>
+</div>
+<p>If this prior probability is applied to the entire subscriber base, then the company would expect to have 400,000 positive responses. The process of contacting customers via mail, email, and telephone to offer the new service had a cost, so the company wanted to know if there was a way to make the contacting process more efficient. That is, was there a way of increasing the positive rate?.</p>
+<p>It turned out that the company had data on the gender and age (young, or old) of its subscribers and thus this information was available on those in the test market. Using gender, the probability of purchase can be refined. It turns out that there were 600 female customers in the test, 300 of whom subscribed to the new service and 400 males, 100 of whom subscribed. The probability was further refining using age, with results shown in Figure <a href="naive-bayes.html#fig:BuyersNonBuyersBayes">10.2</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:BuyersNonBuyersBayes"></span>
+<img src="images_naiveBayes/BuyersNonBuyersBayes.PNG" alt="Conditional results of the test market." width="75%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.2: Conditional results of the test market.
+</p>
+</div>
+<p>By simply counting the number of customers in each shaded area, the posterior probabilities of each segment could be calculated.</p>
+<div class="nobullet">
+<ul>
+<li><em>prob (Subscribing | male, young) = 50/ (50+180) = .217</em></li>
+<li><em>prob (Subscribing | male, old) = 50/ (50+120) = .294</em></li>
+<li><em>prob (Subscribing |female, young) = 180/ (180 + 150) = .545</em></li>
+<li><em>prob (Subscribing | female, old) = 120/ (120+150) = .444</em></li>
+</ul>
+</div>
+<p>So, this small example shows that the Bayes model can be used for predicting the classification of new observations. To classify a new case, find all of the observations in the sample with exactly the same descriptive characteristics. With this set of observations, count the number of positive and negative outcomes and apply the counting scheme discussed above.</p>
+<p>This approach does not work if there are many predictors. Many practical predictive modeling problems have many predictors. So, the Bayesian idea works in theory, but not always in practice.</p>
+<p>As a more practical example, assume you want to predict a binary target class with true or false as the outcomes using 15 binary predictors. Assume that you it needed at least 50 observations in each one of the resulting cells to make a reasonable estimate of the true versus false values of the binary target. The very minimum number of observations you would need is 50 x 215 = 1.638.400 observations. Even this may not be enough because the distribution of observations may not be uniform and many of the cells will have too few observations.</p>
+<p>The “solution” to this problem is to use the Naïve Bayes model. The word solution is in quotes because the problem is not really solved. Instead, an approximation, which works well in many practical situations, is used. The approximation is based on the assumption that the predictor variables operate independently of one another. That is, naive Bayes assumes that the presence of a specific feature is unrelated to the presence of any other feature. If the predictors operate independently, then the joint probabilities of multiple variables can be simply estimated as the product of the individual probabilities.</p>
+</div>
+<div id="illustration-of-naïve-bayes-with-a-toy-data-set" class="section level2" number="10.3">
+<h2><span class="header-section-number">10.3</span> Illustration of Naïve Bayes with a “toy” data set</h2>
+<p>The small data set consists of 14 observations with the target variable “play tennis” and weather characteristics thought to affect the decision to play or not play. <span class="citation">(<a href="#ref-Breno" role="doc-biblioref"><span>“Play Tennis: Simple Dataset with Decisions about Playing Tennis,”</span> n.d.</a>)</span> The observations are shown in Table <a href="naive-bayes.html#tab:TennisDataSet">10.1</a>.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:TennisDataSet">Table 10.1: </span>The tennis data set.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Observation
+</th>
+<th style="text-align:center;">
+Play Tennis
+</th>
+<th style="text-align:center;">
+Outlook
+</th>
+<th style="text-align:center;">
+Temperature
+</th>
+<th style="text-align:center;">
+Humidity
+</th>
+<th style="text-align:center;">
+Wind
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+1
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Sunny
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Hot
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+High
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Sunny
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Hot
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+High
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Strong
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+3
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Overcast
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Hot
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+High
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+4
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Rain
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Mild
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+High
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+5
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Rain
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Cool
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Normal
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+6
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Rain
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Cool
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Normal
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Strong
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+7
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Overcast
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Cool
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Normal
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Strong
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+8
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Sunny
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Mild
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+High
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+9
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Sunny
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Cool
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Normal
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+10
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Rain
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Mild
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Normal
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+11
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Sunny
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Mild
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Normal
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Strong
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+12
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Overcast
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Mild
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+High
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Strong
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+13
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Overcast
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Hot
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Normal
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Weak
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+14
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Rain
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Mild
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+High
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Strong
+</td>
+</tr>
+</tbody>
+</table>
+<p>Using the data in Table <a href="naive-bayes.html#tab:TennisDataSet">10.1</a>, the following probabilities were calculated:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:TennisProbabilities"></span>
+<img src="images_naiveBayes/TennisProbabilities.PNG" alt="Probabilities for the Naïve Bayes model." width="50%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.3: Probabilities for the Naïve Bayes model.
+</p>
+</div>
+<p>The calculations shown in Figure <a href="naive-bayes.html#fig:TennisProbabilities">10.3</a> were simply obtained by counting. For example, to obtain the conditional probability of Sunny given Not playing, note that five observations were for Sunny conditions. Of those five observations, three indicated Sunny, so the conditional probability is 3/5 = .60. Similar calculations were done for each of the probabilities in the table.</p>
+<p>To obtain probabilities of playing versus not playing for Outlook = Sunny, Temperature = Mild, Humidity = High, and Wind = Strong, the following calculations were made using the naive Bayes model:</p>
+<div class="nobullet">
+<ul>
+<li><strong>The value for playing tennis:</strong></li>
+<li><em>Prob(Outlook=Sunny Given Playing tennis = Yes) = 0.222 times</em></li>
+<li><em>Prob(Temperature=Mild Given Playing tennis = Yes) = 0.444 times</em></li>
+<li><em>Prob(Humidity=High Given Playing tennis = Yes) = 0.333 times</em></li>
+<li><em>Prob(Wind=Weak Given Playing tennis = Yes) = 0.333 times</em></li>
+<li><em>Prob(Playing tennis = Yes) = 0.644</em></li>
+<li><em>which equals = 0.222 X 0.444 X 0.333 X 0.333 X 0.643 = 0.0071</em></li>
+<li>==================================================================<br />
+</li>
+<li><strong>The value for not playing tennis:</strong></li>
+<li><em>Prob(Outlook=Sunny Given Playing tennis = Yes) X</em></li>
+<li><em>Prob(Temperature=Mild Given Playing tennis = Yes) X</em></li>
+<li><em>Prob(Humidity=High Given Playing tennis = Yes) X</em></li>
+<li><em>Prob(Wind=Weak Given Playing tennis = Yes) X</em></li>
+<li><em>Prob(Playing tennis = Yes)</em></li>
+<li><em>which equals = 0.600 X 0.400 X 0.800 X 0.600 X 0.357 = 0.0412</em></li>
+<li>================================================================== *</li>
+<li><em>The probability of playing = 0.0071 / (0.0071 + 0.0412) = .1465</em></li>
+<li><em>Since the probability of playing is less than 0.50, the prediction is “Not play”</em></li>
+</ul>
+</div>
+<p>Similar calculations were completed for each of the 14 observations with a summary of the predictions in Table <a href="naive-bayes.html#tab:TennisPredictions">10.2</a>. Thirteen of the 14 predictions were correct using the Naïve Bayes model.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:TennisPredictions">Table 10.2: </span>Prediction accuracy with tennis data set using naive Bayes.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Observation
+</th>
+<th style="text-align:center;">
+Play Tennis
+</th>
+<th style="text-align:center;">
+Probability
+</th>
+<th style="text-align:center;">
+Prediction
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+1
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.205
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+2
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.079
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+3
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.999
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+4
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.536
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+5
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.933
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+6
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.822
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes*
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+7
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+1.000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+8
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.340
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+9
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.861
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+10
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.902
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+11
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.578
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+12
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.999
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+13
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+1.000
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; border-right:1px solid;vertical-align: top">
+14
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+0.278
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 12em; border-right:1px solid;vertical-align: top">
+No
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup></sup> Note: * Indicates prediction error.
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<div id="the-assumption-of-conditional-independence" class="section level2" number="10.4">
+<h2><span class="header-section-number">10.4</span> The assumption of conditional independence</h2>
+<p>Referring to Figure <a href="naive-bayes.html#fig:Independence">10.4</a>, what is the probability of getting a three on a roll of the die, “red” on the spinner, and heads on a flip of a coin? Since the three experiments are independent, the probability of is simply 1/6 X 1/4 X 1/2 = 1/48 = .0208.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Independence"></span>
+<img src="images_naiveBayes/Independence.PNG" alt="Illustration of independence." width="50%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.4: Illustration of independence.
+</p>
+</div>
+<p>This is what naïve Bayes analysis assumes about the effects of the predictors on the target class in a supervised model.</p>
+</div>
+<div id="naïve-bayes-with-continuous-predictors" class="section level2" number="10.5">
+<h2><span class="header-section-number">10.5</span> Naïve Bayes with continuous predictors</h2>
+<p>For simplicity, the previous examples only had categorical predictors, but Naïve Bayes can be used with continuous predictors. There are two approaches that can be used for continuous predictors. A simple solution is to discretize the continuous variables into a few categories. However, doing so is sometimes subjective. For instance, in categorizing temperature, someone may select 80 degrees as the cutoff at which temperature can be considered as “High,” whereas another person (from the tropics!) may choose to select 90 degrees as the border between “Medium” and “High.” This subjectivity causes obvious loss of information. But it can still be used as a quick way to get going before applying naive Bayes classification.</p>
+<p>Another method is to represent continuous variables with a probability density function. Typically, the normal or Gaussian distribution is used, but some software programs can use other distributions. The normal distribution is convenient since a continuous variable can be represented using just its mean and standard deviation. Some software implementations of Naïve Bayes offer the choice of other distribution function, e.g., Poisson.</p>
+<p>The way this works is demonstrated in Figure <a href="naive-bayes.html#fig:NBwithContinuousVars">10.5</a>. Consider a continuous variable, V, that is a predictor of a categorical variable Y which is either True or False. Observations on V in the data sample are grouped according to the Y values. The means and standard deviations of each group are computed and used to form the two normal density functions shown in Figure <a href="naive-bayes.html#fig:NBwithContinuousVars">10.5</a>. The conditional probabilities Prob(X|Target = False) and Prob(X|Target = True) which are needed for the naïve Bayes model are then obtained from the density functions. This method assumes that the normal distribution usefully represents the variable V.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:NBwithContinuousVars"></span>
+<img src="images_naiveBayes/BayesContinuous.PNG" alt="Demonstration of  working with a continuous variable in naïve Bayes." width="50%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.5: Demonstration of working with a continuous variable in naïve Bayes.
+</p>
+</div>
+</div>
+<div id="laplace-smoothing" class="section level2" number="10.6">
+<h2><span class="header-section-number">10.6</span> Laplace Smoothing</h2>
+<p>The naïve Bayes algorithm can have a problem in certain situations, especially with small sample sizes. The problem happens if a particular value does not occur with frequency greater than zero in any level of a predictor. In this case, the conditional probability becomes zero and since the conditional probabilities are multiplied in a chain, this causes all posterior probabilities that included the level to be zero. (This was actually the case in the tennis example illustrated earlier. For the condition not playing tennis, the overcast level of the weather never occurred.)</p>
+<p>To avoid this, a Laplace Smoother <span class="citation">(<a href="#ref-Kuhn2016" role="doc-biblioref">Kuhn and Johnson 2016</a>)</span> is used. There are several ways to incorporate the smoother with the simplest being to add one to every count in the combination of predictor values.</p>
+</div>
+<div id="example-using-naïve-bayes-with-churn-data" class="section level2" number="10.7">
+<h2><span class="header-section-number">10.7</span> Example using naïve Bayes with churn data</h2>
+<p>The churn data set was analyzed using naive Bayes in KNIME. The KNIME workflow is shown in Figure <a href="naive-bayes.html#fig:WorflowChurns">10.6</a>. The same preprocessing of the churn data was included and SMOTE was used to balance the target values in the training data.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:WorflowChurns"></span>
+<img src="images_naiveBayes/churnDataWorkflow.PNG" alt="Workflow for naïve Bayes using churn data." width="100%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.6: Workflow for naïve Bayes using churn data.
+</p>
+</div>
+<p>Node descriptions for the workflow in Figure <a href="naive-bayes.html#fig:WorflowChurns">10.6</a> are in Table <a href="naive-bayes.html#tab:NodesChurns">10.3</a>.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:NodesChurns">Table 10.3: </span>Node descriptions for naive Byes with churn data.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Node
+</th>
+<th style="text-align:left;">
+Label
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+1
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+File Reader
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Read the file ChurnData.csv.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+2
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Math Formula
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Compute square root of total charges
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+3
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Partitioning
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Stratified sampling on Churn; 70/30 split.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+4
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+SMOTE
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Oversample minority cases
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+5
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Naïve Bayes Learning
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Run naïve Bayes on training data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+6
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Naïve Bayes Predictor
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Use the naïve Bayes model to predict test data.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+7
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+ROC Curve
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Create ROC curve and AUC.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+8
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+Scorer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Calculate performance metrics and confusion matrix.
+</td>
+</tr>
+</tbody>
+</table>
+<p>The evaluation metrics results for naïve Bayes are shown in Table <a href="naive-bayes.html#tab:ComparisonMetrics">10.4</a>. For comparison, the metrics from a basic decision tree as well as three ensemble models are also shown. The naïve Bayes model performed comparably. The area under the ROC curve was greater than decision trees, but lower than that for the ensemble models. Interestingly, naïve Bayes traded specificity (lower) for sensitivity (higher). Overall, however, while naïve Bayes is a contender for classification, it does not perform as well as more complex models.</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:ComparisonMetrics">Table 10.4: </span>Comparative performance of naïve Bayes with ensemble models.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;color: black !important;background-color: white !important;padding: 2px;">
+Model
+</th>
+<th style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+ROC AUC
+</th>
+<th style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Accuracy
+</th>
+<th style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Sensitivity
+</th>
+<th style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Specificity
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Naïve Bayes
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.820
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.702
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.831
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+0.655
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Decision tree
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.803
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.745
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.754
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+0.742
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+Random forest
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.837
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.758
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.770
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+0.754
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+GBT
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.846
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.758
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.807
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+0.740
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 8em; vertical-align: top">
+XGBoost
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.846
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.752
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 10em; vertical-align: top">
+0.783
+</td>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+0.740
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="spam-detection-using-naïve-bayes" class="section level2" number="10.8">
+<h2><span class="header-section-number">10.8</span> Spam detection using naïve Bayes</h2>
+<p>Email has provided a convenient mode of communication that is used throughout the world by millions of people for business and personal messages. The huge number of unsolicited commercial messages most people receive daily soon, however, is at best an annoyance and at worst a means for deception or even criminal activity. The proliferation and variety of these unsolicited email messages, now called spam or junk mail, led to the development of software programs detect and screen out such emails. Spam filters have been developed to sift through email messages to separate the “ham” from the “spam.” The challenge in designing spam filters is to make the algorithm selective enough to identify spam while not flagging legitimate messages. It has been estimated that about 45% of global e-mail traffic was spam. <span class="citation">(<a href="#ref-SpamStats" role="doc-biblioref"><span>“Spam Statistics and Facts,”</span> n.d.</a>)</span></p>
+<p>Naïve Bayes has been used as the machine learning engine for spam filters because of its simplicity, speed, and accuracy. Many enhancements of the basic naïve Bayes model have been made to improve its performance and other algorithms have been used such as k-nearest neighbors, support vector machines.<span class="citation">(<a href="#ref-Karimovich2020" role="doc-biblioref">Karimovich and Salimbayevich 2020</a>)</span> <span class="citation">(<a href="#ref-Thae2020" role="doc-biblioref">Ma and Thida 2020</a>)</span><br />
+A data set of 5,556 messages labeled as spam or ham email messages <span class="citation">(<a href="#ref-UCI_Spam" role="doc-biblioref"><span>“SMS Spam Collection Data Set, UCI Machine Learning Repository,”</span> n.d.</a>)</span> was downloaded and analyzed using KNIME. Example messages in the data set are in Table <a href="naive-bayes.html#tab:SpamHamMessageExamples">10.5</a>:</p>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:SpamHamMessageExamples">Table 10.5: </span>Examples of spam and ham email messages.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;color: black !important;background-color: white !important;padding: 2px;">
+Class
+</th>
+<th style="text-align:left;color: black !important;background-color: white !important;padding: 2px;">
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 4em; vertical-align: top">
+ham
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 30em; vertical-align: top">
+What you doing? how are you?
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 4em; vertical-align: top">
+ham
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 30em; vertical-align: top">
+Siva is in hostel aha:-.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 4em; vertical-align: top">
+spam
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 30em; vertical-align: top">
+Sunshine Quiz! Win a super Sony DVD recorder if you can name the capital of Australia? Text MQUIZ to 82277.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 4em; vertical-align: top">
+spam
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 30em; vertical-align: top">
+PRIVATE! Your 2003 Account Statement for shows 800 un-redeemed S.I.M. points. Call 08718738001 Identifier Code: 49557 Expires 26/11/04
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 4em; vertical-align: top">
+</td>
+<td style="text-align:left;width: 30em; vertical-align: top">
+</td>
+</tr>
+</tbody>
+</table>
+<p>The text file was converted into a file consisting of a bag of words.<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a> The KNIME workflow is in Figure <a href="naive-bayes.html#fig:PreprocessHAM">10.7</a>. and node descriptions are in Table . The workflow a table with created 5,572 rows (one for each message) and 12,230 columns with indicators for terms. (The details for textual analysis will be covered in more detail in the chapter on Text Analytics.)</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:PreprocessHAM"></span>
+<img src="images_naiveBayes/PreProcessingBagOfWords.PNG" alt="Pre-processing workflow in KNIME for SPAM/HAM example." width="100%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.7: Pre-processing workflow in KNIME for SPAM/HAM example.
+</p>
+</div>
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:hamSpamNodeDescriptions">Table 10.6: </span>Node descriptions for naive Bayes with SPAM / HAM data workflow.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Node
+</th>
+<th style="text-align:left;">
+Label
+</th>
+<th style="text-align:left;">
+Description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+1
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Excel Reader
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Read the Excel file SPAMHAM.xlsx.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+2
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Strings to Document
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Convert observations to documents.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+3
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Punctuation Erasure
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Remove all punctuation from the documents.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+4
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+N Chars Filter
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Removes all terms with less than 3 characters.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+5
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Number Filter
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Remove all terms that consist of numbers.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+6
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Case Converter
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Convert all terms to lower case.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+7
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Stop Word Filter
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Remove stop words using built-in list.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+8
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Bag Of Words Creater
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Changes each document to individual terms, one term in each row; creates a table with 90,102 rows.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+9
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Document Vector
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Create a vector with one row per document and columns with binary indicator for presence of term (0 or 1).
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+10
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Category To Class
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Adds the appropriate string class variable (either spam or ham).
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+11
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Number to String
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Convert the numbers in the bag of words to strings.
+</td>
+</tr>
+<tr>
+<td style="text-align:center;color: black !important;background-color: white !important;padding: 2px;width: 5em; vertical-align: top">
+12
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 12em; vertical-align: top">
+Table Writer
+</td>
+<td style="text-align:left;color: black !important;background-color: white !important;padding: 2px;width: 25em; vertical-align: top">
+Write bag of words to file SPAMHAM.table.
+</td>
+</tr>
+</tbody>
+</table>
+<p>The bag of words data from the preprocessing step was submitted to naive Bayes in KNIME (Figure <a href="naive-bayes.html#fig:naiveBayesHam">10.8</a>. Descriptions of each node used to run the naïve Bayes model are in Table @ref(tab:naiveBayesHam ).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:naiveBayesHam"></span>
+<img src="images_naiveBayes/NaiveBayesWorkflowBagOfWords.PNG" alt="Naïve Bayes workflow in KNIME for SPAM/HAM example." width="100%" style="   border: 1px solid maroon;" />
+<p class="caption">
+Figure 10.8: Naïve Bayes workflow in KNIME for SPAM/HAM example.
+</p>
+</div>
+<p>The results of the naïve Bayes analysis of the spam data set show quite good accuracy (over 98%). As shown in the confusion matrix created for the test</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Karimovich2020" class="csl-entry">
+Karimovich, Khamidov Sherzod Jaloldin ugli, Ganiev Salim, and Olimov Iskandar Salimbayevich. 2020. <span>“Analysis of Machine Learning Methods for Filtering Spam Messages in Email Services.”</span> In <em>Proceedings of the 22nd International Conference on Machine Learning</em>, 625–32.
+</div>
+<div id="ref-Kuhn2016" class="csl-entry">
+Kuhn, Max, and Kjell Johnson. 2016. <em>Applied Predictive Modeling</em>. 2nd ed. New York: Springer.
+</div>
+<div id="ref-Thae2020" class="csl-entry">
+Ma, Kunihito Yamamori, Thae Ma, and Aye Thida. 2020. <span>“A Comparative Approach to Naïve Bayes Classifier and Support Vector Machine for Email Spam Classification.”</span> In <em>IEEE 9th Global Conference on Consumer Electronics</em>.
+</div>
+<div id="ref-Breno" class="csl-entry">
+<span>“Play Tennis: Simple Dataset with Decisions about Playing Tennis.”</span> n.d. <a href="https://www.coursera.org/learn/machine-learning-under-the-hood">https://www.coursera.org/learn/machine-learning-under-the-hood</a>.
+</div>
+<div id="ref-UCI_Spam" class="csl-entry">
+<span>“SMS Spam Collection Data Set, UCI Machine Learning Repository.”</span> n.d. <a href="https://archive.ics.uci.edu/ml/datasets/sms+spam+collection">https://archive.ics.uci.edu/ml/datasets/sms+spam+collection</a>.
+</div>
+<div id="ref-SpamStats" class="csl-entry">
+<span>“Spam Statistics and Facts.”</span> n.d. <a href="https://www.spamlaws.com/spam-stats.html">https://www.spamlaws.com/spam-stats.html</a>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="13">
+<li id="fn13"><p>The “bag of words” model simply counts the number of occurences of known words in a document and does not consider the order or syntax of the words. It is therefore a simplified representing text.<a href="naive-bayes.html#fnref13" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ensemble-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="deep-learning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["TextbookDraft.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
